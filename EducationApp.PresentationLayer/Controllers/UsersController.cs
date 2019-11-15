@@ -26,7 +26,7 @@ namespace CustomIdentityApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                ApplicationUser user = new ApplicationUser { Email = model.Email, UserName = model.Email, Year = model.Year };
+                ApplicationUser user = new ApplicationUser { Email = model.Email, UserName = model.Email, FirstName = model.FirstName, LastName = model.LastName };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -50,7 +50,7 @@ namespace CustomIdentityApp.Controllers
             {
                 return NotFound();
             }
-            EditUserViewModel model = new EditUserViewModel { Id = user.Id, Email = user.Email, Year = user.Year };
+            EditUserViewModel model = new EditUserViewModel { Id = user.Id, Email = user.Email, FirstName = user.FirstName, LastName = user.LastName };
             return View(model);
         }
 
@@ -64,7 +64,8 @@ namespace CustomIdentityApp.Controllers
                 {
                     user.Email = model.Email;
                     user.UserName = model.Email;
-                    user.Year = model.Year;
+                    user.FirstName = model.FirstName;
+                    user.LastName = model.LastName;
 
                     var result = await _userManager.UpdateAsync(user);
                     if (result.Succeeded)
