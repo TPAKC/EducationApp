@@ -29,6 +29,7 @@ namespace RolesInitializerApp
                     await userManager.AddToRoleAsync(admin, "admin");
                 }
             }
+
             if (await userManager.FindByNameAsync(userEmail) == null)
             {
                 ApplicationUser user = new ApplicationUser { Email = userEmail, UserName = userEmail };

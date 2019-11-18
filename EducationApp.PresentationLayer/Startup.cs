@@ -1,5 +1,6 @@
 using EducationApp.DataAccessLayer.Entities;
 using EducationApp.PresentationLayer.Data;
+using EducationApp.PresentationLayer.Middlewares;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -49,6 +50,7 @@ namespace EducationApp.PresentationLayer
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
+            app.UseMiddleware<ExceptionMiddleware>();
             app.UseRouting();
 
             app.UseAuthentication();

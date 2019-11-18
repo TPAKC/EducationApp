@@ -6,9 +6,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using EducationApp.DataAccessLayer.Entities;
 using EducationApp.BusinessLogicalLayer.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CustomIdentityApp.Controllers
 {
+    [Authorize(Roles = "admin")]
     public class RolesController : Controller
     {
         RoleManager<IdentityRole> _roleManager;
@@ -57,11 +59,11 @@ namespace CustomIdentityApp.Controllers
 
         public async Task<IActionResult> Edit(string userId)
         {
-            // получаем пользователя
+            // get user
             ApplicationUser user = await _userManager.FindByIdAsync(userId);
             if (user != null)
             {
-                // получем список ролей пользователя
+                // get a list of user roles
                 var userRoles = await _userManager.GetRolesAsync(user);
                 var allRoles = _roleManager.Roles.ToList();
                 ChangeRoleViewModel model = new ChangeRoleViewModel
@@ -79,17 +81,17 @@ namespace CustomIdentityApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(string userId, List<string> roles)
         {
-            // получаем пользователя
+            // get user
             ApplicationUser user = await _userManager.FindByIdAsync(userId);
             if (user != null)
             {
-                // получем список ролей пользователя
+                // get a list of user roles
                 var userRoles = await _userManager.GetRolesAsync(user);
-                // получаем все роли
+                // we get all the roles
                 var allRoles = _roleManager.Roles.ToList();
-                // получаем список ролей, которые были добавлены
+                // get a list of roles that have been added
                 var addedRoles = roles.Except(userRoles);
-                // получаем роли, которые были удалены
+                // we get the roles that were deleted
                 var removedRoles = userRoles.Except(roles);
 
                 await _userManager.AddToRolesAsync(user, addedRoles);
@@ -98,8 +100,13 @@ namespace CustomIdentityApp.Controllers
 
                 return RedirectToAction("UserList");
             }
-
             return NotFound();
+        }
+
+
+        public IActionResult Back()
+        {
+            return RedirectToAction("Index", "Roles");
         }
     }
 }

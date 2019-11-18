@@ -37,14 +37,22 @@ namespace EducationApp.PresentationLayer.Controllers
                     await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
                 if (result.Succeeded)
                 {
-                    // проверяем, принадлежит ли URL приложению
+                    // check if the URL belongs to the application
                     if (!string.IsNullOrEmpty(model.ReturnUrl) && Url.IsLocalUrl(model.ReturnUrl))
                     {
                         return Redirect(model.ReturnUrl);
                     }
                     else
                     {
-                        return RedirectToAction("Index", "Home");
+                        var user = await _userManager.FindByNameAsync(model.Email);
+                        if (await _userManager.IsInRoleAsync(user, "admin"))
+                        { 
+                            return RedirectToAction("Index", "Roles");
+                        }
+                        else
+                        {
+                            return RedirectToAction("Index", "Home");
+                        }
                     }
                 }
                 else
@@ -59,7 +67,7 @@ namespace EducationApp.PresentationLayer.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> LogOff()
         {
-            // удаляем аутентификационные куки
+            // delete authentication cookies
             await _signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
         }
@@ -69,12 +77,13 @@ namespace EducationApp.PresentationLayer.Controllers
         {
             if (ModelState.IsValid)
             {
-                ApplicationUser user = new ApplicationUser { Email = model.Email, UserName = model.Email, FirstName = model.FirstName, LastName = model.LastName };
-                // добавляем пользователя
+                ApplicationUser user = new ApplicationUser { Email = model.Email, UserName = model.Email, FirstName = model.FirstName, LastName = model.LastName};
+                // Add user
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    // установка куки
+                    // Setting cookies
+                    await _userManager.AddToRoleAsync(user, "user");
                     await _signInManager.SignInAsync(user, false);
                     return RedirectToAction("Index", "Home");
                 }
