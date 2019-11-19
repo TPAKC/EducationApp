@@ -1,5 +1,6 @@
 ﻿using EducationApp.BusinessLogicalLayer.Models.ViewModels;
 using EducationApp.DataAccessLayer.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
@@ -7,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace CustomIdentityApp.Controllers
 {
+    [Authorize(Roles = "admin")]
     public class UsersController : Controller
     {
         UserManager<ApplicationUser> _userManager;
@@ -140,5 +142,11 @@ namespace CustomIdentityApp.Controllers
             }
             return View(model);
         }
+
+        public IActionResult GoToRoles()
+        {
+            return RedirectToAction("Index", "Roles");
+        }
+
     }
 }

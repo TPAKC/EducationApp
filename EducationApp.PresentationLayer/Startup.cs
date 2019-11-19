@@ -27,9 +27,14 @@ namespace EducationApp.PresentationLayer
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddIdentity<ApplicationUser, IdentityRole>()
-    .AddEntityFrameworkStores<ApplicationDbContext>()
-    .AddDefaultTokenProviders();
+            services.AddIdentity<ApplicationUser, IdentityRole>(opts => {
+                opts.Password.RequireNonAlphanumeric = false; 
+                opts.Password.RequireLowercase = false;
+                opts.Password.RequireUppercase = false;
+                opts.Password.RequireDigit = false;
+            })
+     .AddEntityFrameworkStores<ApplicationDbContext>()
+     .AddDefaultTokenProviders();
 
             services.AddControllersWithViews();
             services.AddRazorPages();
@@ -56,7 +61,7 @@ namespace EducationApp.PresentationLayer
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
+            app.UseEndpoints(endpoints =>   
             {
                 endpoints.MapControllerRoute(
                     name: "default",

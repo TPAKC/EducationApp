@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using EducationApp.DataAccessLayer.Entities;
-using EducationApp.PresentationLayer.Data;
+﻿using EducationApp.DataAccessLayer.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 
 namespace EducationApp.PresentationLayer.Controllers
 {

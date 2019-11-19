@@ -4,23 +4,29 @@
     <form method="post" asp-controller="Account" asp-action="Login"
           asp-route-returnUrl="@Model.ReturnUrl">
         <div asp-validation-summary="ModelOnly"></div>
-        <div>
-            <label asp-for="Email"></label><br />
+        <p>
+            <label asp-for="Email"></label>
             <input asp-for="Email" />
             <span asp-validation-for="Email"></span>
-        </div>
-        <p>
             <div>
-                <label asp-for="Password"></label><br />
+                <label asp-for="Password"></label>
                 <input asp-for="Password" />
                 <span asp-validation-for="Password"></span>
             </div>
         <p>
             <div>
-                <label asp-for="RememberMe"></label><br />
+                <label asp-for="RememberMe"></label>
                 <input asp-for="RememberMe" />
             </div>
             <div>
                 <input type="submit" value="Login" />
+            </div>
+        <p>
+            <div>
+                <input type="submit" asp-controller="Account" asp-action="Register" value="Registration" />
+            </div>
+        <p>
+            <div>
+                <input type="submit" asp-controller="Account" asp-action="GoToForgotPassword" value="Forgot password" />
             </div>
     </form>

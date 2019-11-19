@@ -22,18 +22,17 @@ namespace RolesInitializerApp
             }
             if (await userManager.FindByNameAsync(adminEmail) == null)
             {
-                ApplicationUser admin = new ApplicationUser { Email = adminEmail, UserName = adminEmail };
+                ApplicationUser admin = new ApplicationUser { Email = adminEmail, UserName = adminEmail, EmailConfirmed = true };
                 IdentityResult result = await userManager.CreateAsync(admin, adminPassword);
                 if (result.Succeeded)
                 {
-                   
                     await userManager.AddToRoleAsync(admin, "admin");
                 }
             }
 
             if (await userManager.FindByNameAsync(userEmail) == null)
             {
-                ApplicationUser user = new ApplicationUser { Email = userEmail, UserName = userEmail };
+                ApplicationUser user = new ApplicationUser { Email = userEmail, UserName = userEmail, EmailConfirmed = true };
                 IdentityResult result = await userManager.CreateAsync(user, userPassword);
                 if (result.Succeeded)
                 {

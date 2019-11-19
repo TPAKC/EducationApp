@@ -1,12 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using EducationApp.BusinessLogicalLayer.Models.ViewModels;
+using EducationApp.DataAccessLayer.Entities;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using EducationApp.DataAccessLayer.Entities;
-using EducationApp.BusinessLogicalLayer.Models.ViewModels;
-using Microsoft.AspNetCore.Authorization;
 
 namespace CustomIdentityApp.Controllers
 {
@@ -102,7 +101,6 @@ namespace CustomIdentityApp.Controllers
             }
             return NotFound();
         }
-
 
         public IActionResult Back()
         {
