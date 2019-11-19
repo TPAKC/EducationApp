@@ -1,5 +1,6 @@
 ﻿using EducationApp.BusinessLogicalLayer.Models.ViewModels;
 using EducationApp.DataAccessLayer.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -33,31 +34,32 @@ namespace EducationApp.PresentationLayer.Controllers
         {
             if (ModelState.IsValid)
             {
-                var result =
-                    await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
+                var user = await _userManager.FindByNameAsync(model.Email);
+                if (user != null)
+                {
+                    // check if email is verified
+                    if (!await _userManager.IsEmailConfirmedAsync(user))
+                    {
+                        ModelState.AddModelError(string.Empty, "You have not verified your email");
+                        return View(model);
+                    }
+                }
+
+                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
                 if (result.Succeeded)
                 {
-                    // check if the URL belongs to the application
-                    if (!string.IsNullOrEmpty(model.ReturnUrl) && Url.IsLocalUrl(model.ReturnUrl))
+                    if (await _userManager.IsInRoleAsync(user, "admin"))
                     {
-                        return Redirect(model.ReturnUrl);
+                        return RedirectToAction("Index", "Roles");
                     }
                     else
                     {
-                        var user = await _userManager.FindByNameAsync(model.Email);
-                        if (await _userManager.IsInRoleAsync(user, "admin"))
-                        { 
-                            return RedirectToAction("Index", "Roles");
-                        }
-                        else
-                        {
-                            return RedirectToAction("Index", "Home");
-                        }
+                        return RedirectToAction("Index", "Home");
                     }
                 }
                 else
                 {
-                    ModelState.AddModelError("", "Invalid username and/or password");
+                    ModelState.AddModelError("", "Incorrect username and/or password");
                 }
             }
             return View(model);
@@ -71,7 +73,6 @@ namespace EducationApp.PresentationLayer.Controllers
             await _signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
         }
-
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
@@ -82,10 +83,21 @@ namespace EducationApp.PresentationLayer.Controllers
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    // Setting cookies
-                    await _userManager.AddToRoleAsync(user, "user");
-                    await _signInManager.SignInAsync(user, false);
-                    return RedirectToAction("Index", "Home");
+                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    var callbackUrl = Url.Action(
+                        "ConfirmEmail",
+                        "Account",
+                        new { userId = user.Id, code = code },
+                        protocol: HttpContext.Request.Scheme);
+                    EmailService emailService = new EmailService();
+                    await emailService.SendEmailAsync(model.Email, "Confirm your account",
+                        $"Confirm registration by clicking on the <a href='{callbackUrl}'>link</a>");
+
+                    return Content("To complete the registration, check your email and follow the link provided in the letter");
+
+                    /*  await _userManager.AddToRoleAsync(user, "user");
+                      await _signInManager.SignInAsync(user, false);
+                      return RedirectToAction("Index", "Home");*/
                 }
                 else
                 {
@@ -97,5 +109,27 @@ namespace EducationApp.PresentationLayer.Controllers
             }
             return View(model);
         }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> ConfirmEmail(string userId, string code)
+        {
+            if (userId == null || code == null)
+            {
+                return View("Error");
+            }
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return View("Error");
+            }
+            var result = await _userManager.ConfirmEmailAsync(user, code);
+            if (result.Succeeded)
+                return RedirectToAction("Index", "Home");
+            else
+                return View("Error");
+        }
+
+       
     }
 }
