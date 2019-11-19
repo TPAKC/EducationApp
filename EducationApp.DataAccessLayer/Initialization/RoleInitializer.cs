@@ -26,7 +26,7 @@ namespace RolesInitializerApp
                 IdentityResult result = await userManager.CreateAsync(admin, adminPassword);
                 if (result.Succeeded)
                 {
-                    await userManager.IsEmailConfirmedAsync = true;
+                   
                     await userManager.AddToRoleAsync(admin, "admin");
                 }
             }
