@@ -23,7 +23,7 @@ namespace EducationApp.PresentationLayer
                 {
                     var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
                     var rolesManager = services.GetRequiredService<RoleManager<IdentityRole>>();
-                    await RoleInitializer.InitializeAsync(userManager, rolesManager);
+                    await DataBaseInitializer.InitializeAsync(userManager, rolesManager);
                 }
                 catch (Exception ex)
                 {

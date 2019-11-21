@@ -10,6 +10,9 @@ namespace EducationApp.DataAccessLayer
         {
             services.AddSingleton(new Connection(connectionString));
             services.AddScoped<IPrintingEditionRepository, PrintingEditionsRepository>();
+            services.AddScoped<IAuthorRepository, AuthorsRepository>();
+            services.AddScoped<IOrderRepository, OrdersRepository>();
+            services.AddScoped<IOrderItemRepository, OrderItemsRepository>();
         }
     }
 }

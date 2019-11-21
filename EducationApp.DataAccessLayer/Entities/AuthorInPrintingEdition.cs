@@ -2,7 +2,7 @@
 
 namespace EducationApp.DataAccessLayer.Entities
 {
-    class AuthorInPrintingEdition : BaseEntity
+    public class AuthorInPrintingEdition : BaseEntity
     {
         public string Name { get; set; }
     }

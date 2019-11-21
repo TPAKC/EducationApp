@@ -196,5 +196,6 @@ namespace EducationApp.PresentationLayer.Controllers
         {
             return RedirectToAction("ForgotPassword", "Account");
         }
+
     }
 }

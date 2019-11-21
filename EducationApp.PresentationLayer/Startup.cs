@@ -1,13 +1,16 @@
+using EducationApp.BusinessLogicalLayer.Common;
 using EducationApp.DataAccessLayer.Entities;
 using EducationApp.PresentationLayer.Data;
 using EducationApp.PresentationLayer.Middlewares;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace EducationApp.PresentationLayer
 {
@@ -27,8 +30,9 @@ namespace EducationApp.PresentationLayer
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddIdentity<ApplicationUser, IdentityRole>(opts => {
-                opts.Password.RequireNonAlphanumeric = false; 
+            services.AddIdentity<ApplicationUser, IdentityRole>(opts =>
+            {
+                opts.Password.RequireNonAlphanumeric = false;
                 opts.Password.RequireLowercase = false;
                 opts.Password.RequireUppercase = false;
                 opts.Password.RequireDigit = false;
@@ -40,8 +44,9 @@ namespace EducationApp.PresentationLayer
             services.AddRazorPages();
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
+            Logger.LoggerFactory = loggerFactory;
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -61,7 +66,7 @@ namespace EducationApp.PresentationLayer
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>   
+            app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                     name: "default",

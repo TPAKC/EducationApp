@@ -15,15 +15,14 @@ namespace EducationApp.BusinessLogicalLayer.Services
             _printingEditionsrepository = printingEditionRepository;
         }
 
-        public async Task<GetPrintingEditionsViewModel> GetAll()
+        public async Task<PrintingEditionModel> GetAll()
         {
             var dbResponse = await _printingEditionsrepository.GetAll();
-            var response = new GetPrintingEditionsViewModel();
+            var response = new PrintingEditionModel();
             response.PrintingEditions = dbResponse.Select(m =>
             {
-                var model = new GetPrintingEditionItemModel();
+                var model = new PrintingEditionItemModel();
                 model.Id = m.Id;
-                model.Name = m.Title;
                 return model;
             }).ToList();
             return response;
