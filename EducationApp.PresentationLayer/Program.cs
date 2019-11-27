@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace EducationApp.PresentationLayer
 {
-    public class Program
+    public static class Program
     {
-        public static async Task Main(string[] args)
+        public static void Main(string[] args)
         {
 
             var host = CreateHostBuilder(args).Build();
@@ -23,7 +23,6 @@ namespace EducationApp.PresentationLayer
                 {
                     var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
                     var rolesManager = services.GetRequiredService<RoleManager<IdentityRole>>();
-                    await DataBaseInitializer.InitializeAsync(userManager, rolesManager);
                 }
                 catch (Exception ex)
                 {

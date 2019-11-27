@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace EducationApp.DataAccessLayer.Repositories
 {
-    public class BaseRepository<TEntity>: IBaseRepository<TEntity> where TEntity: BaseEntity
+    public class BaseDapperRepository<TEntity>: IBaseRepository<TEntity> where TEntity: BaseEntity
     {
         protected IDbConnection _connection { get; set; }
 
-        public BaseRepository(Connection connection)
+        public BaseDapperRepository(Connection connection)
         {
             _connection = new SqlConnection(connection.ConnectionString);
         }

@@ -46,6 +46,7 @@
 
   <ItemGroup>
     <Folder Include="Migrations\" />
+    <Folder Include="Repositories\EFRepositories\" />
   </ItemGroup>
 
 </Project>

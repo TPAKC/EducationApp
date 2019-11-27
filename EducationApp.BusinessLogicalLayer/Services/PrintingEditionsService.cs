@@ -3,18 +3,19 @@ using EducationApp.BusinessLogicalLayer.Models.ViewModels.PrintingEdition;
 using EducationApp.BusinessLogicalLayer.Services.Interfaces;
 using EducationApp.DataAccessLayer.Entities;
 using EducationApp.DataAccessLayer.Repositories.Interfaces;
+using EducationApp.PresentationLayer.Data;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
 namespace EducationApp.BusinessLogicalLayer.Services
 {
-    public class PrintingEditionsService : IPrintingEditionsService
+    public class PrintingEditionService : IPrintingEditionsService
     {
-        IUnitOfWork Database { get; set; }
-        public PrintingEditionsService(IUnitOfWork uow)
+        private ApplicationDbContext Database;
+        public PrintingEditionService(ApplicationDbContext context)
         {
-            Database = uow;
+            Database = context;
         }
 
         public async Task MakePrintingEditionAsync(PrintingEditionModel printingEditionModel)

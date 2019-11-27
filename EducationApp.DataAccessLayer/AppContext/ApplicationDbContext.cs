@@ -16,7 +16,9 @@ namespace EducationApp.PresentationLayer.Data
 
         static ApplicationDbContext()
         {
-           // Database.SetInitializer<ApplicationDbContext>(new DataBaseInitializer());
+            // Database.SetInitializer<ApplicationDbContext>(new DataBaseInitializer());
+            //or
+            // await DataBaseInitializer.InitializeAsync(userManager, rolesManager);
         }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)

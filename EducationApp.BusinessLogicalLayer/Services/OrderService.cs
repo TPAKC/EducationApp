@@ -3,6 +3,7 @@ using EducationApp.BusinessLogicalLayer.Models.ViewModels.Orders;
 using EducationApp.BusinessLogicalLayer.Services.Interfaces;
 using EducationApp.DataAccessLayer.Entities;
 using EducationApp.DataAccessLayer.Repositories.Interfaces;
+using EducationApp.PresentationLayer.Data;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
@@ -11,10 +12,10 @@ namespace EducationApp.BusinessLogicalLayer.Services
 {
     public class OrderService : IOrderService
     {
-        IUnitOfWork Database { get; set; }
-        public OrderService(IUnitOfWork uow)
+        private ApplicationDbContext Database;
+        public OrderService(ApplicationDbContext context)
         {
-            Database = uow;
+            Database = context;
         }
 
         public async Task MakeOrderAsync(OrderModel orderModel)
