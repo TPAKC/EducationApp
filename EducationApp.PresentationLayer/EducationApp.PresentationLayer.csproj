@@ -46,12 +46,4 @@
     <ProjectReference Include="..\EducationApp.BusinessLogicalLayer\EducationApp.BusinessLogicalLayer.csproj" />
   </ItemGroup>
 
-
-  <ItemGroup>
-    <Content Update="Views\Roles\Edit.cshtml">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-  </ItemGroup>
-
 </Project>

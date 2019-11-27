@@ -8,7 +8,7 @@ namespace EducationApp.BusinessLogicalLayer
     {
         public static void RegisterDependencies(string connectionString, IServiceCollection services)
         {
-            services.AddScoped<IPrintingEditionsService, PrintingEditionsService>();
+            services.AddScoped<IPrintingEditionsService, PrintingEditionService>();
 
             EducationApp.DataAccessLayer.Startup.RegisterDependencies(connectionString, services);
         }

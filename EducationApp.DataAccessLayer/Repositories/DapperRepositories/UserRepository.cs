@@ -28,7 +28,10 @@ namespace EducationApp.DataAccessLayer.Repositories.DapperRepositories
         {
             return await _userManager.CreateAsync(user);
         }
-
+        public virtual async Task<IdentityResult> Create(ApplicationUser user, string password)
+        {
+            return await _userManager.CreateAsync(user, password);
+        }
         public virtual async Task<IdentityResult> Delete(ApplicationUser user)
         {
             return await _userManager.DeleteAsync(user);

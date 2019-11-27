@@ -7,15 +7,8 @@ using System.Threading.Tasks;
 
 namespace EducationApp.BusinessLogicalLayer.Services.Interfaces
 {
-    public interface IUserService : IDisposable
+    public interface IUserService
     {
-        Task MakeuserAsync(UserModel user);
-        Task<ClaimsIdentity> Authenticate(UserModel userModel);
-        Task SetInitialData(UserModel adminModel, List<string> roles);
-
- /*       Task MakePrintingEditionAsync(PrintingEditionModel printingEditionModel);
-        Task<PrintingEditionModel> GetPrintingEditionAsync(int? id);
-        Task<IEnumerable<PrintingEditionModel>> GetPrintingEditionsAsync();
-        void Dispose();*/
+        Task Create(UserModel user);
     }
 }

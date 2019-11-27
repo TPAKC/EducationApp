@@ -9,6 +9,7 @@ namespace EducationApp.DataAccessLayer.Repositories.Interfaces
     {
         Task<IdentityResult> ChangePassword(ApplicationUser user, string oldPassword, string newPassword);
         Task<IdentityResult> Create(ApplicationUser user);
+        Task<IdentityResult> Create(ApplicationUser user, string password);
         Task<IdentityResult> Delete(ApplicationUser user);
         Task<ApplicationUser> FindById(string id);
         Task<ApplicationUser> FindByEmail(string email);
@@ -18,5 +19,6 @@ namespace EducationApp.DataAccessLayer.Repositories.Interfaces
         Task<IList<string>> GetRoles(ApplicationUser user);
         Task<bool> IsInRole(ApplicationUser user, string role);
         Task<IdentityResult> RemoveFromRole(ApplicationUser user, string role);
+
     }
 }
