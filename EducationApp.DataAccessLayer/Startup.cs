@@ -6,12 +6,13 @@ namespace EducationApp.DataAccessLayer
 {
     public class Startup
     {
-        public static void RegisterDependencies(string connectionString, IServiceCollection services)
+            public static void RegisterDependencies(string connectionString, IServiceCollection services)
         {
+
             services.AddSingleton(new Connection(connectionString));
-            services.AddScoped<IPrintingEditionRepository, PrintingEditionsRepository>();
-            services.AddScoped<IAuthorRepository, AuthorsRepository>();
-            services.AddScoped<IOrderRepository, OrdersRepository>();
+            services.AddScoped<IPrintingEditionRepository, PrintingEditionRepository>();
+            services.AddScoped<IAuthorRepository, AuthorRepository>();
+            services.AddScoped<IOrderRepository, OrderRepository>();
             services.AddScoped<IOrderItemRepository, OrderItemsRepository>();
         }
     }

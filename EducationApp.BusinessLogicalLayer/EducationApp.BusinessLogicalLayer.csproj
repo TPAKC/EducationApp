@@ -6,11 +6,11 @@
 
   <ItemGroup>
     <Folder Include="Helpers\" />
-    <Folder Include="Models\ViewModels\Order\Items\" />
-    <Folder Include="Models\ViewModels\User\" />
+    <Folder Include="Models\ViewModels\Author\" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="9.0.0" />
     <PackageReference Include="Dapper" Version="2.0.30" />
     <PackageReference Include="Dapper.Contrib" Version="2.0.30" />
     <PackageReference Include="IdentityModel" Version="4.1.0" />

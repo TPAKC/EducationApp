@@ -7,6 +7,7 @@
 
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="9.0.0" />
     <PackageReference Include="Dapper" Version="2.0.30" />
     <PackageReference Include="Dapper.Contrib" Version="2.0.30" />
     <PackageReference Include="IdentityModel" Version="4.1.0" />
@@ -16,6 +17,10 @@
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.0.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.7">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.0.0">
       <PrivateAssets>all</PrivateAssets>
@@ -31,15 +36,14 @@
 
 
   <ItemGroup>
-    <ProjectReference Include="..\EducationApp.BusinessLogicalLayer\EducationApp.BusinessLogicalLayer.csproj" />
-    <ProjectReference Include="..\EducationApp.DataAccessLayer\EducationApp.DataAccessLayer.csproj" />
+    <Folder Include="Filters\" />
+    <Folder Include="Common\" />
+    <Folder Include="Helpers\" />
   </ItemGroup>
 
 
   <ItemGroup>
-    <Folder Include="Filters\" />
-    <Folder Include="Common\" />
-    <Folder Include="Helpers\" />
+    <ProjectReference Include="..\EducationApp.BusinessLogicalLayer\EducationApp.BusinessLogicalLayer.csproj" />
   </ItemGroup>
 
 

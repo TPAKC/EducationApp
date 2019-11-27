@@ -3,11 +3,12 @@ using EducationApp.DataAccessLayer.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace EducationApp.PresentationLayer.Controllers
 {
-    public class AccountController : Controller
+    public class AccountController : ControllerBase
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
@@ -20,12 +21,12 @@ namespace EducationApp.PresentationLayer.Controllers
         [HttpGet]
         public IActionResult Register()
         {
-            return View();
+            return Ok();
         }
         [HttpGet]
         public IActionResult Login(string returnUrl = null)
         {
-            return View(new LoginViewModel { ReturnUrl = returnUrl });
+            return Ok(new LoginViewModel { ReturnUrl = returnUrl });
         }
 
         [HttpPost]
@@ -41,7 +42,7 @@ namespace EducationApp.PresentationLayer.Controllers
                     if (!await _userManager.IsEmailConfirmedAsync(user))
                     {
                         ModelState.AddModelError(string.Empty, "You have not verified your email");
-                        return View(model);
+                        return Ok(model);
                     }
                 }
 
@@ -62,7 +63,7 @@ namespace EducationApp.PresentationLayer.Controllers
                     ModelState.AddModelError("", "Incorrect username and/or password");
                 }
             }
-            return View(model);
+            return Ok(model);
         }
 
         [HttpPost]
@@ -105,7 +106,7 @@ namespace EducationApp.PresentationLayer.Controllers
                     }
                 }
             }
-            return View(model);
+            return Ok(model);
         }
 
         [HttpGet]
@@ -114,25 +115,25 @@ namespace EducationApp.PresentationLayer.Controllers
         {
             if (userId == null || code == null)
             {
-                return View("Error");
+                return Ok("Error");
             }
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
             {
-                return View("Error");
+                return Ok("Error");
             }
             var result = await _userManager.ConfirmEmailAsync(user, code);
             if (result.Succeeded)
                 return RedirectToAction("Index", "Home");
             else
-                return View("Error");
+                return Ok("Error");
         }
 
         [HttpGet]
         [AllowAnonymous]
         public IActionResult ForgotPassword()
         {
-            return View();
+            return Ok();
         }
         [HttpPost]
         [AllowAnonymous]
@@ -144,9 +145,9 @@ namespace EducationApp.PresentationLayer.Controllers
                 var user = await _userManager.FindByNameAsync(model.Email);
                 if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
                 {
-                    // user with this email may not be in the database nonetheless, we display a standard message,
+                    // user with this email may not be in the database nonetheless, we display a standard message, 
                     //  to hide the presence or absence of a user in the database
-                    return View("ForgotPasswordConfirmation");
+                    return Ok("ForgotPasswordConfirmation");
                 }
 
                 var code = await _userManager.GeneratePasswordResetTokenAsync(user);
@@ -154,17 +155,17 @@ namespace EducationApp.PresentationLayer.Controllers
                 EmailService emailService = new EmailService();
                 await emailService.SendEmailAsync(model.Email, "Reset Password",
                     $"To reset your password, follow the <a href='{callbackUrl}'>link</a>");
-                return View("ForgotPasswordConfirmation");
+                return Ok("ForgotPasswordConfirmation");
             }
-            return View(model);
+            return Ok(model);
         }
 
-        [HttpGet]
+      /*  [HttpGet]
         [AllowAnonymous]
         public IActionResult ResetPassword(string code = null)
         {
-            return code == null ? View("Error") : View();
-        }
+            return code == null ? ("Error") : Ok();
+        }*/
 
         [HttpPost]
         [AllowAnonymous]
@@ -173,23 +174,23 @@ namespace EducationApp.PresentationLayer.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View(model);
+                return Ok(model);
             }
             var user = await _userManager.FindByNameAsync(model.Email);
             if (user == null)
             {
-                return View("ResetPasswordConfirmation");
+                return Ok("ResetPasswordConfirmation");
             }
             var result = await _userManager.ResetPasswordAsync(user, model.Code, model.Password);
             if (result.Succeeded)
             {
-                return View("ResetPasswordConfirmation");
+                return Ok("ResetPasswordConfirmation");
             }
             foreach (var error in result.Errors)
             {
                 ModelState.AddModelError(string.Empty, error.Description);
             }
-            return View(model);
+            return Ok(model);
         }
 
         public IActionResult GoToForgotPassword()

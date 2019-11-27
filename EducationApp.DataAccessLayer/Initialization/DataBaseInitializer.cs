@@ -1,5 +1,10 @@
 ﻿using EducationApp.DataAccessLayer.Entities;
+using EducationApp.DataAccessLayer.Entities.Enums;
+using EducationApp.PresentationLayer.Data;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Data.Entity;
 using System.Threading.Tasks;
 
 namespace RolesInitializerApp
@@ -40,13 +45,24 @@ namespace RolesInitializerApp
                 }
             }
 
-         //   string printingEditionId =
-     /*               public string Title { get; set; }
-        public string Description { get; set; }
-        public long Price { get; set; }
-        public Status Status { get; set; }
-        public Currency Currency { get; set; }
-        public Type Type { get; set; }*/
-    }
+            /* db.PrintingEditions.Add(new PrintingEdition 
+            {
+                Title = "TestPE",
+                Description= "TestDescription",
+                Price = 200, 
+                Status = Status.Paid, 
+                Currency = Currency.USD,
+                Type = Type.Book
+              });
+
+            db.Authors.Add(new Author { Name = "Elon Musk" });
+
+            db.SaveChanges();*/
+        }
+
+        public static Task InitializeAsync(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> rolesManager, object connectionString)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

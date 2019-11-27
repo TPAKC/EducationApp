@@ -1,10 +1,9 @@
 ﻿using EducationApp.DataAccessLayer.Entities;
-using EducationApp.DataAccessLayer.Entities.Enums;
 using System;
 
-namespace EducationApp.BusinessLogicalLayer.Models.ViewModels.OrderItem.Items
+namespace EducationApp.BusinessLogicalLayer.Models.ViewModels.Orders
 {
-    public class OrderItemItemModel
+    public class OrderModel
     {
         public long Id { get; set; }
         public string Description { get; set; }

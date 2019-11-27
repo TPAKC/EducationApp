@@ -1,6 +1,7 @@
 ﻿using EducationApp.DataAccessLayer.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using RolesInitializerApp;
 
 namespace EducationApp.PresentationLayer.Data
 {
@@ -12,10 +13,16 @@ namespace EducationApp.PresentationLayer.Data
         public DbSet<AuthorInPrintingEdition> AuthorInPrintingEditions { get; set; }
         public DbSet<OrderItem> OrderItem { get; set; }
         public DbSet<Payment> Paymets { get; set; }
+
+        static ApplicationDbContext()
+        {
+           // Database.SetInitializer<ApplicationDbContext>(new DataBaseInitializer());
+        }
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
-            Database.EnsureCreated();
+            //Database.EnsureCreated();
         }
 
     }

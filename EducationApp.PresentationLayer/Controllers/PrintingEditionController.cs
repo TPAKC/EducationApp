@@ -1,32 +1,27 @@
-﻿using EducationApp.DataAccessLayer.Entities;
-using EducationApp.PresentationLayer.Data;
+﻿using AutoMapper;
+using EducationApp.BusinessLogicalLayer.Models.ViewModels.PrintingEdition;
+using EducationApp.BusinessLogicalLayer.Services.Interfaces;
+using EducationApp.DataAccessLayer.Entities;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace EducationApp.PresentationLayer.Controllers
 {
     public class PrintingEditionController : ControllerBase
     {
-        private ApplicationDbContext db;
-        public PrintingEditionController(ApplicationDbContext context)
+        IPrintingEditionsService pintingEditionsService;
+        public PrintingEditionController(IPrintingEditionsService serv)
         {
-            db = context;
+            pintingEditionsService = serv;
         }
-        public async Task<IActionResult> Index()
+
+        public async Task<ActionResult> IndexAsync()
         {
-            return Ok(await db.PrintingEditions.ToListAsync());
-        }
-        public IActionResult Create()
-        {
-            return Ok();
-        }
-        [HttpPost]
-        public async Task<IActionResult> Create(PrintingEdition printingEditions)
-        {
-            db.PrintingEditions.Add(printingEditions);
-            await db.SaveChangesAsync();
-            return RedirectToAction("Index");
+            IEnumerable<PrintingEditionModel> printingEditionModels = await pintingEditionsService.GetPrintingEditionsAsync();
+            var mapper = new MapperConfiguration(cfg => cfg.CreateMap<PrintingEditionModel, PrintingEdition>()).CreateMapper();
+            var printingEdition = mapper.Map<IEnumerable<PrintingEditionModel>, List<PrintingEdition>>(printingEditionModels);
+            return Ok(printingEdition);
         }
     }
 }

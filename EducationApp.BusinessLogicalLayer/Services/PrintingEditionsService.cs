@@ -1,31 +1,53 @@
-﻿using EducationApp.BusinessLogicalLayer.Models.ViewModels.PrintingEdition;
-using EducationApp.BusinessLogicalLayer.Models.ViewModels.PrintingEdition.Items;
+﻿using AutoMapper;
+using EducationApp.BusinessLogicalLayer.Models.ViewModels.PrintingEdition;
 using EducationApp.BusinessLogicalLayer.Services.Interfaces;
+using EducationApp.DataAccessLayer.Entities;
 using EducationApp.DataAccessLayer.Repositories.Interfaces;
-using System.Linq;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
 namespace EducationApp.BusinessLogicalLayer.Services
 {
     public class PrintingEditionsService : IPrintingEditionsService
     {
-        private readonly IPrintingEditionRepository _printingEditionsrepository;
-        public PrintingEditionsService(IPrintingEditionRepository printingEditionRepository)
+        IUnitOfWork Database { get; set; }
+        public PrintingEditionsService(IUnitOfWork uow)
         {
-            _printingEditionsrepository = printingEditionRepository;
+            Database = uow;
         }
 
-        public async Task<PrintingEditionModel> GetAll()
+        public async Task MakePrintingEditionAsync(PrintingEditionModel printingEditionModel)
         {
-            var dbResponse = await _printingEditionsrepository.GetAll();
-            var response = new PrintingEditionModel();
-            response.PrintingEditions = dbResponse.Select(m =>
-            {
-                var model = new PrintingEditionItemModel();
-                model.Id = m.Id;
-                return model;
-            }).ToList();
-            return response;
+            PrintingEdition printingEdition = await Database.PrintingEditions.Find(printingEditionModel.Id);
+
+            if (printingEdition == null)
+                throw new ValidationException("Printing edition not found");
+            await Database.PrintingEditions.Add(printingEdition);
+            Database.Save();
         }
+
+        public async Task<IEnumerable<PrintingEditionModel>> GetPrintingEditionsAsync()
+        {
+            var mapper = new MapperConfiguration(cfg => cfg.CreateMap<PrintingEdition, PrintingEditionModel>()).CreateMapper();
+            return mapper.Map<IEnumerable<PrintingEdition>, List<PrintingEditionModel>>(await Database.PrintingEditions.GetAll());
+        }
+
+        public async Task<PrintingEditionModel> GetPrintingEditionAsync(int? id)
+        {
+            if (id == null)
+                throw new ValidationException("Printing edition id not set");
+            var printingEdition = await Database.PrintingEditions.Find(id.Value);
+            if (printingEdition == null)
+                throw new ValidationException("Printing edition not found");
+
+            return new PrintingEditionModel { Id = printingEdition.Id, Title = printingEdition.Title, Description = printingEdition.Description, Status = printingEdition.Status, Currency = printingEdition.Currency, Type = printingEdition.Type };
+        }
+
+        public void Dispose()
+        {
+            Database.Dispose();
+        }
+
     }
 }

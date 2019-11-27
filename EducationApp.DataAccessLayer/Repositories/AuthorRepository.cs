@@ -3,9 +3,9 @@ using EducationApp.DataAccessLayer.Repositories.Interfaces;
 
 namespace EducationApp.DataAccessLayer.Repositories
 {
-    public class AuthorsRepository : BaseRepository<Author>, IAuthorRepository
+    public class AuthorRepository : BaseRepository<Author>, IAuthorRepository
     {
-        public AuthorsRepository(Connection connection) : base(connection)
+        public AuthorRepository(Connection connection) : base(connection)
         {
         }
     }
