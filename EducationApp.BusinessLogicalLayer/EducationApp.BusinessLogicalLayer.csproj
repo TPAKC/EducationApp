@@ -6,7 +6,7 @@
 
   <ItemGroup>
     <Folder Include="Helpers\" />
-    <Folder Include="Models\ViewModels\Author\" />
+    <Folder Include="Models\Base\" />
   </ItemGroup>
 
   <ItemGroup>

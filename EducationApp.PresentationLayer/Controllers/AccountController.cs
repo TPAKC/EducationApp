@@ -1,23 +1,21 @@
 ﻿using EducationApp.BusinessLogicalLayer.Models.ViewModels;
+using EducationApp.BusinessLogicalLayer.Services.Interfaces;
 using EducationApp.DataAccessLayer.Entities;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System.Net;
 using System.Threading.Tasks;
 
 namespace EducationApp.PresentationLayer.Controllers
 {
     public class AccountController : ControllerBase
     {
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly SignInManager<ApplicationUser> _signInManager;
 
-        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+        IUserService _userService;
+        public AccountController(IUserService serv)
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
+            _userService = serv;
         }
+
         [HttpGet]
         public IActionResult Register()
         {
@@ -35,16 +33,13 @@ namespace EducationApp.PresentationLayer.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = await _userManager.FindByNameAsync(model.Email);
-                if (user != null)
-                {
+
                     // check if email is verified
-                    if (!await _userManager.IsEmailConfirmedAsync(user))
+                    if (!_userService.IsEmailConfirmed(model))   
                     {
                         ModelState.AddModelError(string.Empty, "You have not verified your email");
                         return Ok(model);
                     }
-                }
 
                 var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
                 if (result.Succeeded)

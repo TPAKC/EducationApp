@@ -76,5 +76,15 @@ namespace EducationApp.DataAccessLayer.Repositories.DapperRepositories
         {
             return await _userManager.RemoveFromRoleAsync(user, role);
         }
+
+        public virtual async Task<string> GeneratePasswordResetToken(ApplicationUser user)
+        {
+            return await _userManager.GeneratePasswordResetTokenAsync(user);
+        }
+
+        public virtual async Task<bool> IsEmailConfirmed(ApplicationUser user)
+        {
+            return await _userManager.IsEmailConfirmedAsync(user);
+        }
     }
 }

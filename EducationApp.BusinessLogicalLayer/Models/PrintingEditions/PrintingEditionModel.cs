@@ -4,7 +4,7 @@ namespace EducationApp.BusinessLogicalLayer.Models.ViewModels.PrintingEdition
 {
     public class PrintingEditionModel
     {
-        public long Id { get; set; }
+        public string Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public long Price { get; set; }

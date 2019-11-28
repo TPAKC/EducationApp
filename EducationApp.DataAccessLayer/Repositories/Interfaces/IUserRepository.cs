@@ -19,6 +19,7 @@ namespace EducationApp.DataAccessLayer.Repositories.Interfaces
         Task<IList<string>> GetRoles(ApplicationUser user);
         Task<bool> IsInRole(ApplicationUser user, string role);
         Task<IdentityResult> RemoveFromRole(ApplicationUser user, string role);
-
+        Task<string> GeneratePasswordResetToken(ApplicationUser user);
+        Task<bool> IsEmailConfirmed(ApplicationUser user);
     }
 }

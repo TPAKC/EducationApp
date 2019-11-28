@@ -1,4 +1,5 @@
 ﻿using EducationApp.BusinessLogicalLayer.Models.ViewModels;
+using EducationApp.BusinessLogicalLayer.Services.Interfaces;
 using EducationApp.DataAccessLayer.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -9,18 +10,17 @@ using System.Threading.Tasks;
 namespace CustomIdentityApp.Controllers
 {
     [Authorize(Roles = "admin")]
-    public class UsersController : Controller
+    public class UsersController : ControllerBase
     {
-        UserManager<ApplicationUser> _userManager;
-
-        public UsersController(UserManager<ApplicationUser> userManager)
+        IUserService _userService;
+        public UsersController(IUserService serv)
         {
-            _userManager = userManager;
+            _userService = serv;
         }
 
-        public IActionResult Index() => View(_userManager.Users.ToList());
+        public IActionResult Index() => Ok(_userService.Users.ToList());
 
-        public IActionResult Create() => View();
+        public IActionResult Create() => Ok();
 
         [HttpPost]
         public async Task<IActionResult> Create(CreateUserViewModel model)
@@ -28,7 +28,7 @@ namespace CustomIdentityApp.Controllers
             if (ModelState.IsValid)
             {
                 ApplicationUser user = new ApplicationUser { Email = model.Email, UserName = model.Email, FirstName = model.FirstName, LastName = model.LastName };
-                var result = await _userManager.CreateAsync(user, model.Password);
+                var result = await _userService.Create(user);
                 if (result.Succeeded)
                 {
                     return RedirectToAction("Index");
@@ -41,12 +41,12 @@ namespace CustomIdentityApp.Controllers
                     }
                 }
             }
-            return View(model);
+            return Ok(model);
         }
 
         public async Task<IActionResult> Edit(string id)
         {
-            ApplicationUser user = await _userManager.FindByIdAsync(id);
+            ApplicationUser user = await _userService.FindById(id);
             if (user == null)
             {
                 return NotFound();
