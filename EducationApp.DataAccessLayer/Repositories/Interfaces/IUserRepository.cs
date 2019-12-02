@@ -7,19 +7,21 @@ namespace EducationApp.DataAccessLayer.Repositories.Interfaces
 {
     public interface IUserRepository
     {
-        Task<IdentityResult> ChangePassword(ApplicationUser user, string oldPassword, string newPassword);
-        Task<IdentityResult> Create(ApplicationUser user);
-        Task<IdentityResult> Create(ApplicationUser user, string password);
-        Task<IdentityResult> Delete(ApplicationUser user);
-        Task<ApplicationUser> FindById(string id);
-        Task<ApplicationUser> FindByEmail(string email);
-        Task<IdentityResult> Update(ApplicationUser user);
-        List<ApplicationUser> GetUsers();
-        Task<IdentityResult> AddToRole(ApplicationUser user, string role);
-        Task<IList<string>> GetRoles(ApplicationUser user);
-        Task<bool> IsInRole(ApplicationUser user, string role);
-        Task<IdentityResult> RemoveFromRole(ApplicationUser user, string role);
-        Task<string> GeneratePasswordResetToken(ApplicationUser user);
-        Task<bool> IsEmailConfirmed(ApplicationUser user);
+        Task<IdentityResult> ChangePasswordAsync(ApplicationUser user, string oldPassword, string newPassword);
+        Task<IdentityResult> CreateAsync(ApplicationUser user);
+        Task<IdentityResult> CreateAsync(ApplicationUser user, string password);
+        Task<IdentityResult> DeleteAsync(ApplicationUser user);
+        Task<ApplicationUser> FindByIdAsync(string id);
+        Task<ApplicationUser> FindByEmailAsync(string email);
+        Task<IdentityResult> UpdateAsync(ApplicationUser user);
+        List<ApplicationUser> GetUsersAsync();
+        Task<IdentityResult> AddToRoleAsync(ApplicationUser user, string role);
+        Task<IList<string>> GetRolesAsync(ApplicationUser user);
+        Task<bool> IsInRoleAsync(ApplicationUser user, string role);
+        Task<IdentityResult> RemoveFromRoleAsync(ApplicationUser user, string role);
+        Task<string> GeneratePasswordResetTokenAsync(ApplicationUser user);
+        Task<bool> IsEmailConfirmedAsync(ApplicationUser user);
+        Task<SignInResult> PasswordSignInAsync(ApplicationUser user, string password, bool isPersistent);
+        Task SignOutAsync();
     }
 }

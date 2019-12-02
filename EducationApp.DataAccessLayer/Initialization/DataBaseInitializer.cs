@@ -1,10 +1,6 @@
 ﻿using EducationApp.DataAccessLayer.Entities;
-using EducationApp.DataAccessLayer.Entities.Enums;
-using EducationApp.PresentationLayer.Data;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using System;
-using System.Data.Entity;
 using System.Threading.Tasks;
 
 namespace RolesInitializerApp

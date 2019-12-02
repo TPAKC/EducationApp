@@ -12,14 +12,12 @@ namespace CustomIdentityApp.Controllers
     [Authorize(Roles = "admin")]
     public class RolesController : Controller
     {
-        RoleManager<IdentityRole> _roleManager;
-        UserManager<ApplicationUser> _userManager;
+
         public RolesController(RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager)
         {
-            _roleManager = roleManager;
-            _userManager = userManager;
+
         }
-        public IActionResult Index() => View(_roleManager.Roles.ToList());
+       /* public IActionResult Index() => View(_roleManager.Roles.ToList());
 
         public IActionResult Create() => View();
         [HttpPost]
@@ -105,6 +103,6 @@ namespace CustomIdentityApp.Controllers
         public IActionResult Back()
         {
             return RedirectToAction("Index", "Roles");
-        }
+        }*/
     }
 }

@@ -20,10 +20,19 @@ namespace EducationApp.PresentationLayer.Middlewares
             {
                 await _next(context);
             }
-            catch (Exception exception)
+            catch(ApplicationException ex)
             {
+                var message = ex.Message;
+                context.Response.StatusCode = StatusCodes.Status400BadRequest;
+                await context.Response.WriteAsync(message);
+                return;
+            }
+            catch (Exception exception)
+            {       
                 await WriteToFile(exception, "Server is not responding.");
             }
+
+
         }
 
         public static async Task WriteToFile(Exception exception = null, string message = null)

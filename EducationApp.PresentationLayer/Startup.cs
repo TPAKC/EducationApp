@@ -29,6 +29,11 @@ namespace EducationApp.PresentationLayer
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
 
+            services.AddMvcCore(options =>
+            {
+                options.Filters.Add(typeof(Filters.ModelStateValidationFilter));
+            });
+
             services.AddIdentity<ApplicationUser, IdentityRole>(opts =>
             {
                 opts.Password.RequireNonAlphanumeric = false;

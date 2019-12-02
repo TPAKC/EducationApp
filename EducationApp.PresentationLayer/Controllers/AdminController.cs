@@ -13,13 +13,13 @@ namespace EducationApp.PresentationLayer.Controllers
         {
             _userService = serv;
         }
-        public IActionResult Index()
+       /* public IActionResult Index()
         {
             return Ok(_userService.Users.ToList());
         }
         public IActionResult GetRoles()
         {
             return Ok(_userService.Roles.ToList());
-        }
+        }*/
     }
 }

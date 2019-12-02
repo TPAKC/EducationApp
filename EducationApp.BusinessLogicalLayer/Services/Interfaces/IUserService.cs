@@ -8,18 +8,19 @@ namespace EducationApp.BusinessLogicalLayer.Services.Interfaces
 {
     public interface IUserService
     {
-        Task<IdentityResult> Create(UserModel userModel);
-        Task<IdentityResult> ChangePassword(ChangePasswordViewModel changePasswordViewModel, string password);
-        Task<IdentityResult> Delete(UserModel userModel);
-        Task<UserModel> FindById(string id);
-        Task<UserModel> FindByEmail(string email);
-        Task<IdentityResult> Update(UserModel userModel);
-        List<UserModel> GetUsers();
-        Task<IdentityResult> AddToRole(UserModel userModel, string role);
-        Task<IList<string>> GetRoles(UserModel userModel);
-        Task<bool> IsInRole(UserModel userModel, string role);
-        Task<IdentityResult> RemoveFromRole(UserModel userModel, string role);
-        Task<bool> IsEmailConfirmed(LoginViewModel loginViewModel);
-
+        Task CreateAsync(UserModelItem userModel);
+        Task<IdentityResult> ChangePasswordAsync(ChangePasswordViewModel changePasswordViewModel);
+        Task<IdentityResult> DeleteAsync(string id);
+        Task<UserModelItem> FindByIdAsync(string id);
+        Task<UserModelItem> FindByEmailAsync(string email);
+        Task<IdentityResult> UpdateAsync(UserModelItem userModel);
+        List<UserModelItem> GetUsersAsync();
+        Task<IdentityResult> AddToRoleAsync(UserModelItem userModel, string role);
+        Task<IList<string>> GetRolesAsync(UserModelItem userModel);
+        Task<bool> IsInRoleAsync(UserModelItem userModel, string role);
+        Task<IdentityResult> RemoveFromRoleAsync(UserModelItem userModel, string role);
+        Task<bool> IsEmailConfirmedAsync(LoginViewModel loginViewModel);
+        Task<SignInResult> PasswordSignInAsync(string id, string password, bool isPersistent);
+        Task SignOutAsync();
     }
 }

@@ -16,12 +16,12 @@ namespace EducationApp.PresentationLayer.Controllers
             pintingEditionsService = serv;
         }
 
-        public async Task<ActionResult> IndexAsync()
+        /*public async Task<ActionResult> IndexAsync()
         {
             IEnumerable<PrintingEditionModel> printingEditionModels = await pintingEditionsService.GetPrintingEditionsAsync();
             var mapper = new MapperConfiguration(cfg => cfg.CreateMap<PrintingEditionModel, PrintingEdition>()).CreateMapper();
             var printingEdition = mapper.Map<IEnumerable<PrintingEditionModel>, List<PrintingEdition>>(printingEditionModels);
             return Ok(printingEdition);
-        }
+        }*/
     }
 }

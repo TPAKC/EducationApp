@@ -1,4 +1,5 @@
 ﻿using EducationApp.BusinessLogicalLayer.Models.ViewModels;
+using EducationApp.BusinessLogicalLayer.Models.ViewModels.User;
 using EducationApp.BusinessLogicalLayer.Services.Interfaces;
 using EducationApp.DataAccessLayer.Entities;
 using Microsoft.AspNetCore.Authorization;
@@ -21,6 +22,7 @@ namespace EducationApp.PresentationLayer.Controllers
         {
             return Ok();
         }
+  
         [HttpGet]
         public IActionResult Login(string returnUrl = null)
         {
@@ -33,24 +35,27 @@ namespace EducationApp.PresentationLayer.Controllers
         {
             if (ModelState.IsValid)
             {
-
-                    // check if email is verified
-                    if (!_userService.IsEmailConfirmed(model))   
+                var result = await _userService.IsEmailConfirmedAsync(model);
+                    
+                    if (!result)   
                     {
                         ModelState.AddModelError(string.Empty, "You have not verified your email");
                         return Ok(model);
                     }
 
-                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
-                if (result.Succeeded)
+               var resultPasswordSignIn = await _userService.PasswordSignInAsync(model.Email, model.Password, model.RememberMe);
+                if (resultPasswordSignIn.Succeeded)
                 {
-                    if (await _userManager.IsInRoleAsync(user, "admin"))
+                    UserModelItem user = await _userService.FindByEmailAsync(model.Email);
+
+                    if (await _userService.IsInRoleAsync(user, "admin"))
                     {
                         return RedirectToAction("Index", "Users");
                     }
-                    else
+
+                    if (await _userService.IsInRoleAsync(user, "user"))
                     {
-                        return RedirectToAction("Index", "Home");
+                        return RedirectToAction("Index", "Application");
                     }
                 }
                 else
@@ -66,17 +71,17 @@ namespace EducationApp.PresentationLayer.Controllers
         public async Task<IActionResult> LogOff()
         {
             // delete authentication cookies
-            await _signInManager.SignOutAsync();
-            return RedirectToAction("Index", "Home");
+            await _userService.SignOutAsync();
+            return RedirectToAction("Index", "Apllication");
         }
+
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
             {
-                ApplicationUser user = new ApplicationUser { Email = model.Email, UserName = model.Email, FirstName = model.FirstName, LastName = model.LastName};
                 // Add user
-                var result = await _userManager.CreateAsync(user, model.Password);
+                var result = await _userService.CreateAsync(user, model.Password);
                 await _userManager.AddToRoleAsync(user, "user");
 
                 if (result.Succeeded)
@@ -155,12 +160,12 @@ namespace EducationApp.PresentationLayer.Controllers
             return Ok(model);
         }
 
-      /*  [HttpGet]
+        [HttpGet]
         [AllowAnonymous]
         public IActionResult ResetPassword(string code = null)
         {
             return code == null ? ("Error") : Ok();
-        }*/
+        }
 
         [HttpPost]
         [AllowAnonymous]

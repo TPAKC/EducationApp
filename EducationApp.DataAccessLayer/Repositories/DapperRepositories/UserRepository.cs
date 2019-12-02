@@ -19,72 +19,82 @@ namespace EducationApp.DataAccessLayer.Repositories.DapperRepositories
             _signInManager = signInManager;
         }
 
-        public virtual async Task<IdentityResult> ChangePassword(ApplicationUser user, string oldPassword, string newPassword)
+        public async Task<IdentityResult> ChangePasswordAsync(ApplicationUser user, string oldPassword, string newPassword)
         {
             return await _userManager.ChangePasswordAsync(user, oldPassword, newPassword);
         }
 
-        public virtual async Task<IdentityResult> Create(ApplicationUser user)
+        public async Task<IdentityResult> CreateAsync(ApplicationUser user)
         {
             return await _userManager.CreateAsync(user);
         }
-        public virtual async Task<IdentityResult> Create(ApplicationUser user, string password)
+        public async Task<IdentityResult> CreateAsync(ApplicationUser user, string password)
         {
             return await _userManager.CreateAsync(user, password);
         }
-        public virtual async Task<IdentityResult> Delete(ApplicationUser user)
+        public async Task<IdentityResult> DeleteAsync(ApplicationUser user)
         {
             return await _userManager.DeleteAsync(user);
         }
 
-        public virtual async Task<ApplicationUser> FindById(string id)
+        public async Task<ApplicationUser> FindByIdAsync(string id)
         {
             return await _userManager.FindByIdAsync(id);
         }
 
-        public virtual async Task<ApplicationUser> FindByEmail(string email)
+        public async Task<ApplicationUser> FindByEmailAsync(string email)
         {
             return await _userManager.FindByEmailAsync(email);
         }
 
-        public virtual async Task<IdentityResult> Update(ApplicationUser user)
+        public async Task<IdentityResult> UpdateAsync(ApplicationUser user)
         {
             return await _userManager.UpdateAsync(user);
         }
 
-        public virtual List<ApplicationUser> GetUsers()
+        public List<ApplicationUser> GetUsersAsync()
         {
             return _userManager.Users.ToList();
         }
 
-        public virtual async Task<IdentityResult> AddToRole(ApplicationUser user, string role)
+        public async Task<IdentityResult> AddToRoleAsync(ApplicationUser user, string role)
         {
             return await _userManager.AddToRoleAsync(user, role);
         }
 
-        public virtual async Task<IList<string>> GetRoles(ApplicationUser user)
+        public async Task<IList<string>> GetRolesAsync(ApplicationUser user)
         {
             return await _userManager.GetRolesAsync(user);
         }
 
-        public virtual async Task<bool> IsInRole(ApplicationUser user, string role)
+        public async Task<bool> IsInRoleAsync(ApplicationUser user, string role)
         {
             return await _userManager.IsInRoleAsync(user,role);
         }
 
-        public virtual async Task<IdentityResult> RemoveFromRole(ApplicationUser user, string role)
+        public async Task<IdentityResult> RemoveFromRoleAsync(ApplicationUser user, string role)
         {
             return await _userManager.RemoveFromRoleAsync(user, role);
         }
 
-        public virtual async Task<string> GeneratePasswordResetToken(ApplicationUser user)
+        public async Task<string> GeneratePasswordResetTokenAsync(ApplicationUser user)
         {
             return await _userManager.GeneratePasswordResetTokenAsync(user);
         }
 
-        public virtual async Task<bool> IsEmailConfirmed(ApplicationUser user)
+        public async Task<bool> IsEmailConfirmedAsync(ApplicationUser user)
         {
             return await _userManager.IsEmailConfirmedAsync(user);
+        }
+
+        public async Task<SignInResult> PasswordSignInAsync(ApplicationUser user, string password, bool isPersistent)
+        {
+            return await _signInManager.PasswordSignInAsync(user, password, isPersistent, false);
+        }
+
+        public async Task SignOutAsync()
+        {
+            await _signInManager.SignOutAsync();
         }
     }
 }

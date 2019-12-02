@@ -1,9 +1,12 @@
 ﻿using EducationApp.DataAccessLayer.Entities.Enums;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace EducationApp.BusinessLogicalLayer.Models.ViewModels.PrintingEdition
 {
-    public class PrintingEditionModel
+    public class PrintingEditionModelItem
     {
+        [Required]
         public string Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
@@ -11,5 +14,10 @@ namespace EducationApp.BusinessLogicalLayer.Models.ViewModels.PrintingEdition
         public Status Status { get; set; }
         public Currency Currency { get; set; }
         public Type Type { get; set; }
+    }
+
+    public class PrintingEditionModel
+    {
+        public List<PrintingEditionModelItem> PrintingEditions;
     }
 }
