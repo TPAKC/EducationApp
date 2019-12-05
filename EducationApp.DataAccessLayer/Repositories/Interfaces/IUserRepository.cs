@@ -23,5 +23,8 @@ namespace EducationApp.DataAccessLayer.Repositories.Interfaces
         Task<bool> IsEmailConfirmedAsync(ApplicationUser user);
         Task<SignInResult> PasswordSignInAsync(ApplicationUser user, string password, bool isPersistent);
         Task SignOutAsync();
+        Task<string> GenerateEmailConfirmationTokenAsync(ApplicationUser user);
+        Task<IdentityResult> ConfirmEmailAsync(ApplicationUser user, string code);
+        Task<IdentityResult> ResetPasswordAsync(ApplicationUser user, string code, string password);
     }
 }

@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using EducationApp.BusinessLogicalLayer.Common;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using System;
 using System.IO;
 using System.Threading.Tasks;
@@ -8,9 +10,11 @@ namespace EducationApp.PresentationLayer.Middlewares
     public class ExceptionMiddleware
     {
         private readonly RequestDelegate _next;
+        private readonly ILogger _logger;
 
-        public ExceptionMiddleware(RequestDelegate next)
+        public ExceptionMiddleware(RequestDelegate next, ILogger<ExceptionMiddleware> logger) //todo use DI to inject ILogger
         {
+            _logger = logger;
             _next = next ?? throw new ArgumentNullException(nameof(next));
         }
 
@@ -22,40 +26,17 @@ namespace EducationApp.PresentationLayer.Middlewares
             }
             catch(ApplicationException ex)
             {
-                var message = ex.Message;
+                _logger.LogCritical("LogCritical {0}", context.Request.Path);
+                _logger.LogDebug("LogDebug {0}", context.Request.Path);
+                _logger.LogError("LogError {0}", context.Request.Path);
+                _logger.LogInformation("LogInformation {0}", context.Request.Path);
+                _logger.LogWarning("LogWarning {0}", context.Request.Path);
+
                 context.Response.StatusCode = StatusCodes.Status400BadRequest;
-                await context.Response.WriteAsync(message);
+                await context.Response.WriteAsync(ex.Message);
                 return;
             }
-            catch (Exception exception)
-            {       
-                await WriteToFile(exception, "Server is not responding.");
-            }
-
-
         }
-
-        public static async Task WriteToFile(Exception exception = null, string message = null)
-        {
-            string fileName = $"{DateTime.UtcNow.Day}_{DateTime.UtcNow.Month}_{DateTime.UtcNow.Year}";
-            string logDirectory = Path.Combine("./logs");
-            string fullFilePath = Path.Combine(logDirectory, $"{fileName}.txt");
-
-            if (!Directory.Exists(logDirectory))
-                Directory.CreateDirectory(logDirectory);
-
-            using (StreamWriter sw = new StreamWriter(fullFilePath, true))
-            {
-                if (exception != null)
-                {
-                    await sw.WriteLineAsync($"Error on {DateTime.UtcNow}, Exception Message: {exception.Message}, Inner Message: {exception.InnerException}, Line: {exception.StackTrace}");
-                }
-                else
-                {
-                    await sw.WriteLineAsync($"Error on {DateTime.UtcNow}, Error Message: {message}");
-                }
-            }
-
-        }
+        //todo remove
     }
 }

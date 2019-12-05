@@ -1,12 +1,4 @@
-﻿using AutoMapper;
-using EducationApp.BusinessLogicalLayer.Models.ViewModels.PrintingEdition;
-using EducationApp.BusinessLogicalLayer.Services.Interfaces;
-using EducationApp.DataAccessLayer.Entities;
-using EducationApp.PresentationLayer.Data;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Threading.Tasks;
-using EducationApp.DataAccessLayer.Repositories.DapperRepositories;
+﻿using EducationApp.BusinessLogicalLayer.Services.Interfaces;
 using EducationApp.DataAccessLayer.Repositories.Interfaces;
 
 namespace EducationApp.BusinessLogicalLayer.Services

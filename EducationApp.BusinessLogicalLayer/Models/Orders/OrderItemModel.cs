@@ -11,7 +11,7 @@ namespace EducationApp.BusinessLogicalLayer.Models.ViewModels.Orders
         public long Amount { get; set; }
         public Currency Currency { get; set; }
         public string PrintingEditionId { get; set; }
-        public Order Order { get; set; }
+        //public Order Order { get; set; }
         public long Count { get; set; }
     }
 }

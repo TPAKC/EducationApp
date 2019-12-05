@@ -1,17 +1,20 @@
-﻿using System.Collections.Generic;
+﻿using EducationApp.BusinessLogicalLayer.Models.Base;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace EducationApp.BusinessLogicalLayer.Models.ViewModels.Author
 {
-    public class AuthorModelItem
+    public class AuthorModel : BaseModel
+    {
+        public List<AuthorModelItem> Items;
+    }
+
+    public class AuthorModelItem : BaseModel
     {
         [Required]
         public string Id { get; set; }
         public string Name { get; set; }
     }
 
-    public class AuthorModel
-    {
-        public List<AuthorModelItem> Authors;
-    }
+
 }

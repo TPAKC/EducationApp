@@ -9,7 +9,7 @@ namespace EducationApp.DataAccessLayer.Repositories.DapperRepositories
 {
 
     public class UserRepository : IUserRepository
-    { 
+    {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
 
@@ -26,7 +26,9 @@ namespace EducationApp.DataAccessLayer.Repositories.DapperRepositories
 
         public async Task<IdentityResult> CreateAsync(ApplicationUser user)
         {
-            return await _userManager.CreateAsync(user);
+            var result = await _userManager.CreateAsync(user);
+            //return result.Succeeded;
+            return result;
         }
         public async Task<IdentityResult> CreateAsync(ApplicationUser user, string password)
         {
@@ -54,7 +56,7 @@ namespace EducationApp.DataAccessLayer.Repositories.DapperRepositories
 
         public List<ApplicationUser> GetUsersAsync()
         {
-            return _userManager.Users.ToList();
+            return _userManager.Users.ToList(); //todo filter list
         }
 
         public async Task<IdentityResult> AddToRoleAsync(ApplicationUser user, string role)
@@ -69,7 +71,7 @@ namespace EducationApp.DataAccessLayer.Repositories.DapperRepositories
 
         public async Task<bool> IsInRoleAsync(ApplicationUser user, string role)
         {
-            return await _userManager.IsInRoleAsync(user,role);
+            return await _userManager.IsInRoleAsync(user, role);
         }
 
         public async Task<IdentityResult> RemoveFromRoleAsync(ApplicationUser user, string role)
@@ -94,7 +96,22 @@ namespace EducationApp.DataAccessLayer.Repositories.DapperRepositories
 
         public async Task SignOutAsync()
         {
-            await _signInManager.SignOutAsync();
+           await _signInManager.SignOutAsync();
+        }
+
+        public async Task<string> GenerateEmailConfirmationTokenAsync(ApplicationUser user)
+        {
+            return await _userManager.GenerateEmailConfirmationTokenAsync(user);
+        }
+
+        public async Task<IdentityResult> ConfirmEmailAsync(ApplicationUser user, string code)
+        {
+            return await _userManager.ConfirmEmailAsync(user, code);
+        }
+
+        public async Task<IdentityResult> ResetPasswordAsync(ApplicationUser user, string code, string password)
+        {
+            return await _userManager.ResetPasswordAsync(user, code, password);
         }
     }
 }

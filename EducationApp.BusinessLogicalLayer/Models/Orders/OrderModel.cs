@@ -1,4 +1,5 @@
-﻿using EducationApp.DataAccessLayer.Entities;
+﻿using EducationApp.BusinessLogicalLayer.Models.ViewModels.User;
+using EducationApp.DataAccessLayer.Entities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -10,13 +11,13 @@ namespace EducationApp.BusinessLogicalLayer.Models.ViewModels.Orders
         [Required]
         public string Id { get; set; }
         public string Description { get; set; }
-        public ApplicationUser User { get; set; }
+        public UserModelItem User { get; set; }
         public DateTime Date { get; set; }
-        public string PaymentId { get; set; }
+        public List<OrderItemModel> OrderItems { get; set; }
     }
 
     public class OrderModel
     {
-        public List<OrderModelItem> Orders;
+        public List<OrderModelItem> Items = new List<OrderModelItem>();
     }
 }

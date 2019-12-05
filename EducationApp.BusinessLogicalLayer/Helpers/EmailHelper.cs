@@ -1,15 +1,17 @@
-﻿using MimeKit;
-using MailKit.Net.Smtp;
+﻿using MailKit.Net.Smtp;
+using MimeKit;
 using System.Threading.Tasks;
-namespace EducationApp
+using static EducationApp.BusinessLogicalLayer.Common.Constants.UserData;
+
+namespace EducationApp.BusinessLogicalLayer.Helpers
 {
-    public class EmailService
+    public class EmailHelper
     {
         public async Task SendEmailAsync(string email, string subject, string message)
         {
             var emailMessage = new MimeMessage();
 
-            emailMessage.From.Add(new MailboxAddress("Site administration", "alex1bakay@gmail.com"));
+            emailMessage.From.Add(new MailboxAddress(NameMailboxAddress, AdressMailboxAddress));
             emailMessage.To.Add(new MailboxAddress("", email));
             emailMessage.Subject = subject;
             emailMessage.Body = new TextPart(MimeKit.Text.TextFormat.Html)
@@ -19,11 +21,9 @@ namespace EducationApp
 
             using (var client = new SmtpClient())
             {
-                await client.ConnectAsync("smtp.gmail.com", 25, false);
-                await client.AuthenticateAsync("alex1bakay@gmail.com", "dota212310");
+                await client.ConnectAsync(HostConnectAsync, 25, false);
+                await client.AuthenticateAsync(UserNameAuthenticateAsync, PasswordAuthenticateAsync);
                 await client.SendAsync(emailMessage);
-
-                await client.DisconnectAsync(true);
             }
         }
     }

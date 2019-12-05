@@ -1,9 +1,12 @@
 ﻿using EducationApp.DataAccessLayer.Entities.Base;
+using System;
 
 namespace EducationApp.DataAccessLayer.Entities
 {
     public class AuthorInPrintingEdition : BaseEntity
     {
-        public string Name { get; set; }
+        public Author Author { get; set; } //todo check +
+        public PrintingEdition PrintingEdition { get; set; }
+        public DateTime Date { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-﻿using EducationApp.DataAccessLayer.Entities.Enums;
+﻿using EducationApp.BusinessLogicalLayer.Models.Enums;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -11,9 +11,9 @@ namespace EducationApp.BusinessLogicalLayer.Models.ViewModels.PrintingEdition
         public string Title { get; set; }
         public string Description { get; set; }
         public long Price { get; set; }
-        public Status Status { get; set; }
-        public Currency Currency { get; set; }
-        public Type Type { get; set; }
+        public StatusPrintingEdition Status { get; set; } //todo ProductStatus +
+        public CurrencyPrintingEdition Currency { get; set; }
+        public TypePrintingEdition Type { get; set; } //todo add enums to BLL +
     }
 
     public class PrintingEditionModel

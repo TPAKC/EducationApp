@@ -1,44 +1,58 @@
 ﻿using EducationApp.DataAccessLayer.Entities;
 using Microsoft.AspNetCore.Identity;
-using System;
 using System.Threading.Tasks;
+using static EducationApp.DataAccessLayer.Common.Constants.AccountRole;
+using static EducationApp.DataAccessLayer.Common.Constants.InitializeData;
 
-namespace RolesInitializerApp
+namespace EducationApp.DataAccessLayer.Initialization
 {
-    public class DataBaseInitializer
+    public class DataBaseInitializer //todo use DI +
     {
-        public static async Task InitializeAsync(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
+
+        public DataBaseInitializer(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
-            string adminEmail = "admin@gmail.com";
-            string adminPassword = "_Aa123456";
-            if (await roleManager.FindByNameAsync("admin") == null)
+            _userManager = userManager;
+            _roleManager = roleManager;
+        }
+
+        public async void СreationRole(string role)
+        {
+            if (await _roleManager.FindByNameAsync(role) == null)
             {
-                await roleManager.CreateAsync(new IdentityRole("admin"));
+                await _roleManager.CreateAsync(new IdentityRole(role)); //todo use enum or const +
             }
-            if (await userManager.FindByNameAsync(adminEmail) == null)
+        }
+
+        public async void СreationAccount(string email, string password, string role)
+        {
+            var user = new ApplicationUser
             {
-                ApplicationUser admin = new ApplicationUser { Email = adminEmail, UserName = adminEmail, EmailConfirmed = true };
-                IdentityResult result = await userManager.CreateAsync(admin, adminPassword);
-                if (result.Succeeded)
-                {
-                    await userManager.AddToRoleAsync(admin, "admin");
-                }
+                Email = email,
+                UserName = email,
+                EmailConfirmed = true
+            };
+            var result = await _userManager.CreateAsync(user, password);
+            if (result.Succeeded)
+            {
+                await _userManager.AddToRoleAsync(user, role);
+            }
+        }
+
+        public async Task InitializeAsync(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+        {
+            СreationRole(NameUserRole);
+            СreationRole(NameAdminRole);
+
+            if (await _userManager.FindByNameAsync(AdminEmail) == null) //todo if if +
+            {
+                СreationAccount(AdminEmail, AdminPassword, AdminPassword);
             }
 
-            string userEmail = "user@gmail.com";
-            string userPassword = "_Uu123456";
-            if (await roleManager.FindByNameAsync("user") == null)
+            if (await userManager.FindByNameAsync(UserEmail) == null)
             {
-                await roleManager.CreateAsync(new IdentityRole("user"));
-            }
-            if (await userManager.FindByNameAsync(userEmail) == null)
-            {
-                ApplicationUser user = new ApplicationUser { Email = userEmail, UserName = userEmail, EmailConfirmed = true };
-                IdentityResult result = await userManager.CreateAsync(user, userPassword);
-                if (result.Succeeded)
-                {
-                    await userManager.AddToRoleAsync(user, "user");
-                }
+                СreationAccount(UserEmail, UserPassword, UserPassword);
             }
 
             /* db.PrintingEditions.Add(new PrintingEdition 
@@ -54,11 +68,6 @@ namespace RolesInitializerApp
             db.Authors.Add(new Author { Name = "Elon Musk" });
 
             db.SaveChanges();*/
-        }
-
-        public static Task InitializeAsync(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> rolesManager, object connectionString)
-        {
-            throw new NotImplementedException();
         }
     }
 }
