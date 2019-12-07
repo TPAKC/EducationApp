@@ -1,11 +1,11 @@
-﻿using EducationApp.BusinessLogicalLayer.Models.Base;
+﻿using EducationApp.BusinessLogicalLayer.Helpers;
+using EducationApp.BusinessLogicalLayer.Models.Base;
 using EducationApp.BusinessLogicalLayer.Models.ViewModels;
 using EducationApp.BusinessLogicalLayer.Models.ViewModels.User;
 using EducationApp.BusinessLogicalLayer.Services.Interfaces;
 using EducationApp.DataAccessLayer.Entities;
 using EducationApp.DataAccessLayer.Repositories.Interfaces;
 using Microsoft.AspNetCore.Identity;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using static EducationApp.BusinessLogicalLayer.Common.Constants.AccountRole;
@@ -15,11 +15,14 @@ namespace EducationApp.BusinessLogicalLayer.Services
 {
     public class UserService : IUserService
     {
+
         private readonly IUserRepository _userRepository;
-        //todo inject IEmailHelper
-        public UserService(IUserRepository userRepository)
+        private readonly Mapper _mapper;
+        //todo inject IEmailHelper ?
+        public UserService(IUserRepository userRepository, Mapper mapper)
         {
             _userRepository = userRepository;
+            _mapper = mapper;
         }
 
         public async Task<UserModelItem> CreateAsync(CreateUserViewModel userModel)
@@ -31,106 +34,154 @@ namespace EducationApp.BusinessLogicalLayer.Services
                 userResultModel.Errors.Add(UserIsExist);
                 return userResultModel;
             }
-            user = new ApplicationUser
-            {
-                Email = userModel.Email,
-                UserName = userModel.Email,
-                FirstName = userModel.FirstName,
-                LastName = userModel.LastName
-            };
+            userResultModel = _mapper.ApplicationUserToUserModelITem(user); //todo map user to userResultModel +
             var result = await _userRepository.CreateAsync(user, userModel.Password);
-            user = await _userRepository.FindByEmailAsync(userModel.Email);
-            //todo map user to userResultModel
-            if (!result.Succeeded)
+            if (!result)
             {
                 userResultModel.Errors.Add(UserCantBeRegistered);
                 return userResultModel;
             }
+
             result = await _userRepository.AddToRoleAsync(user, NameUserRole); //todo errors and roles from constants or enums +
-            if (!result.Succeeded)
+            if (!result)
             {
                 userResultModel.Errors.Add(UserCantBeAddedToRole);
             }
+
             return userResultModel;
         }
 
-        public async Task<IdentityResult> ChangePasswordAsync(ChangePasswordViewModel changePasswordViewModel)
+        public async Task<BaseModel> ChangePasswordAsync(ChangePasswordViewModel changePasswordViewModel)
         {
-            if (changePasswordViewModel != null)
+            var resultModel = new BaseModel();
+            if (changePasswordViewModel == null) 
             {
-                //...
+                resultModel.Errors.Add(ModelIsExist);
+                return resultModel;
             }
+
             var user = await _userRepository.FindByEmailAsync(changePasswordViewModel.Email);
-            return await _userRepository.ChangePasswordAsync(user, changePasswordViewModel.OldPassword, changePasswordViewModel.NewPassword); //you may need to enter the password manually
+            if (user == null)
+            {
+                resultModel.Errors.Add(UserIsExist);
+                return resultModel;
+            }
+
+            var result = await _userRepository.ChangePasswordAsync(user, changePasswordViewModel.OldPassword, changePasswordViewModel.NewPassword); //you may need to enter the password manually
+            if (!result)
+            {
+                resultModel.Errors.Add(FailedToChangePassword);
+            }
+
+            return resultModel;
         }
 
-        public async Task<IdentityResult> DeleteAsync(string id)
+        public async Task<BaseModel> DeleteAsync(string id)
         {
+            var resultModel = new BaseModel();
             var user = await _userRepository.FindByIdAsync(id);
-            return await _userRepository.DeleteAsync(user);
+            if (user == null)
+            {
+                resultModel.Errors.Add(UserIsExist);
+                return resultModel;
+            }
+
+            var result = await _userRepository.DeleteAsync(user);
+            if (!result)
+            {
+                resultModel.Errors.Add(FailedToRemoveUser);
+            }
+
+            return resultModel;
         }
 
         public async Task<UserModelItem> FindByIdAsync(string id)
         {
+            var userResultModel = new UserModelItem();
             var user = await _userRepository.FindByIdAsync(id);
-            //todo check user for null
-            var model = new UserModelItem(); //todo map at mappers (Excention)
-            model.Email = user.Email;
-            model.Id = user.Id;
-            model.FirstName = user.FirstName;
-            model.LastName = user.LastName;
-            return model;
+            if(user == null) //todo check user for null +
+            {
+                userResultModel.Errors.Add(UserIsExist);
+                return userResultModel;
+            }
+            userResultModel = _mapper.ApplicationUserToUserModelITem(user);
+            return userResultModel; //todo map at mappers (Excention) +
         }
 
     public async Task<UserModelItem> FindByEmailAsync(string email)
     {
-        var user = await _userRepository.FindByEmailAsync(email);
-        var model = new UserModelItem { Email = user.Email, Id = user.Id, FirstName = user.FirstName, LastName = user.LastName };
-        return model;
+            var userResultModel = new UserModelItem();
+            var user = await _userRepository.FindByEmailAsync(email);
+        if(user == null)
+            {
+                userResultModel.Errors.Add(UserIsExist);
+                return userResultModel;
+            }
+            userResultModel = _mapper.ApplicationUserToUserModelITem(user); //todo map at mappers +
+            return userResultModel;
     }
 
-    public async Task<IdentityResult> UpdateAsync(UserModelItem userModel)
+    public async Task<BaseModel> UpdateAsync(UserModelItem userModel)
     {
-        ApplicationUser user = await _userRepository.FindByEmailAsync(userModel.Email);
-        return await _userRepository.UpdateAsync(user);
+            var resultModel = new BaseModel();
+            if (userModel == null)
+            {
+                resultModel.Errors.Add(ModelIsExist);
+            }
+
+            ApplicationUser user = await _userRepository.FindByEmailAsync(userModel.Email);
+            if (user == null)
+            {
+                resultModel.Errors.Add(UserIsExist);
+                return resultModel;
+            }
+
+            var result = await _userRepository.UpdateAsync(user);
+            if (!result)
+            {
+                resultModel.Errors.Add(FailedToUpdateUser);
+            }
+
+            return resultModel;
     }
 
-    public List<UserModelItem> GetUsersAsync()
+    public UserModel GetUsersAsync()
     {
-        var users = _userRepository.GetUsersAsync();
-        var models = users.Select(user => new UserModelItem
-        {
-            Email = user.Email,
-            Id = user.Id,
-            FirstName = user.FirstName,
-            LastName = user.LastName
-        }).ToList();
+            var usersResultModel = new UserModel();
+            var users = _userRepository.GetUsersAsync();
+        if(users == null)
+            {
+                usersResultModel.Errors.Add(FailedToUpdateUser);
+                return usersResultModel;
+            }
 
-        return models;
-    }
+         usersResultModel.Users = users.Select(user => _mapper.ApplicationUserToUserModelITem(user)).ToList();
+            return usersResultModel;
+        }
 
-    public async Task<IdentityResult> AddToRoleAsync(UserModelItem userModel, string role)
+    public async Task<BaseModel> AddToRoleAsync(UserModelItem userModel, string role)
     {
-        var user = await _userRepository.FindByEmailAsync(userModel.Email);
-        return await _userRepository.AddToRoleAsync(user, role);
-    }
+            var resultModel = new BaseModel();
+            var user = await _userRepository.FindByEmailAsync(userModel.Email);
+            if (user == null)
+            {
+                resultModel.Errors.Add(FailedToUpdateUser);
+                return resultModel;
+            }
+            var result = await _userRepository.AddToRoleAsync(user, role);
+            if (!result)
+            {
+                resultModel.Errors.Add(UserCantBeAddedToRole);
+            }
+            return resultModel;
+        }
 
-    public async Task<IList<string>> GetRolesAsync(UserModelItem userModel)
+    public async Task<BaseModel> RemoveFromRoleAsync(UserModelItem userModel, string role)
     {
-        var user = await _userRepository.FindByEmailAsync(userModel.Email);
-        return await _userRepository.GetRolesAsync(user);
-    }
-
-    public async Task<bool> IsInRoleAsync(UserModelItem userModel, string role)
-    {
-        var user = await _userRepository.FindByEmailAsync(userModel.Email);
-        return await _userRepository.IsInRoleAsync(user, role);
-    }
-
-    public async Task<IdentityResult> RemoveFromRoleAsync(UserModelItem userModel, string role)
-    {
-        var user = await _userRepository.FindByEmailAsync(userModel.Email);
-        return await _userRepository.RemoveFromRoleAsync(user, role);
+            var resultModel = new BaseModel();
+            var user = await _userRepository.FindByEmailAsync(userModel.Email);
+         await _userRepository.RemoveFromRoleAsync(user, role);
+            return resultModel;
     }
 
     public async Task<bool> IsEmailConfirmedAsync(UserModelItem userModel)
@@ -145,9 +196,11 @@ namespace EducationApp.BusinessLogicalLayer.Services
         return await _userRepository.PasswordSignInAsync(user, password, isPersistent);
     }
 
-    public async Task SignOutAsync()
+    public async Task<BaseModel> SignOutAsync()
     {
-         await _userRepository.SignOutAsync();
+            var resultModel = new BaseModel();
+            await _userRepository.SignOutAsync();
+            return resultModel;
     }
 
     public async Task<string> GenerateEmailConfirmationTokenAsync(string email)
@@ -172,16 +225,23 @@ namespace EducationApp.BusinessLogicalLayer.Services
             return resultModel;
         }
         var confirmResult = await _userRepository.ConfirmEmailAsync(user, code);
-        if (!confirmResult.Succeeded)
+        if (!confirmResult)
         {
             resultModel.Errors.Add(UserNotConfirmed); //todo from const +
         }
         return resultModel;
     }
 
-    public async Task<IdentityResult> ResetPasswordAsync(string email, string code, string password)
+    public async Task<BaseModel> ResetPasswordAsync(string email, string code, string password)
     {
-        return await _userRepository.ResetPasswordAsync(email, code, password);
+            var resultModel = new BaseModel();
+            var user = await _userRepository.FindByEmailAsync(email);
+            var result = await _userRepository.ResetPasswordAsync(user, code, password);
+            if(!result)
+            {
+                resultModel.Errors.Add(FailedToResetPassword);
+            }
+            return resultModel;
     }
     public async Task<string> GeneratePasswordResetTokenAsync(string email)
     {

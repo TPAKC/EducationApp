@@ -7,24 +7,23 @@ namespace EducationApp.DataAccessLayer.Repositories.Interfaces
 {
     public interface IUserRepository
     {
-        Task<IdentityResult> ChangePasswordAsync(ApplicationUser user, string oldPassword, string newPassword);
-        Task<IdentityResult> CreateAsync(ApplicationUser user);
-        Task<IdentityResult> CreateAsync(ApplicationUser user, string password);
-        Task<IdentityResult> DeleteAsync(ApplicationUser user);
+        Task<bool> ChangePasswordAsync(ApplicationUser user, string oldPassword, string newPassword);
+        Task<bool> CreateAsync(ApplicationUser user, string password);
+        Task<bool> DeleteAsync(ApplicationUser user);
         Task<ApplicationUser> FindByIdAsync(string id);
         Task<ApplicationUser> FindByEmailAsync(string email);
-        Task<IdentityResult> UpdateAsync(ApplicationUser user);
+        Task<bool> UpdateAsync(ApplicationUser user);
         List<ApplicationUser> GetUsersAsync();
-        Task<IdentityResult> AddToRoleAsync(ApplicationUser user, string role);
+        Task<bool> AddToRoleAsync(ApplicationUser user, string role);
         Task<IList<string>> GetRolesAsync(ApplicationUser user);
         Task<bool> IsInRoleAsync(ApplicationUser user, string role);
-        Task<IdentityResult> RemoveFromRoleAsync(ApplicationUser user, string role);
+        Task<bool> RemoveFromRoleAsync(ApplicationUser user, string role);
         Task<string> GeneratePasswordResetTokenAsync(ApplicationUser user);
         Task<bool> IsEmailConfirmedAsync(ApplicationUser user);
         Task<SignInResult> PasswordSignInAsync(ApplicationUser user, string password, bool isPersistent);
         Task SignOutAsync();
         Task<string> GenerateEmailConfirmationTokenAsync(ApplicationUser user);
-        Task<IdentityResult> ConfirmEmailAsync(ApplicationUser user, string code);
-        Task<IdentityResult> ResetPasswordAsync(ApplicationUser user, string code, string password);
+        Task<bool> ConfirmEmailAsync(ApplicationUser user, string code);
+        Task<bool> ResetPasswordAsync(ApplicationUser user, string code, string password);
     }
 }

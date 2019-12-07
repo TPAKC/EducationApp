@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace EducationApp.BusinessLogicalLayer.Models.ViewModels.PrintingEdition
+namespace EducationApp.BusinessLogicalLayer.Models.PrintingEditions
 {
     public class PrintingEditionModelItem
     {

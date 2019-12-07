@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace EducationApp.BusinessLogicalLayer.Models.ViewModels.Author
+namespace EducationApp.BusinessLogicalLayer.Models.Authors
 {
     public class AuthorModel : BaseModel
     {

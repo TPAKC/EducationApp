@@ -22,9 +22,6 @@ namespace EducationApp.BusinessLogicalLayer
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ApplicationDbContext>(options => //todo replace to BLL
-options.UseSqlServer(
-Configuration.GetConnectionString("DefaultConnection")));
 
             EducationApp.Run(async (context) =>
             {
@@ -40,11 +37,12 @@ Configuration.GetConnectionString("DefaultConnection")));
 
         public static void RegisterDependencies(string connectionString, IServiceCollection services)
         {
+
             services.AddScoped<IPrintingEditionsService, PrintingEditionService>();
 
             EducationApp.DataAccessLayer.Startup.RegisterDependencies(connectionString, services);
 
-            services.AddIdentity<ApplicationUser, IdentityRole>(opts => //todo replace to BLL
+            services.AddIdentity<ApplicationUser, IdentityRole>(opts => //todo replace to BLL +
             {
                 opts.Password.RequireNonAlphanumeric = false;
                 opts.Password.RequireLowercase = false;

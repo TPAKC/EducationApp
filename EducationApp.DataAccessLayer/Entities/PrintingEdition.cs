@@ -8,8 +8,8 @@ namespace EducationApp.DataAccessLayer.Entities
         public string Title { get; set; }
         public string Description { get; set; }
         public long Price { get; set; }
-        public Status Status { get; set; }
-        public Currency Currency { get; set; }
-        public Type Type { get; set; }
+        public StatusPrintingEdition Status { get; set; }
+        public CurrencyPrintingEdition Currency { get; set; }
+        public TypePrintingEdition Type { get; set; }
     }
 }

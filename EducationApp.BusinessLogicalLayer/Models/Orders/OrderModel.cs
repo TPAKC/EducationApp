@@ -1,10 +1,9 @@
-﻿using EducationApp.BusinessLogicalLayer.Models.ViewModels.User;
-using EducationApp.DataAccessLayer.Entities;
+﻿using EducationApp.BusinessLogicalLayer.Models.Users;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace EducationApp.BusinessLogicalLayer.Models.ViewModels.Orders
+namespace EducationApp.BusinessLogicalLayer.Models.Orders
 {
     public class OrderModelItem
     {

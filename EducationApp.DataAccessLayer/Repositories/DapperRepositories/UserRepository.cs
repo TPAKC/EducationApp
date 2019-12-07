@@ -19,24 +19,21 @@ namespace EducationApp.DataAccessLayer.Repositories.DapperRepositories
             _signInManager = signInManager;
         }
 
-        public async Task<IdentityResult> ChangePasswordAsync(ApplicationUser user, string oldPassword, string newPassword)
+        public async Task<bool> ChangePasswordAsync(ApplicationUser user, string oldPassword, string newPassword)
         {
-            return await _userManager.ChangePasswordAsync(user, oldPassword, newPassword);
+            var result = await _userManager.ChangePasswordAsync(user, oldPassword, newPassword);
+            return result.Succeeded;
         }
 
-        public async Task<IdentityResult> CreateAsync(ApplicationUser user)
+        public async Task<bool> CreateAsync(ApplicationUser user, string password)
         {
-            var result = await _userManager.CreateAsync(user);
-            //return result.Succeeded;
-            return result;
+            var result = await _userManager.CreateAsync(user, password);
+            return result.Succeeded;
         }
-        public async Task<IdentityResult> CreateAsync(ApplicationUser user, string password)
+        public async Task<bool> DeleteAsync(ApplicationUser user)
         {
-            return await _userManager.CreateAsync(user, password);
-        }
-        public async Task<IdentityResult> DeleteAsync(ApplicationUser user)
-        {
-            return await _userManager.DeleteAsync(user);
+            var result = await _userManager.DeleteAsync(user);
+            return result.Succeeded;
         }
 
         public async Task<ApplicationUser> FindByIdAsync(string id)
@@ -49,19 +46,25 @@ namespace EducationApp.DataAccessLayer.Repositories.DapperRepositories
             return await _userManager.FindByEmailAsync(email);
         }
 
-        public async Task<IdentityResult> UpdateAsync(ApplicationUser user)
+        public async Task<bool> UpdateAsync(ApplicationUser user)
         {
-            return await _userManager.UpdateAsync(user);
+            var result = await _userManager.UpdateAsync(user);
+            return result.Succeeded;
         }
 
         public List<ApplicationUser> GetUsersAsync()
         {
-            return _userManager.Users.ToList(); //todo filter list
+           List<ApplicationUser> result = new List<ApplicationUser>();
+          // var users = _userManager.Users.ToList();
+         /*   var evens = users.Where(user => !user.IsRemoved);
+            foreach (ApplicationUser user in evens) result.Add(user);*/
+                return result; //todo filter list+
         }
 
-        public async Task<IdentityResult> AddToRoleAsync(ApplicationUser user, string role)
+        public async Task<bool> AddToRoleAsync(ApplicationUser user, string role)
         {
-            return await _userManager.AddToRoleAsync(user, role);
+            var result = await _userManager.AddToRoleAsync(user, role);
+            return result.Succeeded;
         }
 
         public async Task<IList<string>> GetRolesAsync(ApplicationUser user)
@@ -74,9 +77,10 @@ namespace EducationApp.DataAccessLayer.Repositories.DapperRepositories
             return await _userManager.IsInRoleAsync(user, role);
         }
 
-        public async Task<IdentityResult> RemoveFromRoleAsync(ApplicationUser user, string role)
+        public async Task<bool> RemoveFromRoleAsync(ApplicationUser user, string role)
         {
-            return await _userManager.RemoveFromRoleAsync(user, role);
+            var result = await _userManager.RemoveFromRoleAsync(user, role);
+            return result.Succeeded;
         }
 
         public async Task<string> GeneratePasswordResetTokenAsync(ApplicationUser user)
@@ -86,7 +90,7 @@ namespace EducationApp.DataAccessLayer.Repositories.DapperRepositories
 
         public async Task<bool> IsEmailConfirmedAsync(ApplicationUser user)
         {
-            return await _userManager.IsEmailConfirmedAsync(user);
+            return await _userManager.IsEmailConfirmedAsync(user);  
         }
 
         public async Task<SignInResult> PasswordSignInAsync(ApplicationUser user, string password, bool isPersistent)
@@ -104,14 +108,17 @@ namespace EducationApp.DataAccessLayer.Repositories.DapperRepositories
             return await _userManager.GenerateEmailConfirmationTokenAsync(user);
         }
 
-        public async Task<IdentityResult> ConfirmEmailAsync(ApplicationUser user, string code)
+        public async Task<bool> ConfirmEmailAsync(ApplicationUser user, string code)
         {
-            return await _userManager.ConfirmEmailAsync(user, code);
+            var result = await _userManager.ConfirmEmailAsync(user, code);
+            return result.Succeeded;
         }
 
-        public async Task<IdentityResult> ResetPasswordAsync(ApplicationUser user, string code, string password)
+        public async Task<bool> ResetPasswordAsync(ApplicationUser user, string code, string password)
         {
-            return await _userManager.ResetPasswordAsync(user, code, password);
+            var result = await _userManager.ResetPasswordAsync(user, code, password);
+            return result.Succeeded;
         }
     }
 }
+   

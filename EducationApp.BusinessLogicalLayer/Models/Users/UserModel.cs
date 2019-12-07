@@ -3,7 +3,7 @@ using EducationApp.BusinessLogicalLayer.Models.Enums;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace EducationApp.BusinessLogicalLayer.Models.ViewModels.User
+namespace EducationApp.BusinessLogicalLayer.Models.Users
 {
     public class UserModel : BaseModel
     {

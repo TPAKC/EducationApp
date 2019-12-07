@@ -18,9 +18,9 @@ namespace CustomIdentityApp.Controllers
         }
 
         [HttpPost("create")]
-        public async Task<IActionResult> Create(CreateUserViewModel user) //todo use RegistrModel
+        public async Task<IActionResult> Create(CreateUserViewModel user) //todo use RegistrModel +
         { 
-           var result = await _userService.CreateAsync(user); //todo get response
+           var result = await _userService.CreateAsync(user); //todo get response +
            return Ok(result);
         }
 

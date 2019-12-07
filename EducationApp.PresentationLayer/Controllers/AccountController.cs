@@ -6,7 +6,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Threading.Tasks;
-using static EducationApp.PresentationLayer.Common.Constants.СontrollerValidationErrors;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using System.Security.Claims;
+using System.Collections.Generic;
+
 namespace EducationApp.PresentationLayer.Controllers
 {
     public class AccountController : ControllerBase
@@ -23,33 +27,27 @@ namespace EducationApp.PresentationLayer.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
-            if (ModelState.IsValid)
-            {
+
                 var result = await _userService.IsEmailConfirmedAsync(model);
+            if (result != null)
+            {
+                await Authenticate(model.Email);
+                    }
 
-                if (!result)
-                {
-                    ModelState.AddModelError(string.Empty, NotVerified);
-                    return Ok(model);
-                }
-
-                var resultPasswordSignIn = await _userService.PasswordSignInAsync(model.Email, model.Password, model.RememberMe);
+            var resultPasswordSignIn = await _userService.PasswordSignInAsync(model.Email, model.Password, model.RememberMe);
                 if (resultPasswordSignIn.Succeeded)
                 {
                     UserModelItem user = await _userService.FindByEmailAsync(model.Email);
-
                 }
-            }
             return Ok(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> LogOut() //todo LogOut
+        public async Task<IActionResult> LogOut() //todo LogOut +
         {
-            // delete authentication cookies
             var result = await _userService.SignOutAsync();
-            return Ok(result); //todo return Ok();
+            return Ok(result); //todo return Ok(); +
         }
 
         [HttpPost]
@@ -68,7 +66,6 @@ namespace EducationApp.PresentationLayer.Controllers
                     "Account",
                     new { userId = resultModel.Id, code },
                     protocol: HttpContext.Request.Scheme);
-                //EmailService emailService = new EmailService();
                 await _userService.SendEmailAsync(model.Email, "Confirm your account",
                     $"Confirm registration by clicking on the <a href='{callbackUrl}'>link</a>");
                 return Ok(resultModel);
@@ -133,15 +130,24 @@ namespace EducationApp.PresentationLayer.Controllers
                 return Ok(model);
             }
             var result = await _userService.ResetPasswordAsync(model.Email, model.Code, model.Password);
-            if (result.Succeeded)
-            {
-                return Ok("ResetPasswordConfirmation");
-            }
             foreach (var error in result.Errors)
             {
                 ModelState.AddModelError(string.Empty, error.Description);
             }
             return Ok(model);
+        }
+
+        private async Task Authenticate(string userName)
+        {
+            // создаем один claim
+            var claims = new List<Claim>
+    {
+        new Claim(ClaimsIdentity.DefaultNameClaimType, userName)
+    };
+            // создаем объект ClaimsIdentity
+            ClaimsIdentity id = new ClaimsIdentity(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
+            // установка аутентификационных куки
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(id));
         }
     }
 }

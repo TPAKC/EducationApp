@@ -12,7 +12,7 @@ namespace EducationApp.PresentationLayer.Middlewares
         private readonly RequestDelegate _next;
         private readonly ILogger _logger;
 
-        public ExceptionMiddleware(RequestDelegate next, ILogger<ExceptionMiddleware> logger) //todo use DI to inject ILogger
+        public ExceptionMiddleware(RequestDelegate next, ILogger<ExceptionMiddleware> logger) //todo use DI to inject ILogger +
         {
             _logger = logger;
             _next = next ?? throw new ArgumentNullException(nameof(next));
@@ -37,6 +37,6 @@ namespace EducationApp.PresentationLayer.Middlewares
                 return;
             }
         }
-        //todo remove
+        //todo remove +
     }
 }

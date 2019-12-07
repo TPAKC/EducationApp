@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace EducationApp.BusinessLogicalLayer.Models.ViewModels.Payment
+namespace EducationApp.BusinessLogicalLayer.Models.Payments
 {
     public class PaymentModelItem
     {

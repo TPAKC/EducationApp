@@ -6,7 +6,7 @@ namespace EducationApp.DataAccessLayer.Entities
     public class OrderItem :BaseEntity
     {
         public long Amount { get; set; }
-        public Currency Currency { get; set; }
+        public CurrencyPrintingEdition Currency { get; set; }
         public PrintingEdition PrintingEdition { get; set; }
         public Order Order { get; set; }
         public long Count { get; set; }
