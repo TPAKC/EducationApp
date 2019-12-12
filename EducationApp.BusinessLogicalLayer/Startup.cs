@@ -23,16 +23,6 @@ namespace EducationApp.BusinessLogicalLayer
         public void ConfigureServices(IServiceCollection services)
         {
 
-            EducationApp.Run(async (context) =>
-            {
-                // пишем на консоль информацию
-                logger.LogInformation("Processing request {0}", context.Request.Path);
-                //или так
-                //logger.LogInformation($"Processing request {context.Request.Path}");
-
-                await context.Response.WriteAsync("Hello World!");
-            });
-
         }
 
         public static void RegisterDependencies(string connectionString, IServiceCollection services)

@@ -1,15 +1,19 @@
 ﻿using EducationApp.BusinessLogicalLayer.Helpers;
+using EducationApp.BusinessLogicalLayer.Models;
 using EducationApp.BusinessLogicalLayer.Models.Base;
+using EducationApp.BusinessLogicalLayer.Models.Users;
 using EducationApp.BusinessLogicalLayer.Models.ViewModels;
-using EducationApp.BusinessLogicalLayer.Models.ViewModels.User;
 using EducationApp.BusinessLogicalLayer.Services.Interfaces;
 using EducationApp.DataAccessLayer.Entities;
 using EducationApp.DataAccessLayer.Repositories.Interfaces;
-using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Options;
+using System;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using static EducationApp.BusinessLogicalLayer.Common.Constants.AccountRole;
 using static EducationApp.BusinessLogicalLayer.Common.Constants.ServiceValidationErrors;
+using static EducationApp.BusinessLogicalLayer.Common.Constants.TemplateText;
 
 namespace EducationApp.BusinessLogicalLayer.Services
 {
@@ -18,37 +22,65 @@ namespace EducationApp.BusinessLogicalLayer.Services
 
         private readonly IUserRepository _userRepository;
         private readonly Mapper _mapper;
-        //todo inject IEmailHelper ?
-        public UserService(IUserRepository userRepository, Mapper mapper)
+        private readonly JwtHelper _jwtHelper;
+        private readonly JwtOptions _jwtOptions;
+        private readonly EmailHelper _emailHelper;
+        //todo inject IEmailHelper +
+        public UserService(IUserRepository userRepository, Mapper mapper, JwtHelper jwtHelper,
+                              IOptions<JwtOptions> jwtOptions, EmailHelper emailHelper)
         {
             _userRepository = userRepository;
             _mapper = mapper;
+            _jwtHelper = jwtHelper;
+            _jwtOptions = jwtOptions.Value;
+            _emailHelper = emailHelper;
         }
 
-        public async Task<UserModelItem> CreateAsync(CreateUserViewModel userModel)
+        public async Task<LoginView> Login(string email, string password, bool rememberMe)
         {
-            var userResultModel = new UserModelItem();
-            var user = await _userRepository.FindByEmailAsync(userModel.Email);
+            LoginView modelResult = new LoginView();
+            var user = await _userRepository.FindByEmailAsync(email);
+            if (user == null ||
+                !await _userRepository.PasswordSignInAsync(user, password, rememberMe))
+            {
+                modelResult.Errors.Add("");//add error
+                return modelResult;
+            }
+
+            var result = new LoginView
+            {
+                UserId = user.Id,
+                Confirmed = user.EmailConfirmed,
+                Token = (user.EmailConfirmed) ? await GetAccessToken(user) : null
+            };
+
+            return modelResult;
+        }
+
+        public async Task<UserModelItem> CreateAsync(CreateModel createModel)
+        {
+            var resultModel = new UserModelItem();
+            var user = await _userRepository.FindByEmailAsync(createModel.Email);
             if (user != null)
             {
-                userResultModel.Errors.Add(UserIsExist);
-                return userResultModel;
+                resultModel.Errors.Add(UserIsExist);
+                return resultModel;
             }
-            userResultModel = _mapper.ApplicationUserToUserModelITem(user); //todo map user to userResultModel +
-            var result = await _userRepository.CreateAsync(user, userModel.Password);
+            user = _mapper.RegisterModelToApplicationUser(createModel);
+            var result = await _userRepository.CreateAsync(user, createModel.Password);
             if (!result)
             {
-                userResultModel.Errors.Add(UserCantBeRegistered);
-                return userResultModel;
+                resultModel.Errors.Add(UserCantBeRegistered);
+                return resultModel;
             }
 
             result = await _userRepository.AddToRoleAsync(user, NameUserRole); //todo errors and roles from constants or enums +
             if (!result)
             {
-                userResultModel.Errors.Add(UserCantBeAddedToRole);
+                resultModel.Errors.Add(UserCantBeAddedToRole);
             }
-
-            return userResultModel;
+            resultModel.Id = user.Id;
+            return resultModel;
         }
 
         public async Task<BaseModel> ChangePasswordAsync(ChangePasswordViewModel changePasswordViewModel)
@@ -184,23 +216,15 @@ namespace EducationApp.BusinessLogicalLayer.Services
             return resultModel;
     }
 
-    public async Task<bool> IsEmailConfirmedAsync(UserModelItem userModel)
+    public async Task<bool> IsEmailConfirmedAsync(string email)
     {
-        var user = await _userRepository.FindByEmailAsync(userModel.Email);
+        var user = await _userRepository.FindByEmailAsync(email);
         return await _userRepository.IsEmailConfirmedAsync(user);
     }
 
-    public async Task<SignInResult> PasswordSignInAsync(string id, string password, bool isPersistent)
+    public async Task SignOutAsync()
     {
-        var user = await _userRepository.FindByIdAsync(id);
-        return await _userRepository.PasswordSignInAsync(user, password, isPersistent);
-    }
-
-    public async Task<BaseModel> SignOutAsync()
-    {
-            var resultModel = new BaseModel();
             await _userRepository.SignOutAsync();
-            return resultModel;
     }
 
     public async Task<string> GenerateEmailConfirmationTokenAsync(string email)
@@ -243,14 +267,61 @@ namespace EducationApp.BusinessLogicalLayer.Services
             }
             return resultModel;
     }
-    public async Task<string> GeneratePasswordResetTokenAsync(string email)
+    public async Task<BaseModel> ForgotPassword(string email)
     {
-        var user = await _userRepository.FindByEmailAsync(email);
-        /* if (user == null || !(await _userRepository.IsEmailConfirmedAsync(user)))
-         {
-             return Ok("ForgotPasswordConfirmation");
-         }*/
-        return await _userRepository.GeneratePasswordResetTokenAsync(user);
-    }
-} 
+            var resultModel = new BaseModel();
+            var newPassword = GeneratePassword();
+            var user = await _userRepository.FindByEmailAsync(email);
+            if(user==null)
+            {
+                resultModel.Errors.Add(UserWithThisMailNotFound);
+                return resultModel;
+            }
+            var result = await _userRepository.IsEmailConfirmedAsync(user);
+            if (!result)
+            {
+                resultModel.Errors.Add(UserNotConfirmed);
+                return resultModel;
+            }
+            await _emailHelper.SendEmailAsync(email, "Reset Password", $"{ResetPasswordText}{newPassword}");
+            var code = await _userRepository.GeneratePasswordResetTokenAsync(user);
+            result = await _userRepository.ResetPasswordAsync(user, code, newPassword);
+            if (!result)
+            {
+                resultModel.Errors.Add(FailedToResetPassword);
+                return resultModel;
+            }
+            return resultModel;
+        }
+
+        private string GeneratePassword()
+        {
+            int[] arr = new int[8];
+            Random random = new Random();
+            string password = "";
+            for (int i = 0; i < arr.Length; i++)
+            {
+                password += random.Next(0, 9);
+            }
+            return password;
+        }
+
+        private async Task<string> GetAccessToken(ApplicationUser user)
+        {
+            var roles = await _userRepository.GetRolesAsync(user);
+            var role = roles.FirstOrDefault();
+            var identity = _jwtHelper.GenerateClaimsIdentity(user, role);
+
+            var (token, expiresin) = await GenerateJwt(identity, user.UserName);
+            return token;
+        }
+
+        private async Task<(string token, int expiresin)> GenerateJwt(ClaimsIdentity identity, string userName)
+        {
+            var token = await _jwtHelper.GenerateEncodedToken(userName, identity);
+            var expiresin = (int)_jwtOptions.ValidFor.TotalSeconds;
+            return (token, expiresin);
+        }
+
+    } 
 }

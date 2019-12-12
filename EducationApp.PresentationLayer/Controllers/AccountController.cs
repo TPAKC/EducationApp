@@ -1,18 +1,15 @@
 ﻿using EducationApp.BusinessLogicalLayer.Helpers;
-using EducationApp.BusinessLogicalLayer.Models.ViewModels;
-using EducationApp.BusinessLogicalLayer.Models.ViewModels.User;
+using EducationApp.BusinessLogicalLayer.Models;
 using EducationApp.BusinessLogicalLayer.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using System.Security.Claims;
-using System.Collections.Generic;
+using static EducationApp.PresentationLayer.Common.Constants.TemplateText;
 
 namespace EducationApp.PresentationLayer.Controllers
 {
+    [Authorize]
+    [AllowAnonymous]
     public class AccountController : ControllerBase
     {
 
@@ -25,50 +22,33 @@ namespace EducationApp.PresentationLayer.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(LoginViewModel model)
+        public async Task<IActionResult> Login(string email, string password, bool rememberMe)
         {
-
-                var result = await _userService.IsEmailConfirmedAsync(model);
-            if (result != null)
-            {
-                await Authenticate(model.Email);
-                    }
-
-            var resultPasswordSignIn = await _userService.PasswordSignInAsync(model.Email, model.Password, model.RememberMe);
-                if (resultPasswordSignIn.Succeeded)
-                {
-                    UserModelItem user = await _userService.FindByEmailAsync(model.Email);
-                }
-            return Ok(model);
+            var resultModel = await _userService.Login(email,password,rememberMe);
+            return Ok(resultModel);
         }
-
+           
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> LogOut() //todo LogOut +
         {
-            var result = await _userService.SignOutAsync();
-            return Ok(result); //todo return Ok(); +
+            await _userService.SignOutAsync();
+            return Ok(); //todo return Ok(); +
         }
 
         [HttpPost]
-        public async Task<IActionResult> Register(RegisterViewModel model)
+        public async Task<IActionResult> Register(CreateModel createModel)
         {
-                //var user = await _userService.FindByEmailAsync(model.Email);
-                var resultModel = await _userService.CreateAsync(model);
-                if (resultModel.Errors.Any())
-                {
-                    return Ok(resultModel);
-                }
-
-                var code = await _userService.GenerateEmailConfirmationTokenAsync(model.Email);
+            var resultModel = await _userService.CreateAsync(createModel);
+                var code = await _userService.GenerateEmailConfirmationTokenAsync(createModel.Email);
                 var callbackUrl = Url.Action(
                     "ConfirmEmail",
                     "Account",
                     new { userId = resultModel.Id, code },
                     protocol: HttpContext.Request.Scheme);
-                await _userService.SendEmailAsync(model.Email, "Confirm your account",
-                    $"Confirm registration by clicking on the <a href='{callbackUrl}'>link</a>");
-                return Ok(resultModel);
+                await _emailHelper.SendEmailAsync(createModel.Email, 
+                    "Confirm your account",$"{ConfirmTheRegistration}<a href='{callbackUrl}'>link</a>");
+            return Ok(resultModel);
             }  
 
         [HttpGet("confirmEmail")]
@@ -79,75 +59,12 @@ namespace EducationApp.PresentationLayer.Controllers
             return Ok(result);
         }
 
-        [HttpGet]
-        [AllowAnonymous]
-        public IActionResult ForgotPassword()
-        {
-            return Ok();
-        }
-
         [HttpPost]
         [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
+        public async Task<IActionResult> ForgotPasswordForEmail(string email)
         {
-            if (ModelState.IsValid)
-            {
-                var user = await _userService.FindByEmailAsync(model.Email);
-                if (user == null || !(await _userService.IsEmailConfirmedAsync(user)))
-                {
-                    return Ok("ForgotPasswordConfirmation");
-                }
-
-                var code = await _userService.GeneratePasswordResetTokenAsync(user);
-                var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code }, protocol: HttpContext.Request.Scheme);
-                await _emailHelper.SendEmailAsync(model.Email, "Reset Password",
-                    $"To reset your password, follow the <a href='{callbackUrl}'>link</a>");
-                return Ok("ForgotPasswordConfirmation");
-            }
-            return Ok(model);
-        }
-
-        [HttpGet]
-        [AllowAnonymous]
-        public IActionResult ResetPassword(string code = null)
-        {
-            if (string.IsNullOrWhiteSpace(code))
-            {
-                return Ok("Error");
-            } 
-            return Ok();
-
-        }
-
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return Ok(model);
-            }
-            var result = await _userService.ResetPasswordAsync(model.Email, model.Code, model.Password);
-            foreach (var error in result.Errors)
-            {
-                ModelState.AddModelError(string.Empty, error.Description);
-            }
-            return Ok(model);
-        }
-
-        private async Task Authenticate(string userName)
-        {
-            // создаем один claim
-            var claims = new List<Claim>
-    {
-        new Claim(ClaimsIdentity.DefaultNameClaimType, userName)
-    };
-            // создаем объект ClaimsIdentity
-            ClaimsIdentity id = new ClaimsIdentity(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
-            // установка аутентификационных куки
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(id));
+            var result = await _userService.ForgotPassword(email);
+            return Ok(result);
         }
     }
 }

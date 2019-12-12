@@ -8,7 +8,7 @@ using System.Configuration;
 using System.Data;
 using System.Threading.Tasks;
 
-namespace EducationApp.DataAccessLayer.Repositories
+namespace EducationApp.DataAccessLayer.Repositories.Base
 {
     public class BaseDapperRepository<TEntity>: IBaseRepository<TEntity> where TEntity: BaseEntity
     {

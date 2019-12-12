@@ -1,8 +1,12 @@
-﻿namespace EducationApp.BusinessLogicalLayer.Models.ViewModels
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace EducationApp.BusinessLogicalLayer.Models
 {
-    public class CreateUserViewModel
+    public class CreateModel
     {
+        [Required]
         public string Email { get; set; }
+        [Required]
         public string Password { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }

@@ -16,6 +16,7 @@
             public const string FailedToUpdateUser = "Failed to update user";
             public const string UserListIsEmpty = "User list is empty";
             public const string FailedToResetPassword = "Failed to reset password";
+            public const string UserWithThisMailNotFound = "User with this mail not found";
         }
 
         public class AccountRole
@@ -31,6 +32,10 @@
             public const string HostConnectAsync = "smtp.gmail.com";
             public const string UserNameAuthenticateAsync = "alex1bakay@gmail.com";
             public const string PasswordAuthenticateAsync = "dota212310";
+        }
+        public class TemplateText
+        {
+            public const string ResetPasswordText = "You reset your password, your new password: ";
         }
     }
 }

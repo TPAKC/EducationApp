@@ -20,7 +20,7 @@ namespace EducationApp.DataAccessLayer.Repositories.Interfaces
         Task<bool> RemoveFromRoleAsync(ApplicationUser user, string role);
         Task<string> GeneratePasswordResetTokenAsync(ApplicationUser user);
         Task<bool> IsEmailConfirmedAsync(ApplicationUser user);
-        Task<SignInResult> PasswordSignInAsync(ApplicationUser user, string password, bool isPersistent);
+        Task<bool> PasswordSignInAsync(ApplicationUser user, string password, bool isPersistent);
         Task SignOutAsync();
         Task<string> GenerateEmailConfirmationTokenAsync(ApplicationUser user);
         Task<bool> ConfirmEmailAsync(ApplicationUser user, string code);

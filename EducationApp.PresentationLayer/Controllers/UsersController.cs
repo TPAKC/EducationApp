@@ -1,5 +1,6 @@
-﻿using EducationApp.BusinessLogicalLayer.Models.ViewModels;
-using EducationApp.BusinessLogicalLayer.Models.ViewModels.User;
+﻿using EducationApp.BusinessLogicalLayer.Models;
+using EducationApp.BusinessLogicalLayer.Models.Users;
+using EducationApp.BusinessLogicalLayer.Models.ViewModels;
 using EducationApp.BusinessLogicalLayer.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -17,29 +18,22 @@ namespace CustomIdentityApp.Controllers
             _userService = userService;
         }
 
-        [HttpPost("create")]
-        public async Task<IActionResult> Create(CreateUserViewModel user) //todo use RegistrModel +
-        { 
-           var result = await _userService.CreateAsync(user); //todo get response +
-           return Ok(result);
-        }
-
         [HttpPost("update")]
-        public async Task<IActionResult> Update(UserModelItem user)
+        public async Task<IActionResult> UpdateAsync(UserModelItem user)
         {
             var result = await _userService.UpdateAsync(user);
             return Ok(result);
         }
 
         [HttpPost("delete")]
-        public async Task<ActionResult> Delete(string id)
+        public async Task<ActionResult> DeleteAsync(string id)
         {
             var result = await _userService.DeleteAsync(id);
             return Ok(result);
         }
 
         [HttpGet("changePassword")]
-        public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
+        public async Task<IActionResult> ChangePasswordAsync(ChangePasswordViewModel model)
         {
             var result = await _userService.ChangePasswordAsync(model);
             return Ok(result);

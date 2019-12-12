@@ -1,15 +1,15 @@
-﻿using EducationApp.BusinessLogicalLayer.Models.Base;
+﻿using EducationApp.BusinessLogicalLayer.Models;
+using EducationApp.BusinessLogicalLayer.Models.Base;
+using EducationApp.BusinessLogicalLayer.Models.Users;
 using EducationApp.BusinessLogicalLayer.Models.ViewModels;
-using EducationApp.BusinessLogicalLayer.Models.ViewModels.User;
 using Microsoft.AspNetCore.Identity;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace EducationApp.BusinessLogicalLayer.Services.Interfaces
 {
     public interface IUserService
     {
-        Task<UserModelItem> CreateAsync(CreateUserViewModel user);
+        Task<UserModelItem> CreateAsync(CreateModel registerModel);
         Task<BaseModel> ChangePasswordAsync(ChangePasswordViewModel changePasswordViewModel);
         Task<BaseModel> DeleteAsync(string id);
         Task<UserModelItem> FindByIdAsync(string id);
@@ -18,11 +18,12 @@ namespace EducationApp.BusinessLogicalLayer.Services.Interfaces
         UserModel GetUsersAsync();
         Task<BaseModel> AddToRoleAsync(UserModelItem userModel, string role);
         Task<BaseModel> RemoveFromRoleAsync(UserModelItem userModel, string role);
-        Task<bool> IsEmailConfirmedAsync(UserModelItem userModel);
-        Task<SignInResult> PasswordSignInAsync(string id, string password, bool isPersistent);
-        Task<BaseModel> SignOutAsync();
+        Task<bool> IsEmailConfirmedAsync(string email);
+        Task SignOutAsync();
         Task<string> GenerateEmailConfirmationTokenAsync(string email);
         Task<BaseModel> ConfirmEmailAsync(string id, string code);
         Task<BaseModel> ResetPasswordAsync(string email, string code, string password);
+        Task<BaseModel> ForgotPassword(string email);
+        Task<LoginView> Login(string email, string password, bool rememberMe);
     }
 }

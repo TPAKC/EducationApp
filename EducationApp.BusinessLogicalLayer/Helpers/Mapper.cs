@@ -1,4 +1,5 @@
-﻿using EducationApp.BusinessLogicalLayer.Models.Users;
+﻿using EducationApp.BusinessLogicalLayer.Models;
+using EducationApp.BusinessLogicalLayer.Models.Users;
 using EducationApp.DataAccessLayer.Entities;
 
 namespace EducationApp.BusinessLogicalLayer.Helpers
@@ -13,6 +14,15 @@ namespace EducationApp.BusinessLogicalLayer.Helpers
             model.FirstName = user.FirstName;
             model.LastName = user.LastName;
             return model;
+        }
+
+        public ApplicationUser RegisterModelToApplicationUser(CreateModel registerModel)
+        {
+            var user = new ApplicationUser();
+            user.Email = registerModel.Email;
+            user.FirstName = registerModel.FirstName;
+            user.LastName = registerModel.LastName;
+            return user;
         }
     }
 }

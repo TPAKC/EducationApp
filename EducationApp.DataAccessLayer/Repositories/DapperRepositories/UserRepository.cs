@@ -93,9 +93,10 @@ namespace EducationApp.DataAccessLayer.Repositories.DapperRepositories
             return await _userManager.IsEmailConfirmedAsync(user);  
         }
 
-        public async Task<SignInResult> PasswordSignInAsync(ApplicationUser user, string password, bool isPersistent)
+        public async Task<bool> PasswordSignInAsync(ApplicationUser user, string password, bool isPersistent)
         {
-            return await _signInManager.PasswordSignInAsync(user, password, isPersistent, false);
+            var result = await _signInManager.PasswordSignInAsync(user, password, isPersistent, false);
+            return result.Succeeded;
         }
 
         public async Task SignOutAsync()

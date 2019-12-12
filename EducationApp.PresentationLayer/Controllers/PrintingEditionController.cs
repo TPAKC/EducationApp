@@ -1,10 +1,5 @@
-﻿using AutoMapper;
-using EducationApp.BusinessLogicalLayer.Models.ViewModels.PrintingEdition;
-using EducationApp.BusinessLogicalLayer.Services.Interfaces;
-using EducationApp.DataAccessLayer.Entities;
+﻿using EducationApp.BusinessLogicalLayer.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace EducationApp.PresentationLayer.Controllers
 {
