@@ -15,7 +15,7 @@ namespace EducationApp.BusinessLogicalLayer.Services.Interfaces
         Task<UserModelItem> FindByIdAsync(string id);
         Task<UserModelItem> FindByEmailAsync(string email);
         Task<BaseModel> UpdateAsync(UserModelItem userModel);
-        UserModel GetUsersAsync();
+        UserModel GetUsersAsync(bool isActive, bool isBlocked);
         Task<BaseModel> AddToRoleAsync(UserModelItem userModel, string role);
         Task<BaseModel> RemoveFromRoleAsync(UserModelItem userModel, string role);
         Task<bool> IsEmailConfirmedAsync(string email);

@@ -52,13 +52,21 @@ namespace EducationApp.DataAccessLayer.Repositories.DapperRepositories
             return result.Succeeded;
         }
 
-        public List<ApplicationUser> GetUsersAsync()
+        public List<ApplicationUser> GetUsersAsync(bool isActive, bool isBlocked)
         {
            List<ApplicationUser> result = new List<ApplicationUser>();
-          // var users = _userManager.Users.ToList();
-         /*   var evens = users.Where(user => !user.IsRemoved);
-            foreach (ApplicationUser user in evens) result.Add(user);*/
-                return result; //todo filter list+
+           var users = _userManager.Users.ToList();
+            if (isActive)
+            {
+                var evens = users.Where(user => !user.IsRemoved && !user.IsBlocked);
+                foreach (ApplicationUser user in evens) result.Add(user);
+            }
+            if (isBlocked)
+            {
+                var evens = users.Where(user => !user.IsRemoved && user.IsBlocked);
+                foreach (ApplicationUser user in evens) result.Add(user);
+            }
+            return result; //todo filter list+
         }
 
         public async Task<bool> AddToRoleAsync(ApplicationUser user, string role)
@@ -119,6 +127,11 @@ namespace EducationApp.DataAccessLayer.Repositories.DapperRepositories
         {
             var result = await _userManager.ResetPasswordAsync(user, code, password);
             return result.Succeeded;
+        }
+
+        public void ChangeUserStatus(ApplicationUser user, bool userStatus)
+        {
+            user.IsRemoved = userStatus;
         }
     }
 }

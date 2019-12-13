@@ -38,5 +38,12 @@ namespace CustomIdentityApp.Controllers
             var result = await _userService.ChangePasswordAsync(model);
             return Ok(result);
         }
+
+        [HttpGet("changeUserStatus")]
+        public async Task<IActionResult> ChangeUserStatus(string id, bool userStatus)
+        {
+            var result = await ChangeUserStatus(id, userStatus);
+            return Ok(result);
+        }
     }
 }

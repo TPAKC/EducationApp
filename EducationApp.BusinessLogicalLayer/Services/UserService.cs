@@ -177,10 +177,10 @@ namespace EducationApp.BusinessLogicalLayer.Services
             return resultModel;
     }
 
-    public UserModel GetUsersAsync()
+    public UserModel GetUsersAsync(bool isActive, bool isBlocked)
     {
             var usersResultModel = new UserModel();
-            var users = _userRepository.GetUsersAsync();
+            var users = _userRepository.GetUsersAsync(isActive, isBlocked);
         if(users == null)
             {
                 usersResultModel.Errors.Add(FailedToUpdateUser);
@@ -321,6 +321,19 @@ namespace EducationApp.BusinessLogicalLayer.Services
             var token = await _jwtHelper.GenerateEncodedToken(userName, identity);
             var expiresin = (int)_jwtOptions.ValidFor.TotalSeconds;
             return (token, expiresin);
+        }
+
+        public async Task<BaseModel> ChangeUserStatus(string id, bool userStatus)
+        {
+            var resultModel = new BaseModel();
+            var user = await _userRepository.FindByIdAsync(id);
+            if(user == null)
+            {
+                resultModel.Errors.Add(UserNotFound);
+                return resultModel;
+            }
+            _userRepository.ChangeUserStatus(user, userStatus);
+            return resultModel;
         }
 
     } 
