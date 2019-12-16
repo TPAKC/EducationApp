@@ -61,25 +61,30 @@ namespace EducationApp.BusinessLogicalLayer.Services
         {
             var resultModel = new UserModelItem();
             var user = await _userRepository.FindByEmailAsync(createModel.Email);
-            if (user != null)
+            if (user != null&&!user.IsRemoved)
             {
                 resultModel.Errors.Add(UserIsExist);
                 return resultModel;
             }
-            user = _mapper.RegisterModelToApplicationUser(createModel);
-            var result = await _userRepository.CreateAsync(user, createModel.Password);
+            var newUser = _mapper.RegisterModelToApplicationUser(createModel);
+            if (user != null && user.IsRemoved)
+            {
+               // _userRepository.UpdateAsync();
+                return resultModel;
+            }
+                var result = await _userRepository.CreateAsync(newUser, createModel.Password);
             if (!result)
             {
                 resultModel.Errors.Add(UserCantBeRegistered);
                 return resultModel;
             }
 
-            result = await _userRepository.AddToRoleAsync(user, NameUserRole); //todo errors and roles from constants or enums +
+            result = await _userRepository.AddToRoleAsync(newUser, NameUserRole); //todo errors and roles from constants or enums +
             if (!result)
             {
                 resultModel.Errors.Add(UserCantBeAddedToRole);
             }
-            resultModel.Id = user.Id;
+            resultModel.Id = newUser.Id;
             return resultModel;
         }
 
@@ -183,7 +188,7 @@ namespace EducationApp.BusinessLogicalLayer.Services
             var users = _userRepository.GetUsersAsync(isActive, isBlocked);
         if(users == null)
             {
-                usersResultModel.Errors.Add(FailedToUpdateUser);
+                usersResultModel.Errors.Add(UserListIsEmpty);
                 return usersResultModel;
             }
 
@@ -334,7 +339,6 @@ namespace EducationApp.BusinessLogicalLayer.Services
             }
             _userRepository.ChangeUserStatus(user, userStatus);
             return resultModel;
-        }
-
+        } 
     } 
 }

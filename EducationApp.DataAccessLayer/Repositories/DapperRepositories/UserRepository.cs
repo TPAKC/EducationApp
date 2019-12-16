@@ -131,7 +131,7 @@ namespace EducationApp.DataAccessLayer.Repositories.DapperRepositories
 
         public void ChangeUserStatus(ApplicationUser user, bool userStatus)
         {
-            user.IsRemoved = userStatus;
+            user.IsBlocked = userStatus;
         }
     }
 }

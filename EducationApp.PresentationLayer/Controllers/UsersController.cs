@@ -1,5 +1,4 @@
-﻿using EducationApp.BusinessLogicalLayer.Models;
-using EducationApp.BusinessLogicalLayer.Models.Users;
+﻿using EducationApp.BusinessLogicalLayer.Models.Users;
 using EducationApp.BusinessLogicalLayer.Models.ViewModels;
 using EducationApp.BusinessLogicalLayer.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -16,6 +15,13 @@ namespace CustomIdentityApp.Controllers
         public UsersController(IUserService userService)
         {
             _userService = userService;
+        }
+
+        [HttpPost("users")]
+        public async Task<IActionResult> UsersAsync()
+        {
+            var result = _userService.GetUsersAsync(false, false);
+            return Ok(result);
         }
 
         [HttpPost("update")]

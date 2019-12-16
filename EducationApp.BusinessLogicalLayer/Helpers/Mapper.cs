@@ -1,4 +1,5 @@
 ﻿using EducationApp.BusinessLogicalLayer.Models;
+using EducationApp.BusinessLogicalLayer.Models.Authors;
 using EducationApp.BusinessLogicalLayer.Models.Users;
 using EducationApp.DataAccessLayer.Entities;
 
@@ -23,6 +24,13 @@ namespace EducationApp.BusinessLogicalLayer.Helpers
             user.FirstName = registerModel.FirstName;
             user.LastName = registerModel.LastName;
             return user;
+        }
+
+        public AuthorModelItem AuthorToAuthorModelItem(Author author)
+        {
+            var authorModel = new AuthorModelItem();
+            authorModel.Name = author.Name;
+            return authorModel;
         }
     }
 }

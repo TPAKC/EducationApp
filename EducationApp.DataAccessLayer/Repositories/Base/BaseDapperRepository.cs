@@ -44,7 +44,7 @@ namespace EducationApp.DataAccessLayer.Repositories.Base
         {
             using (IDbConnection dataBase = new SqlConnection(connectionString))
             {
-                await dataBase.UpdateAsync(item);
+                await dataBase.UpdateAsync(item); //как здесь возвращать результат апдейта?
             }
         }
 

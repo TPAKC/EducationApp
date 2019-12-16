@@ -36,7 +36,7 @@ namespace EducationApp.PresentationLayer.Controllers
             return Ok(); //todo return Ok(); +
         }
 
-        [HttpPost]
+        [HttpPost("create")]
         public async Task<IActionResult> Register(CreateModel createModel)
         {
             var resultModel = await _userService.CreateAsync(createModel);

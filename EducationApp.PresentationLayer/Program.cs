@@ -1,10 +1,5 @@
-using EducationApp.DataAccessLayer.Entities;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System;
 
 namespace EducationApp.PresentationLayer
 {
@@ -12,24 +7,7 @@ namespace EducationApp.PresentationLayer
     {
         public static void Main(string[] args)
         {
-
-            var host = CreateHostBuilder(args).Build();
-            using (var scope = host.Services.CreateScope())
-            {
-                var services = scope.ServiceProvider;
-                try
-                {
-                    var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
-                    var rolesManager = services.GetRequiredService<RoleManager<IdentityRole>>();
-                }
-                catch (Exception ex)
-                {
-                    var logger = services.GetRequiredService<ILogger<Program>>();
-                    logger.LogError(ex, "An error occurred while seeding the database.");
-                }
-            }
-
-            host.Run();
+            CreateHostBuilder(args).Build().Run();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>

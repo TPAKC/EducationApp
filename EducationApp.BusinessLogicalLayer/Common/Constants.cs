@@ -15,8 +15,10 @@
             public const string FailedToRemoveUser = "Failed to remove user";
             public const string FailedToUpdateUser = "Failed to update user";
             public const string UserListIsEmpty = "User list is empty";
+            public const string AuthorListIsEmpty = "Author list is empty";
             public const string FailedToResetPassword = "Failed to reset password";
             public const string UserWithThisMailNotFound = "User with this mail not found";
+            public const string FailedToCreateAuthor = "Failed to create author";
         }
 
         public class AccountRole

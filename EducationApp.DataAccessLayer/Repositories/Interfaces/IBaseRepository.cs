@@ -1,7 +1,5 @@
 ﻿using EducationApp.DataAccessLayer.Entities.Base;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace EducationApp.DataAccessLayer.Repositories.Interfaces
