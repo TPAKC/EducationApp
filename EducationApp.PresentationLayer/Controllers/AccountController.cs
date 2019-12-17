@@ -8,7 +8,6 @@ using static EducationApp.PresentationLayer.Common.Constants.TemplateText;
 
 namespace EducationApp.PresentationLayer.Controllers
 {
-    [Authorize]
     [AllowAnonymous]
     public class AccountController : ControllerBase
     {
@@ -29,7 +28,6 @@ namespace EducationApp.PresentationLayer.Controllers
         }
            
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> LogOut() //todo LogOut +
         {
             await _userService.SignOutAsync();
@@ -52,7 +50,6 @@ namespace EducationApp.PresentationLayer.Controllers
             }  
 
         [HttpGet("confirmEmail")]
-        [AllowAnonymous]
         public async Task<IActionResult> ConfirmEmail(string userId, string code)
         {
             var result = await _userService.ConfirmEmailAsync(userId, code);
@@ -60,7 +57,6 @@ namespace EducationApp.PresentationLayer.Controllers
         }
 
         [HttpPost]
-        [AllowAnonymous]
         public async Task<IActionResult> ForgotPasswordForEmail(string email)
         {
             var result = await _userService.ForgotPassword(email);

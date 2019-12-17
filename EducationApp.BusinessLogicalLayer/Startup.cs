@@ -1,12 +1,9 @@
 ﻿using EducationApp.BusinessLogicalLayer.Services;
 using EducationApp.BusinessLogicalLayer.Services.Interfaces;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.AspNetCore.Identity;
 using EducationApp.DataAccessLayer.Entities;
-using EducationApp.PresentationLayer.Data;
-using Microsoft.EntityFrameworkCore;
-using System.Configuration;
-using AutoMapper.Configuration;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace EducationApp.BusinessLogicalLayer
 {

@@ -9,28 +9,39 @@ namespace EducationApp.BusinessLogicalLayer.Helpers
     {
         public UserModelItem ApplicationUserToUserModelITem(ApplicationUser user)
         {
-            var model = new UserModelItem();
-            model.Email = user.Email;
-            model.Id = user.Id;
-            model.FirstName = user.FirstName;
-            model.LastName = user.LastName;
+            var model = new UserModelItem
+            {
+                Email = user.Email,
+                Id = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName
+            };
             return model;
         }
 
         public ApplicationUser RegisterModelToApplicationUser(CreateModel registerModel)
         {
-            var user = new ApplicationUser();
-            user.Email = registerModel.Email;
-            user.FirstName = registerModel.FirstName;
-            user.LastName = registerModel.LastName;
+            var user = new ApplicationUser
+            {
+                Email = registerModel.Email,
+                FirstName = registerModel.FirstName,
+                LastName = registerModel.LastName
+            };
             return user;
         }
 
         public AuthorModelItem AuthorToAuthorModelItem(Author author)
         {
-            var authorModel = new AuthorModelItem();
-            authorModel.Name = author.Name;
+            var authorModel = new AuthorModelItem
+            {
+                Name = author.Name
+            };
             return authorModel;
+        }
+
+        public PrintingEditionItem PrintingEditionModelToPrintingEditionItem()
+        {
+
         }
     }
 }

@@ -1,13 +1,11 @@
-﻿using EducationApp.BusinessLogicalLayer.Models.Enums;
+﻿using EducationApp.BusinessLogicalLayer.Models.Base;
+using EducationApp.BusinessLogicalLayer.Models.Enums;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 
 namespace EducationApp.BusinessLogicalLayer.Models.PrintingEditions
 {
-    public class PrintingEditionModelItem
+    public class PrintingEditionModelItem : BaseModel
     {
-        [Required]
-        public string Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public long Price { get; set; }
@@ -16,7 +14,7 @@ namespace EducationApp.BusinessLogicalLayer.Models.PrintingEditions
         public TypePrintingEdition Type { get; set; } //todo add enums to BLL +
     }
 
-    public class PrintingEditionModel
+    public class PrintingEditionModel : BaseModel
     {
         public List<PrintingEditionModelItem> PrintingEditions;
     }

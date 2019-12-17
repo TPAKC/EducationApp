@@ -40,8 +40,8 @@ namespace EducationApp.BusinessLogicalLayer.Services
         {
             LoginView modelResult = new LoginView();
             var user = await _userRepository.FindByEmailAsync(email);
-            if (user == null ||
-                !await _userRepository.PasswordSignInAsync(user, password, rememberMe))
+            var isSignIn = await _userRepository.PasswordSignInAsync(user, password, rememberMe);
+            if (user == null || !isSignIn)
             {
                 modelResult.Errors.Add("");//add error
                 return modelResult;

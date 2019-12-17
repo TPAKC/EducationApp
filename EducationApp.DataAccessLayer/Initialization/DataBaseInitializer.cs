@@ -8,6 +8,7 @@ namespace EducationApp.DataAccessLayer.Initialization
 {
     public class DataBaseInitializer //todo use DI +
     {
+
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
 
@@ -40,7 +41,7 @@ namespace EducationApp.DataAccessLayer.Initialization
             }
         }
 
-        public async Task InitializeAsync(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+        public async Task InitializeAsync()
         {
             СreationRole(NameUserRole);
             СreationRole(NameAdminRole);
@@ -50,7 +51,7 @@ namespace EducationApp.DataAccessLayer.Initialization
                 СreationAccount(AdminEmail, AdminPassword, AdminPassword);
             }
 
-            if (await userManager.FindByNameAsync(UserEmail) == null)
+            if (await _userManager.FindByNameAsync(UserEmail) == null)
             {
                 СreationAccount(UserEmail, UserPassword, UserPassword);
             }

@@ -1,4 +1,5 @@
 ﻿using EducationApp.DataAccessLayer.Entities;
+using EducationApp.DataAccessLayer.Initialization;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,7 +17,7 @@ namespace EducationApp.PresentationLayer.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
-            //Database.EnsureCreated();
+            Database.EnsureCreated();
         }
 
     }

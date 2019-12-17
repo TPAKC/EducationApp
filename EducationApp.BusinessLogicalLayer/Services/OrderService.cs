@@ -1,11 +1,4 @@
-﻿using AutoMapper;
-using EducationApp.BusinessLogicalLayer.Services.Interfaces;
-using EducationApp.DataAccessLayer.Entities;
-using EducationApp.DataAccessLayer.Repositories.Interfaces;
-using EducationApp.PresentationLayer.Data;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Threading.Tasks;
+﻿using EducationApp.BusinessLogicalLayer.Services.Interfaces;
 
 namespace EducationApp.BusinessLogicalLayer.Services
 {
