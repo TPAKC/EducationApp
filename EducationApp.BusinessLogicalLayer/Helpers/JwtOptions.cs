@@ -18,6 +18,5 @@ namespace EducationApp.BusinessLogicalLayer.Helpers
         public TimeSpan ValidFor { get; set; } = TimeSpan.FromDays(1);
         public Func<Task<string>> JtiGenerator =>
           () => Task.FromResult(Guid.NewGuid().ToString());
-        public SigningCredentials SigningCredentials { get; set; }
     }
 }

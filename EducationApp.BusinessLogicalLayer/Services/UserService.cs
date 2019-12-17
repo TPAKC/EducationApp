@@ -26,8 +26,11 @@ namespace EducationApp.BusinessLogicalLayer.Services
         private readonly JwtOptions _jwtOptions;
         private readonly EmailHelper _emailHelper;
         //todo inject IEmailHelper +
-        public UserService(IUserRepository userRepository, Mapper mapper, JwtHelper jwtHelper,
-                              IOptions<JwtOptions> jwtOptions, EmailHelper emailHelper)
+        public UserService(IUserRepository userRepository, 
+            Mapper mapper, 
+            JwtHelper jwtHelper,     
+            IOptions<JwtOptions> jwtOptions, 
+            EmailHelper emailHelper)
         {
             _userRepository = userRepository;
             _mapper = mapper;
@@ -47,12 +50,13 @@ namespace EducationApp.BusinessLogicalLayer.Services
                 return modelResult;
             }
 
-            var result = new LoginView
+            var result = new LoginView();
+            result.UserId = user.Id;
+            result.Confirmed = user.EmailConfirmed;
+            if (user.EmailConfirmed)
             {
-                UserId = user.Id,
-                Confirmed = user.EmailConfirmed,
-                Token = (user.EmailConfirmed) ? await GetAccessToken(user) : null
-            };
+                result.Token = await GetAccessToken(user);
+            }
 
             return modelResult;
         }
@@ -61,7 +65,7 @@ namespace EducationApp.BusinessLogicalLayer.Services
         {
             var resultModel = new UserModelItem();
             var user = await _userRepository.FindByEmailAsync(createModel.Email);
-            if (user != null&&!user.IsRemoved)
+            if (user != null && !user.IsRemoved)
             {
                 resultModel.Errors.Add(UserIsExist);
                 return resultModel;
@@ -69,10 +73,9 @@ namespace EducationApp.BusinessLogicalLayer.Services
             var newUser = _mapper.RegisterModelToApplicationUser(createModel);
             if (user != null && user.IsRemoved)
             {
-               // _userRepository.UpdateAsync();
                 return resultModel;
             }
-                var result = await _userRepository.CreateAsync(newUser, createModel.Password);
+            var result = await _userRepository.CreateAsync(newUser, createModel.Password);
             if (!result)
             {
                 resultModel.Errors.Add(UserCantBeRegistered);
@@ -236,8 +239,7 @@ namespace EducationApp.BusinessLogicalLayer.Services
     {
             var user = await _userRepository.FindByEmailAsync(email);
             return await _userRepository.GenerateEmailConfirmationTokenAsync(user);
-
-        }
+    }
 
     public async Task<BaseModel> ConfirmEmailAsync(string id, string code)
     {
@@ -315,17 +317,8 @@ namespace EducationApp.BusinessLogicalLayer.Services
         {
             var roles = await _userRepository.GetRolesAsync(user);
             var role = roles.FirstOrDefault();
-            var identity = _jwtHelper.GenerateClaimsIdentity(user, role);
-
-            var (token, expiresin) = await GenerateJwt(identity, user.UserName);
+            var token = await _jwtHelper.GenerateEncodedToken(user, role);
             return token;
-        }
-
-        private async Task<(string token, int expiresin)> GenerateJwt(ClaimsIdentity identity, string userName)
-        {
-            var token = await _jwtHelper.GenerateEncodedToken(userName, identity);
-            var expiresin = (int)_jwtOptions.ValidFor.TotalSeconds;
-            return (token, expiresin);
         }
 
         public async Task<BaseModel> ChangeUserStatus(string id, bool userStatus)

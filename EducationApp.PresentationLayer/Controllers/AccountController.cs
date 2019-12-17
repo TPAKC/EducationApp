@@ -13,11 +13,10 @@ namespace EducationApp.PresentationLayer.Controllers
     {
 
         private readonly IUserService _userService;
-        private readonly EmailHelper _emailHelper;
-        public AccountController(IUserService service, EmailHelper emailHelper)
+
+        public AccountController(IUserService service)
         {
             _userService = service;
-            _emailHelper = emailHelper;
         }
 
         [HttpPost]
@@ -38,14 +37,15 @@ namespace EducationApp.PresentationLayer.Controllers
         public async Task<IActionResult> Register(CreateModel createModel)
         {
             var resultModel = await _userService.CreateAsync(createModel);
-                var code = await _userService.GenerateEmailConfirmationTokenAsync(createModel.Email);
-                var callbackUrl = Url.Action(
-                    "ConfirmEmail",
-                    "Account",
-                    new { userId = resultModel.Id, code },
-                    protocol: HttpContext.Request.Scheme);
-                await _emailHelper.SendEmailAsync(createModel.Email, 
-                    "Confirm your account",$"{ConfirmTheRegistration}<a href='{callbackUrl}'>link</a>");
+            var code = await _userService.GenerateEmailConfirmationTokenAsync(createModel.Email);
+            //    var callbackUrl = Url.Action(
+            //        "ConfirmEmail",
+            //        "Account",
+            //        new { userId = resultModel.Id, code },
+            //        protocol: HttpContext.Request.Scheme);
+            //""
+            //    await _emailHelper.SendEmailAsync(createModel.Email, 
+            //        "Confirm your account",$"{ConfirmTheRegistration}<a href='{callbackUrl}'>link</a>");
             return Ok(resultModel);
             }  
 

@@ -1,4 +1,5 @@
-﻿using EducationApp.PresentationLayer.Data;
+﻿using EducationApp.BusinessLogicalLayer.Common;
+using EducationApp.PresentationLayer.Data;
 using EducationApp.PresentationLayer.Middlewares;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -6,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
 
 namespace EducationApp.PresentationLayer
 {
@@ -24,6 +26,9 @@ namespace EducationApp.PresentationLayer
             string connection = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(connection));
+
+            var appSettings = Configuration.GetSection("AppSettings");
+            services.Configure<AppSettings>(appSettings);
 
             services.AddMvc();
 
@@ -57,7 +62,7 @@ namespace EducationApp.PresentationLayer
                 });
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
         {
             if (env.IsDevelopment())
             {
@@ -69,6 +74,8 @@ namespace EducationApp.PresentationLayer
 
             app.UseMiddleware<ExceptionMiddleware>();
             app.UseRouting();
+
+            BusinessLogicalLayer.Startup.EnsureUpdate(serviceProvider);
 
             app.UseSwagger();
             app.UseSwaggerUI(

@@ -20,68 +20,46 @@ namespace EducationApp.BusinessLogicalLayer.Helpers
             IOptions<AppSettings> appSettings)
         {
             _jwtOptions = jwtOptions.Value;
-            ThrowIfInvalidOptions(_jwtOptions);
             _appSettings = appSettings;
         }
 
-        public async Task<string> GenerateEncodedToken(string userName, ClaimsIdentity identity)
+        public async Task<string> GenerateEncodedToken(ApplicationUser user, string userRole)
         {
+            var identity = GenerateClaimsIdentity(user, userRole);
             var claims = new List<Claim>
             {
-                 new Claim(JwtRegisteredClaimNames.Sub, userName),
+                 new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
                  new Claim(JwtRegisteredClaimNames.Jti, await _jwtOptions.JtiGenerator()),
                  new Claim(JwtRegisteredClaimNames.Iat, ToUnixEpochDate(_jwtOptions.IssuedAt).ToString(), ClaimValueTypes.Integer64)
              };
             claims.AddRange(identity.Claims);
 
-            // Create the JWT security token and encode it.
             var jwt = new JwtSecurityToken(
                 issuer: _jwtOptions.Issuer,
                 audience: _jwtOptions.Audience,
                 claims: claims,
                 notBefore: _jwtOptions.NotBefore,
-                expires: _jwtOptions.Expiration,
-                signingCredentials: _jwtOptions.SigningCredentials);
+                expires: _jwtOptions.Expiration);
 
             var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
             return encodedJwt;
         }
 
-        public ClaimsIdentity GenerateClaimsIdentity(ApplicationUser user, string userRole)
+        private ClaimsIdentity GenerateClaimsIdentity(ApplicationUser user, string role)
         {
             return new ClaimsIdentity(new GenericIdentity(user.UserName, "Token"), new[]
                 {
                     new Claim("id", user.Id),
-                    new Claim("role", userRole),
+                    new Claim("role", role),
                     new Claim(JwtRegisteredClaimNames.Email, user.Email),
                     new Claim(ClaimTypes.GivenName, user.FirstName),
                     new Claim(ClaimTypes.Surname, user.LastName)
                 });
         }
 
-        private static long ToUnixEpochDate(DateTime date)
-          => (long)Math.Round((date.ToUniversalTime() -
-                               new DateTimeOffset(1970, 1, 1, 0, 0, 0, TimeSpan.Zero))
-                              .TotalSeconds);
-
-        private static void ThrowIfInvalidOptions(JwtOptions options)
+        private long ToUnixEpochDate(DateTime date)
         {
-            if (options == null) throw new ArgumentNullException(nameof(options));
-
-            if (options.ValidFor <= TimeSpan.Zero)
-            {
-                throw new ArgumentException("Must be a non-zero TimeSpan.", nameof(JwtOptions.ValidFor));
-            }
-
-            if (options.SigningCredentials == null)
-            {
-                throw new ArgumentNullException(nameof(JwtOptions.SigningCredentials));
-            }
-
-            if (options.JtiGenerator == null)
-            {
-                throw new ArgumentNullException(nameof(JwtOptions.JtiGenerator));
-            }
+            return (long)Math.Round((date.ToUniversalTime() - new DateTimeOffset(1970, 1, 1, 0, 0, 0, TimeSpan.Zero)).TotalSeconds);
         }
     }
 }

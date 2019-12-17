@@ -2,6 +2,7 @@
 using EducationApp.BusinessLogicalLayer.Models.Authors;
 using EducationApp.BusinessLogicalLayer.Models.Users;
 using EducationApp.DataAccessLayer.Entities;
+using System;
 
 namespace EducationApp.BusinessLogicalLayer.Helpers
 {
@@ -25,7 +26,8 @@ namespace EducationApp.BusinessLogicalLayer.Helpers
             {
                 Email = registerModel.Email,
                 FirstName = registerModel.FirstName,
-                LastName = registerModel.LastName
+                LastName = registerModel.LastName,
+                UserName = Guid.NewGuid().ToString()
             };
             return user;
         }

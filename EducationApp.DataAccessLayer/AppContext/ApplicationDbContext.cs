@@ -1,11 +1,13 @@
 ﻿using EducationApp.DataAccessLayer.Entities;
+using EducationApp.DataAccessLayer.Entities.Enums;
 using EducationApp.DataAccessLayer.Initialization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace EducationApp.PresentationLayer.Data
 {
-    public class ApplicationDbContext : IdentityDbContext <ApplicationUser>
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public DbSet<PrintingEdition> PrintingEditions { get; set; }
         public DbSet<Author> Authors { get; set; }
@@ -19,6 +21,5 @@ namespace EducationApp.PresentationLayer.Data
         {
             Database.EnsureCreated();
         }
-
     }
 }

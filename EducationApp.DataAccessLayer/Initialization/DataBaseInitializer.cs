@@ -18,7 +18,7 @@ namespace EducationApp.DataAccessLayer.Initialization
             _roleManager = roleManager;
         }
 
-        public async void СreationRole(string role)
+        public async Task СreationRole(string role)
         {
             if (await _roleManager.FindByNameAsync(role) == null)
             {
@@ -26,7 +26,7 @@ namespace EducationApp.DataAccessLayer.Initialization
             }
         }
 
-        public async void СreationAccount(string email, string password, string role)
+        public async Task СreationAccount(string email, string password, string role)
         {
             var user = new ApplicationUser
             {
@@ -43,17 +43,17 @@ namespace EducationApp.DataAccessLayer.Initialization
 
         public async Task InitializeAsync()
         {
-            СreationRole(NameUserRole);
-            СreationRole(NameAdminRole);
+            await СreationRole(NameUserRole);
+            await СreationRole(NameAdminRole);
 
             if (await _userManager.FindByNameAsync(AdminEmail) == null) //todo if if +
             {
-                СreationAccount(AdminEmail, AdminPassword, AdminPassword);
+                await СreationAccount(AdminEmail, AdminPassword, NameAdminRole);
             }
 
             if (await _userManager.FindByNameAsync(UserEmail) == null)
             {
-                СreationAccount(UserEmail, UserPassword, UserPassword);
+                await СreationAccount(UserEmail, UserPassword, NameUserRole);
             }
 
             /* db.PrintingEditions.Add(new PrintingEdition 
