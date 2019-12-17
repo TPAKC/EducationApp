@@ -39,9 +39,9 @@ namespace EducationApp.BusinessLogicalLayer.Helpers
             return authorModel;
         }
 
-        public PrintingEditionItem PrintingEditionModelToPrintingEditionItem()
-        {
+        //public PrintingEditionItem PrintingEditionModelToPrintingEditionItem()
+        //{
 
-        }
+        //}
     }
 }

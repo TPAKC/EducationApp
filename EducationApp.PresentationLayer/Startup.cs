@@ -29,6 +29,8 @@ namespace EducationApp.PresentationLayer
 
             services.AddControllers();
 
+            BusinessLogicalLayer.Startup.RegisterDependencies(connection, services);
+
             services.AddSwaggerGen(
                 options =>
                 {

@@ -1,4 +1,5 @@
-﻿using EducationApp.BusinessLogicalLayer.Services;
+﻿using EducationApp.BusinessLogicalLayer.Helpers;
+using EducationApp.BusinessLogicalLayer.Services;
 using EducationApp.BusinessLogicalLayer.Services.Interfaces;
 using EducationApp.DataAccessLayer.Entities;
 using Microsoft.AspNetCore.Identity;
@@ -9,23 +10,11 @@ namespace EducationApp.BusinessLogicalLayer
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
-
-        public IConfiguration Configuration { get; }
-
-
-        public void ConfigureServices(IServiceCollection services)
-        {
-
-        }
-
         public static void RegisterDependencies(string connectionString, IServiceCollection services)
         {
-
             services.AddScoped<IPrintingEditionsService, PrintingEditionService>();
+            services.AddSingleton<IUserService, UserService>();
+            services.AddSingleton<Mapper, Mapper>();
 
             EducationApp.DataAccessLayer.Startup.RegisterDependencies(connectionString, services);
 
