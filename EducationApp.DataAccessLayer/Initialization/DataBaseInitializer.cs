@@ -32,7 +32,9 @@ namespace EducationApp.DataAccessLayer.Initialization
             {
                 Email = email,
                 UserName = email,
-                EmailConfirmed = true
+                EmailConfirmed = true,
+                IsBlocked = false,
+                IsRemoved = false
             };
             var result = await _userManager.CreateAsync(user, password);
             if (result.Succeeded)

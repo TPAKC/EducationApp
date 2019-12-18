@@ -17,17 +17,17 @@ namespace CustomIdentityApp.Controllers
             _userService = userService;
         }
 
-        [HttpPost("users")]
-        public async Task<IActionResult> UsersAsync()
+        [HttpGet("users")]
+        public async Task<IActionResult> UsersAsync(bool isActive, bool isBlocked)
         {
-            var result = _userService.GetUsersAsync(false, false);
-            return Ok(result);
+            var result = _userService.GetUsersAsync(isActive, isBlocked);
+            return Ok(result.Users);
         }
 
         [HttpPost("update")]
-        public async Task<IActionResult> UpdateAsync(UserModelItem user)
+        public async Task<IActionResult> UpdateAsync(UserModelItem userModel)
         {
-            var result = await _userService.UpdateAsync(user);
+            var result = await _userService.UpdateAsync(userModel);
             return Ok(result);
         }
 
@@ -38,18 +38,11 @@ namespace CustomIdentityApp.Controllers
             return Ok(result);
         }
 
-        [HttpGet("changePassword")]
-        public async Task<IActionResult> ChangePasswordAsync(ChangePasswordViewModel model)
-        {
-            var result = await _userService.ChangePasswordAsync(model);
-            return Ok(result);
-        }
-
         [HttpGet("changeUserStatus")]
         public async Task<IActionResult> ChangeUserStatus(string id, bool userStatus)
         {
-            var result = await ChangeUserStatus(id, userStatus);
-            return Ok(result);
+            var result = await _userService.ChangeUserStatus(id, userStatus);
+            return Ok(result.Errors);
         }
     }
 }

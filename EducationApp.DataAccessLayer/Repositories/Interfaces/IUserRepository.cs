@@ -9,7 +9,6 @@ namespace EducationApp.DataAccessLayer.Repositories.Interfaces
     {
         Task<bool> ChangePasswordAsync(ApplicationUser user, string oldPassword, string newPassword);
         Task<bool> CreateAsync(ApplicationUser user, string password);
-        Task<bool> DeleteAsync(ApplicationUser user);
         Task<ApplicationUser> FindByIdAsync(string id);
         Task<ApplicationUser> FindByEmailAsync(string email);
         Task<bool> UpdateAsync(ApplicationUser user);
@@ -25,6 +24,5 @@ namespace EducationApp.DataAccessLayer.Repositories.Interfaces
         Task<string> GenerateEmailConfirmationTokenAsync(ApplicationUser user);
         Task<bool> ConfirmEmailAsync(ApplicationUser user, string code);
         Task<bool> ResetPasswordAsync(ApplicationUser user, string code, string password);
-        void ChangeUserStatus(ApplicationUser user, bool userStatus);
     }
 }

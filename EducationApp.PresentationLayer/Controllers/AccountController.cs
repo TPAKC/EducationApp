@@ -13,39 +13,40 @@ namespace EducationApp.PresentationLayer.Controllers
     {
 
         private readonly IUserService _userService;
+        private readonly EmailHelper _emailHelper;
 
-        public AccountController(IUserService service)
+        public AccountController(IUserService service, EmailHelper emailHelper)
         {
+            _emailHelper = emailHelper;
             _userService = service;
         }
 
-        [HttpPost]
+        [HttpPost("login")]
         public async Task<IActionResult> Login(string email, string password, bool rememberMe)
         {
             var resultModel = await _userService.Login(email,password,rememberMe);
             return Ok(resultModel);
         }
            
-        [HttpPost]
+        [HttpPost("logOut")]
         public async Task<IActionResult> LogOut() //todo LogOut +
         {
             await _userService.SignOutAsync();
             return Ok(); //todo return Ok(); +
         }
 
-        [HttpPost("create")]
+        [HttpPost("register")]
         public async Task<IActionResult> Register(CreateModel createModel)
         {
             var resultModel = await _userService.CreateAsync(createModel);
             var code = await _userService.GenerateEmailConfirmationTokenAsync(createModel.Email);
-            //    var callbackUrl = Url.Action(
-            //        "ConfirmEmail",
-            //        "Account",
-            //        new { userId = resultModel.Id, code },
-            //        protocol: HttpContext.Request.Scheme);
-            //""
-            //    await _emailHelper.SendEmailAsync(createModel.Email, 
-            //        "Confirm your account",$"{ConfirmTheRegistration}<a href='{callbackUrl}'>link</a>");
+            var callbackUrl = Url.Action(
+                "ConfirmEmail",
+                "Account",
+                new { userId = resultModel.Id, code },
+                protocol: HttpContext.Request.Scheme);
+                await _emailHelper.SendEmailAsync(createModel.Email,
+                    "Confirm your account", $"{ConfirmTheRegistration}<a href='{callbackUrl}'>link</a>");
             return Ok(resultModel);
             }  
 
@@ -56,7 +57,7 @@ namespace EducationApp.PresentationLayer.Controllers
             return Ok(result);
         }
 
-        [HttpPost]
+        [HttpPost("forgotPassword")]
         public async Task<IActionResult> ForgotPasswordForEmail(string email)
         {
             var result = await _userService.ForgotPassword(email);

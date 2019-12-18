@@ -19,6 +19,11 @@
             public const string FailedToResetPassword = "Failed to reset password";
             public const string UserWithThisMailNotFound = "User with this mail not found";
             public const string FailedToCreateAuthor = "Failed to create author";
+            public const string ThisEmailAddressIsNotRegistered = "This email address is not registered";
+            public const string ThisAccountIsBlocked = "This account is blocked";
+            public const string ThisAccountIsRemoved = "This account is removed";
+            public const string ThisEmailIsNotVerified = "This email is not verified";
+            public const string PasswordIsIncorrect = "Password is incorrect";
         }
 
         public class AccountRole

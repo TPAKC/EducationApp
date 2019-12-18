@@ -30,11 +30,6 @@ namespace EducationApp.DataAccessLayer.Repositories.DapperRepositories
             var result = await _userManager.CreateAsync(user, password);
             return result.Succeeded;
         }
-        public async Task<bool> DeleteAsync(ApplicationUser user)
-        {
-            var result = await _userManager.DeleteAsync(user);
-            return result.Succeeded;
-        }
 
         public async Task<ApplicationUser> FindByIdAsync(string id)
         {
@@ -127,11 +122,6 @@ namespace EducationApp.DataAccessLayer.Repositories.DapperRepositories
         {
             var result = await _userManager.ResetPasswordAsync(user, code, password);
             return result.Succeeded;
-        }
-
-        public void ChangeUserStatus(ApplicationUser user, bool userStatus)
-        {
-            user.IsBlocked = userStatus;
         }
     }
 }

@@ -9,7 +9,6 @@ using EducationApp.DataAccessLayer.Repositories.Interfaces;
 using Microsoft.Extensions.Options;
 using System;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using static EducationApp.BusinessLogicalLayer.Common.Constants.AccountRole;
 using static EducationApp.BusinessLogicalLayer.Common.Constants.ServiceValidationErrors;
@@ -43,20 +42,40 @@ namespace EducationApp.BusinessLogicalLayer.Services
         {
             LoginView modelResult = new LoginView();
             var user = await _userRepository.FindByEmailAsync(email);
-            var isSignIn = await _userRepository.PasswordSignInAsync(user, password, rememberMe);
-            if (user == null || !isSignIn)
+            if(user == null)
             {
-                modelResult.Errors.Add("");//add error
+                modelResult.Errors.Add(ThisEmailAddressIsNotRegistered);
+                return modelResult;
+            }
+            if (user.IsBlocked)
+            {
+                modelResult.Errors.Add(ThisAccountIsBlocked);
+                return modelResult;
+            }
+            if (user.IsRemoved)
+            {
+                modelResult.Errors.Add(ThisAccountIsRemoved);
+                return modelResult;
+            }
+            if (!user.EmailConfirmed)
+            {
+                modelResult.Errors.Add(ThisEmailIsNotVerified);
+                return modelResult;
+            }
+            var isSignIn = await _userRepository.PasswordSignInAsync(user, password, rememberMe);
+            if (!isSignIn)
+            {
+                modelResult.Errors.Add(PasswordIsIncorrect);
                 return modelResult;
             }
 
-            var result = new LoginView();
+            /*var result = new LoginView();
             result.UserId = user.Id;
             result.Confirmed = user.EmailConfirmed;
             if (user.EmailConfirmed)
             {
                 result.Token = await GetAccessToken(user);
-            }
+            }*/
 
             return modelResult;
         }
@@ -65,16 +84,12 @@ namespace EducationApp.BusinessLogicalLayer.Services
         {
             var resultModel = new UserModelItem();
             var user = await _userRepository.FindByEmailAsync(createModel.Email);
-            if (user != null && !user.IsRemoved)
+            if (user != null)
             {
                 resultModel.Errors.Add(UserIsExist);
                 return resultModel;
             }
             var newUser = _mapper.RegisterModelToApplicationUser(createModel);
-            if (user != null && user.IsRemoved)
-            {
-                return resultModel;
-            }
             var result = await _userRepository.CreateAsync(newUser, createModel.Password);
             if (!result)
             {
@@ -125,13 +140,8 @@ namespace EducationApp.BusinessLogicalLayer.Services
                 resultModel.Errors.Add(UserIsExist);
                 return resultModel;
             }
-
-            var result = await _userRepository.DeleteAsync(user);
-            if (!result)
-            {
-                resultModel.Errors.Add(FailedToRemoveUser);
-            }
-
+            user.IsRemoved = true;
+            await _userRepository.UpdateAsync(user);
             return resultModel;
         }
 
@@ -162,20 +172,21 @@ namespace EducationApp.BusinessLogicalLayer.Services
     }
 
     public async Task<BaseModel> UpdateAsync(UserModelItem userModel)
-    {
+    { 
             var resultModel = new BaseModel();
             if (userModel == null)
             {
                 resultModel.Errors.Add(ModelIsExist);
             }
 
-            ApplicationUser user = await _userRepository.FindByEmailAsync(userModel.Email);
+            ApplicationUser user = await _userRepository.FindByIdAsync(userModel.Id);
             if (user == null)
             {
                 resultModel.Errors.Add(UserIsExist);
                 return resultModel;
             }
 
+            user.FirstName = user.Model
             var result = await _userRepository.UpdateAsync(user);
             if (!result)
             {
@@ -330,7 +341,8 @@ namespace EducationApp.BusinessLogicalLayer.Services
                 resultModel.Errors.Add(UserNotFound);
                 return resultModel;
             }
-            _userRepository.ChangeUserStatus(user, userStatus);
+            user.IsBlocked = userStatus;
+            await _userRepository.UpdateAsync(user);
             return resultModel;
         } 
     } 

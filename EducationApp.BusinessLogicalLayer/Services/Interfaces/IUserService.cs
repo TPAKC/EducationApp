@@ -25,5 +25,6 @@ namespace EducationApp.BusinessLogicalLayer.Services.Interfaces
         Task<BaseModel> ResetPasswordAsync(string email, string code, string password);
         Task<BaseModel> ForgotPassword(string email);
         Task<LoginView> Login(string email, string password, bool rememberMe);
+        Task<BaseModel> ChangeUserStatus(string id, bool userStatus);
     }
 }
