@@ -25,7 +25,7 @@ namespace EducationApp.PresentationLayer.Controllers
         public async Task<IActionResult> Login(string email, string password, bool rememberMe)
         {
             var resultModel = await _userService.Login(email,password,rememberMe);
-            return Ok(resultModel);
+            return Ok(resultModel.Errors);
         }
            
         [HttpPost("logOut")]
@@ -47,21 +47,21 @@ namespace EducationApp.PresentationLayer.Controllers
                 protocol: HttpContext.Request.Scheme);
                 await _emailHelper.SendEmailAsync(createModel.Email,
                     "Confirm your account", $"{ConfirmTheRegistration}<a href='{callbackUrl}'>link</a>");
-            return Ok(resultModel);
+            return Ok(resultModel.Errors);
             }  
 
         [HttpGet("confirmEmail")]
         public async Task<IActionResult> ConfirmEmail(string userId, string code)
         {
             var result = await _userService.ConfirmEmailAsync(userId, code);
-            return Ok(result);
+            return Ok(result.Errors);
         }
 
         [HttpPost("forgotPassword")]
         public async Task<IActionResult> ForgotPasswordForEmail(string email)
         {
             var result = await _userService.ForgotPassword(email);
-            return Ok(result);
+            return Ok(result.Errors);
         }
     }
 }

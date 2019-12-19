@@ -4,9 +4,9 @@ using EducationApp.DataAccessLayer.Repositories.Interfaces;
 
 namespace EducationApp.DataAccessLayer.Repositories.DapperRepositories
 {
-    public class OrderItemsRepository : BaseDapperRepository<OrderItem>, IOrderItemRepository
+    public class OrderItemRepository : BaseDapperRepository<OrderItem>, IOrderItemRepository
     {
-        public OrderItemsRepository(Connection connection) : base()
+        public OrderItemRepository(Connection connection) : base()
         {
         }
     }

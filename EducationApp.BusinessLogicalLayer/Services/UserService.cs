@@ -179,14 +179,13 @@ namespace EducationApp.BusinessLogicalLayer.Services
                 resultModel.Errors.Add(ModelIsExist);
             }
 
-            ApplicationUser user = await _userRepository.FindByIdAsync(userModel.Id);
+            var user = await _mapper.UserModelITemToApplicationUser(userModel);
             if (user == null)
             {
                 resultModel.Errors.Add(UserIsExist);
                 return resultModel;
             }
 
-            user.FirstName = user.Model
             var result = await _userRepository.UpdateAsync(user);
             if (!result)
             {

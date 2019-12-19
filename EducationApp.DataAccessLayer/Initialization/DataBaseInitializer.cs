@@ -1,4 +1,7 @@
 ﻿using EducationApp.DataAccessLayer.Entities;
+using EducationApp.DataAccessLayer.Entities.Enums;
+using EducationApp.DataAccessLayer.Repositories.DapperRepositories;
+using EducationApp.DataAccessLayer.Repositories.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 using static EducationApp.DataAccessLayer.Common.Constants.AccountRole;
@@ -11,11 +14,22 @@ namespace EducationApp.DataAccessLayer.Initialization
 
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly IPrintingEditionRepository _printingEditionRepository;
+        private readonly IAuthorRepository _authorRepository;
+        private readonly IAuthorInPrintingEditionRepository _authorInPrintingEditionRepository;
 
-        public DataBaseInitializer(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+        public DataBaseInitializer(
+            UserManager<ApplicationUser> userManager, 
+            RoleManager<IdentityRole> roleManager, 
+            PrintingEditionRepository printingEditionRepository, 
+            AuthorRepository authorRepository, 
+            AuthorInPrintingEditionRepository authorInPrintingEditionRepository)
         {
             _userManager = userManager;
             _roleManager = roleManager;
+            _printingEditionRepository = printingEditionRepository;
+            _authorRepository = authorRepository;
+            _authorInPrintingEditionRepository = authorInPrintingEditionRepository;
         }
 
         public async Task СreationRole(string role)
@@ -32,6 +46,8 @@ namespace EducationApp.DataAccessLayer.Initialization
             {
                 Email = email,
                 UserName = email,
+                FirstName = role,
+                LastName = role,
                 EmailConfirmed = true,
                 IsBlocked = false,
                 IsRemoved = false
@@ -58,19 +74,26 @@ namespace EducationApp.DataAccessLayer.Initialization
                 await СreationAccount(UserEmail, UserPassword, NameUserRole);
             }
 
-            /* db.PrintingEditions.Add(new PrintingEdition 
+            var authorId = await _authorRepository.Add(new Author { Name = "Elon Musk" });
+
+            var printingEditionId = await _printingEditionRepository.Add(new PrintingEdition
             {
-                Title = "TestPE",
-                Description= "TestDescription",
-                Price = 200, 
-                Status = Status.Paid, 
-                Currency = Currency.USD,
-                Type = Type.Book
-              });
+                Title = "TestTitle",
+                Description = "TestDescription",
+                Price = 100,
+                Status = StatusPrintingEdition.Paid,
+                Currency = CurrencyPrintingEdition.USD,
+                Type = TypePrintingEdition.Book
+            });
 
-            db.Authors.Add(new Author { Name = "Elon Musk" });
+            await _authorInPrintingEditionRepository.Add(new AuthorInPrintingEdition
+            {
+             Author = await _authorRepository.Find(authorId),
+       PrintingEdition = await _printingEditionRepository.Find(printingEditionId)  
+    });
 
-            db.SaveChanges();*/
+
+
         }
     }
 }

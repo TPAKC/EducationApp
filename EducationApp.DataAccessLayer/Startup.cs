@@ -15,7 +15,8 @@ namespace EducationApp.DataAccessLayer
             services.AddScoped<IPrintingEditionRepository, PrintingEditionRepository>();
             services.AddScoped<IAuthorRepository, AuthorRepository>();
             services.AddScoped<IOrderRepository, OrderRepository>();
-            services.AddScoped<IOrderItemRepository, OrderItemsRepository>();
+            services.AddScoped<IOrderItemRepository, OrderItemRepository>();
+            services.AddScoped<IAuthorInPrintingEditionRepository, AuthorInPrintingEditionRepository>();
             services.AddScoped<DataBaseInitializer, DataBaseInitializer>();
         }
     }

@@ -18,24 +18,25 @@ namespace CustomIdentityApp.Controllers
         }
 
         [HttpGet("users")]
-        public async Task<IActionResult> UsersAsync(bool isActive, bool isBlocked)
+        public ActionResult UsersAsync(bool isActive, bool isBlocked)
         {
             var result = _userService.GetUsersAsync(isActive, isBlocked);
+            if(result.Errors.Count!=0) return Ok(result.Errors);
             return Ok(result.Users);
         }
 
-        [HttpPost("update")]
+        [HttpPost("update")]  
         public async Task<IActionResult> UpdateAsync(UserModelItem userModel)
         {
             var result = await _userService.UpdateAsync(userModel);
-            return Ok(result);
+            return Ok(result.Errors);
         }
 
         [HttpPost("delete")]
         public async Task<ActionResult> DeleteAsync(string id)
         {
             var result = await _userService.DeleteAsync(id);
-            return Ok(result);
+            return Ok(result.Errors);
         }
 
         [HttpGet("changeUserStatus")]

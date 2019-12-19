@@ -34,9 +34,9 @@ namespace EducationApp.BusinessLogicalLayer.Helpers
             var user = new ApplicationUser
             {
                 Email = registerModel.Email,
+                UserName = registerModel.Email,
                 FirstName = registerModel.FirstName,
-                LastName = registerModel.LastName,
-                UserName = Guid.NewGuid().ToString()
+                LastName = registerModel.LastName
             };
             return user;
         }
@@ -55,7 +55,8 @@ namespace EducationApp.BusinessLogicalLayer.Helpers
             var user = await _userRepository.FindByIdAsync(userModel.Id);
             user.FirstName = userModel.FirstName;
             user.LastName = userModel.LastName;
-            if(!String.IsNullOrWhiteSpace(userModel.Pasword)) _userRepository.
+            var code = await _userRepository.GeneratePasswordResetTokenAsync(user);
+            if (!String.IsNullOrWhiteSpace(userModel.Pasword)) await _userRepository.ResetPasswordAsync(user, code, userModel.Pasword);
             return user;
         }
 
