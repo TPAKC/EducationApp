@@ -1,5 +1,4 @@
 ﻿using EducationApp.DataAccessLayer.Initialization;
-using EducationApp.DataAccessLayer.Repositories;
 using EducationApp.DataAccessLayer.Repositories.DapperRepositories;
 using EducationApp.DataAccessLayer.Repositories.Interfaces;
 using Microsoft.Extensions.DependencyInjection;

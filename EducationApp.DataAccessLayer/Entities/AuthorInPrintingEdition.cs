@@ -7,6 +7,6 @@ namespace EducationApp.DataAccessLayer.Entities
     {
         public Author Author { get; set; } //todo check +
         public PrintingEdition PrintingEdition { get; set; }
-        public DateTime Date { get; set; }
+       // public DateTime Date { get; set; }
     }
 }

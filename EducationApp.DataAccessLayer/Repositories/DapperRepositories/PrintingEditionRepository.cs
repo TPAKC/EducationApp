@@ -6,7 +6,7 @@ namespace EducationApp.DataAccessLayer.Repositories.DapperRepositories
 {
     public class PrintingEditionRepository : BaseDapperRepository<PrintingEdition>, IPrintingEditionRepository
     {
-        public PrintingEditionRepository(Connection connection) : base()
+        public PrintingEditionRepository(Connection connection) : base(connection)
         {
         }
     }

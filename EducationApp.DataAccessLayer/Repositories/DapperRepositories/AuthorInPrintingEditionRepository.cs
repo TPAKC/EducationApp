@@ -6,6 +6,8 @@ namespace EducationApp.DataAccessLayer.Repositories.DapperRepositories
 {
     public class AuthorInPrintingEditionRepository : BaseDapperRepository<AuthorInPrintingEdition>, IAuthorInPrintingEditionRepository
     {
-
+        public AuthorInPrintingEditionRepository(Connection connection) : base(connection)
+        {
+        }
     }
 }

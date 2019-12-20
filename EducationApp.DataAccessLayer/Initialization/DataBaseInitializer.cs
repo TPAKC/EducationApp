@@ -1,6 +1,5 @@
 ﻿using EducationApp.DataAccessLayer.Entities;
 using EducationApp.DataAccessLayer.Entities.Enums;
-using EducationApp.DataAccessLayer.Repositories.DapperRepositories;
 using EducationApp.DataAccessLayer.Repositories.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
@@ -21,9 +20,9 @@ namespace EducationApp.DataAccessLayer.Initialization
         public DataBaseInitializer(
             UserManager<ApplicationUser> userManager, 
             RoleManager<IdentityRole> roleManager, 
-            PrintingEditionRepository printingEditionRepository, 
-            AuthorRepository authorRepository, 
-            AuthorInPrintingEditionRepository authorInPrintingEditionRepository)
+            IPrintingEditionRepository printingEditionRepository, 
+            IAuthorRepository authorRepository, 
+            IAuthorInPrintingEditionRepository authorInPrintingEditionRepository)
         {
             _userManager = userManager;
             _roleManager = roleManager;
@@ -85,12 +84,14 @@ namespace EducationApp.DataAccessLayer.Initialization
                 Currency = CurrencyPrintingEdition.USD,
                 Type = TypePrintingEdition.Book
             });
+            Author author = await _authorRepository.Find(authorId);
+            PrintingEdition printingEdition = await _printingEditionRepository.Find(printingEditionId);
 
-            await _authorInPrintingEditionRepository.Add(new AuthorInPrintingEdition
+            var result = await _authorInPrintingEditionRepository.Add(new AuthorInPrintingEdition
             {
-             Author = await _authorRepository.Find(authorId),
-       PrintingEdition = await _printingEditionRepository.Find(printingEditionId)  
-    });
+             Author = author,
+       PrintingEdition = printingEdition
+            });
 
 
 

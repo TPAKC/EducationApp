@@ -3,8 +3,6 @@ using EducationApp.BusinessLogicalLayer.Services;
 using EducationApp.BusinessLogicalLayer.Services.Interfaces;
 using EducationApp.DataAccessLayer.Entities;
 using EducationApp.DataAccessLayer.Initialization;
-using EducationApp.DataAccessLayer.Repositories.DapperRepositories;
-using EducationApp.DataAccessLayer.Repositories.Interfaces;
 using EducationApp.PresentationLayer.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
