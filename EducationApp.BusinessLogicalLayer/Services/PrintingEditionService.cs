@@ -18,30 +18,30 @@ namespace EducationApp.BusinessLogicalLayer.Services
             _mapper = mapper;
         }
 
-        //public async Task<BaseModel> CreateAsync(PrintingEditionModelItem printingEditionModelItem)
-        //{
-        //    var resultModel = new BaseModel();
-        //    var printingEdition = _mapper.PrintingEditionModelToPrintingEdition(printingEditionModelItem);
-        //    if (user != null && user.IsRemoved)
-        //    {
-        //        // _userRepository.UpdateAsync();
-        //        return resultModel;
-        //    }
-        //    var result = await _userRepository.CreateAsync(newUser, createModel.Password);
-        //    if (!result)
-        //    {
-        //        resultModel.Errors.Add(UserCantBeRegistered);
-        //        return resultModel;
-        //    }
+        public async Task<BaseModel> CreateAsync(PrintingEditionModelItem printingEditionModelItem)
+        {
+            var resultModel = new BaseModel();
+            var printingEdition = _mapper.PrintingEditionModelToPrintingEdition(printingEditionModelItem);
+            if (user != null && user.IsRemoved)
+            {
+                // _userRepository.UpdateAsync();
+                return resultModel;
+            }
+            var result = await _userRepository.CreateAsync(newUser, createModel.Password);
+            if (!result)
+            {
+                resultModel.Errors.Add(UserCantBeRegistered);
+                return resultModel;
+            }
 
-        //    result = await _userRepository.AddToRoleAsync(newUser, NameUserRole); //todo errors and roles from constants or enums +
-        //    if (!result)
-        //    {
-        //        resultModel.Errors.Add(UserCantBeAddedToRole);
-        //    }
-        //    resultModel.Id = newUser.Id;
-        //    return resultModel;
-        //}
+            result = await _userRepository.AddToRoleAsync(newUser, NameUserRole); //todo errors and roles from constants or enums +
+            if (!result)
+            {
+                resultModel.Errors.Add(UserCantBeAddedToRole);
+            }
+            resultModel.Id = newUser.Id;
+            return resultModel;
+        }
 
 
     }

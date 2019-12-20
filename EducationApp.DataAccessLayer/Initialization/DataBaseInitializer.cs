@@ -33,10 +33,7 @@ namespace EducationApp.DataAccessLayer.Initialization
 
         public async Task СreationRole(string role)
         {
-            if (await _roleManager.FindByNameAsync(role) == null)
-            {
                 await _roleManager.CreateAsync(new IdentityRole(role)); //todo use enum or const +
-            }
         }
 
         public async Task СreationAccount(string email, string password, string role)
@@ -60,41 +57,28 @@ namespace EducationApp.DataAccessLayer.Initialization
 
         public async Task InitializeAsync()
         {
-            await СreationRole(NameUserRole);
-            await СreationRole(NameAdminRole);
-
-            if (await _userManager.FindByNameAsync(AdminEmail) == null) //todo if if +
+                if (await _userManager.FindByNameAsync(AdminEmail) == null)
             {
+                await СreationRole(NameUserRole);
+                await СreationRole(NameAdminRole);
                 await СreationAccount(AdminEmail, AdminPassword, NameAdminRole);
-            }
-
-            if (await _userManager.FindByNameAsync(UserEmail) == null)
-            {
                 await СreationAccount(UserEmail, UserPassword, NameUserRole);
+                var authorId = await _authorRepository.Add(new Author { Name = "Elon Musk" });
+                var printingEditionId = await _printingEditionRepository.Add(new PrintingEdition
+                {
+                    Title = "TestTitle",
+                    Description = "TestDescription",
+                    Price = 100,
+                    Status = StatusPrintingEdition.Paid,
+                    Currency = CurrencyPrintingEdition.USD,
+                    Type = TypePrintingEdition.Book
+                });
+                await _authorInPrintingEditionRepository.Add(new AuthorInPrintingEdition
+                {
+                    AuthorId = authorId,
+                    PrintingEditionId = printingEditionId
+                });
             }
-
-            var authorId = await _authorRepository.Add(new Author { Name = "Elon Musk" });
-
-            var printingEditionId = await _printingEditionRepository.Add(new PrintingEdition
-            {
-                Title = "TestTitle",
-                Description = "TestDescription",
-                Price = 100,
-                Status = StatusPrintingEdition.Paid,
-                Currency = CurrencyPrintingEdition.USD,
-                Type = TypePrintingEdition.Book
-            });
-            Author author = await _authorRepository.Find(authorId);
-            PrintingEdition printingEdition = await _printingEditionRepository.Find(printingEditionId);
-
-            var result = await _authorInPrintingEditionRepository.Add(new AuthorInPrintingEdition
-            {
-             Author = author,
-       PrintingEdition = printingEdition
-            });
-
-
-
         }
     }
 }

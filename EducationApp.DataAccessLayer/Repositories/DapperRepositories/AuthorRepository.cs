@@ -1,6 +1,8 @@
-﻿using EducationApp.DataAccessLayer.Entities;
+﻿using Dapper.Contrib.Extensions;
+using EducationApp.DataAccessLayer.Entities;
 using EducationApp.DataAccessLayer.Repositories.Base;
 using EducationApp.DataAccessLayer.Repositories.Interfaces;
+using System.Threading.Tasks;
 
 namespace EducationApp.DataAccessLayer.Repositories.DapperRepositories
 {
