@@ -1,9 +1,9 @@
 ﻿using EducationApp.BusinessLogicalLayer.Models;
 using EducationApp.BusinessLogicalLayer.Models.Authors;
-using EducationApp.BusinessLogicalLayer.Models.Enums;
 using EducationApp.BusinessLogicalLayer.Models.PrintingEditions;
 using EducationApp.BusinessLogicalLayer.Models.Users;
 using EducationApp.DataAccessLayer.Entities;
+using EducationApp.DataAccessLayer.Entities.Enums;
 using EducationApp.DataAccessLayer.Repositories.Interfaces;
 using System;
 using System.Threading.Tasks;
@@ -64,15 +64,31 @@ namespace EducationApp.BusinessLogicalLayer.Helpers
 
         public PrintingEdition PrintingEditionModelToPrintingEdition(PrintingEditionModelItem printingEditionModelItem)
         {
-            //var status = printingEditionModelItem.Status;
             var printingEdition = new PrintingEdition
             {
                 Title = printingEditionModelItem.Title,
                 Description = printingEditionModelItem.Description,
                 Price = printingEditionModelItem.Price,
-                //Status = (StatusPrintingEdition)Enum.Parse(typeof(StatusPrintingEdition), status)
-        };
+                Status = (StatusPrintingEdition)printingEditionModelItem.Status,
+                Currency = (CurrencyPrintingEdition)printingEditionModelItem.Currency,
+                Type = (TypePrintingEdition)printingEditionModelItem.Type,
+
+            };
             return printingEdition;
+        }
+
+        public PrintingEditionModelItem PrintingEditionToPrintingEditionModelItem(PrintingEdition printingEdition)
+        {
+            var printingEditionModelItem = new PrintingEditionModelItem
+            {
+                Title = printingEdition.Title,
+                Description = printingEdition.Description,
+                Price = printingEdition.Price,
+                Status = (int)printingEdition.Status,
+                Currency = (int)printingEdition.Currency,
+                Type = (int)printingEdition.Type,
+            };
+            return printingEditionModelItem;
         }
     }
 }

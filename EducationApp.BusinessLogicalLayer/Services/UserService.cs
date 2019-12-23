@@ -111,7 +111,7 @@ namespace EducationApp.BusinessLogicalLayer.Services
             var resultModel = new BaseModel();
             if (changePasswordViewModel == null) 
             {
-                resultModel.Errors.Add(ModelIsExist);
+                resultModel.Errors.Add(ModelIsNotValid);
                 return resultModel;
             }
 
@@ -176,7 +176,7 @@ namespace EducationApp.BusinessLogicalLayer.Services
             var resultModel = new BaseModel();
             if (userModel == null)
             {
-                resultModel.Errors.Add(ModelIsExist);
+                resultModel.Errors.Add(ModelIsNotValid);
             }
 
             var user = await _mapper.UserModelITemToApplicationUser(userModel);

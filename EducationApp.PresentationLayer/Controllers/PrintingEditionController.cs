@@ -1,14 +1,25 @@
 ﻿using EducationApp.BusinessLogicalLayer.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace EducationApp.PresentationLayer.Controllers
 {
     public class PrintingEditionController : ControllerBase
     {
-        IPrintingEditionsService pintingEditionsService;
-        public PrintingEditionController(IPrintingEditionsService serv)
+
+        private readonly IPrintingEditionsService _printingEditionsService;
+
+        public PrintingEditionController(IPrintingEditionsService printingEditionsService)
         {
-            pintingEditionsService = serv;
+            _printingEditionsService = printingEditionsService;
+        }
+
+        [HttpGet("printingEditions")]
+        public async Task<ActionResult> GetPrintingEditions(bool[] categorys)
+        {
+            var result = await _printingEditionsService.GetPrintingEditionsAsync(categorys);
+            if (result.Errors.Count != 0) return Ok(result.Errors);
+            return Ok(result.PrintingEditions);
         }
 
         /*public async Task<ActionResult> IndexAsync()

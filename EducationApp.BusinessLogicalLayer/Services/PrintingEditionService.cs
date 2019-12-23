@@ -3,7 +3,10 @@ using EducationApp.BusinessLogicalLayer.Models.Base;
 using EducationApp.BusinessLogicalLayer.Models.PrintingEditions;
 using EducationApp.BusinessLogicalLayer.Services.Interfaces;
 using EducationApp.DataAccessLayer.Repositories.Interfaces;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using static EducationApp.BusinessLogicalLayer.Common.Constants.ServiceValidationErrors;
 
 namespace EducationApp.BusinessLogicalLayer.Services
 {
@@ -22,27 +25,52 @@ namespace EducationApp.BusinessLogicalLayer.Services
         {
             var resultModel = new BaseModel();
             var printingEdition = _mapper.PrintingEditionModelToPrintingEdition(printingEditionModelItem);
-            if (printingEdition != null && user.IsRemoved)
+            if (printingEdition != null)//&& printingEdition.IsRemoved - возможно
             {
                 // _userRepository.UpdateAsync();
+                resultModel.Errors.Add(ModelIsNotValid);
                 return resultModel;
             }
-            var result = await _userRepository.CreateAsync(newUser, createModel.Password);
-            if (!result)
+            var result = await _printingEditionRepository.Add(printingEdition);
+            if (result == 0)
             {
-                resultModel.Errors.Add(UserCantBeRegistered);
+                resultModel.Errors.Add(PrintingEditionNotCreated);
                 return resultModel;
             }
-
-            result = await _userRepository.AddToRoleAsync(newUser, NameUserRole); //todo errors and roles from constants or enums +
-            if (!result)
-            {
-                resultModel.Errors.Add(UserCantBeAddedToRole);
-            }
-            resultModel.Id = newUser.Id;
             return resultModel;
         }
 
+        public async Task<BaseModel> UpdateAsync(PrintingEditionModelItem printingEditionModelItem, int id)
+        {
+            var resultModel = new BaseModel();
+            if (resultModel == null)
+            {
+                resultModel.Errors.Add(ModelIsNotValid);
+            }
 
+            var printingEdition = _mapper.PrintingEditionModelToPrintingEdition(printingEditionModelItem);
+            if (printingEdition == null)
+            {
+                resultModel.Errors.Add(PrintingEditionIsNotFound);
+                return resultModel;
+            }
+            printingEdition.Id = id;
+            await _printingEditionRepository.Update(printingEdition);
+            return resultModel;
+        }
+
+        public async Task<PrintingEditionModel> GetPrintingEditionsAsync(bool[] categorys)
+        {
+            var printingEditionModel = new PrintingEditionModel();
+            var printingEditions = await _printingEditionRepository.GetAll(categorys);
+            if (printingEditions == null)
+            {
+                printingEditionModel.Errors.Add(UserListIsEmpty);
+                return printingEditionModel;
+            }
+
+            printingEditionModel.PrintingEditions = printingEditions.Select(printingEdition => _mapper.PrintingEditionToPrintingEditionModelItem(printingEdition)).ToList();
+            return printingEditionModel;
+        }
     }
 }
