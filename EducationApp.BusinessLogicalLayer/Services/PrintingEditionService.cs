@@ -22,7 +22,7 @@ namespace EducationApp.BusinessLogicalLayer.Services
         {
             var resultModel = new BaseModel();
             var printingEdition = _mapper.PrintingEditionModelToPrintingEdition(printingEditionModelItem);
-            if (user != null && user.IsRemoved)
+            if (printingEdition != null && user.IsRemoved)
             {
                 // _userRepository.UpdateAsync();
                 return resultModel;

@@ -1,5 +1,7 @@
 ﻿using EducationApp.BusinessLogicalLayer.Models;
 using EducationApp.BusinessLogicalLayer.Models.Authors;
+using EducationApp.BusinessLogicalLayer.Models.Enums;
+using EducationApp.BusinessLogicalLayer.Models.PrintingEditions;
 using EducationApp.BusinessLogicalLayer.Models.Users;
 using EducationApp.DataAccessLayer.Entities;
 using EducationApp.DataAccessLayer.Repositories.Interfaces;
@@ -60,9 +62,17 @@ namespace EducationApp.BusinessLogicalLayer.Helpers
             return user;
         }
 
-        //public PrintingEditionItem PrintingEditionModelToPrintingEditionItem()
-        //{
-
-        //}
+        public PrintingEdition PrintingEditionModelToPrintingEdition(PrintingEditionModelItem printingEditionModelItem)
+        {
+            //var status = printingEditionModelItem.Status;
+            var printingEdition = new PrintingEdition
+            {
+                Title = printingEditionModelItem.Title,
+                Description = printingEditionModelItem.Description,
+                Price = printingEditionModelItem.Price,
+                //Status = (StatusPrintingEdition)Enum.Parse(typeof(StatusPrintingEdition), status)
+        };
+            return printingEdition;
+        }
     }
 }
