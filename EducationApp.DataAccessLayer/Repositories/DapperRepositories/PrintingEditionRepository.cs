@@ -34,7 +34,20 @@ namespace EducationApp.DataAccessLayer.Repositories.DapperRepositories
                 var evens = printingEditions.Where(printingEdition => printingEdition.Type == TypePrintingEdition.Newspaper);
                 foreach (PrintingEdition printingEdition in evens) result.Add(printingEdition);
             }
-            return printingEditions;
+            /*var sortOrder = SortStatePrintingEditions.IdAsc;
+
+            printingEditions = sortOrder switch
+            {
+                SortStatePrintingEditions.IdAsc => result.OrderBy(s => s.Id),
+                SortStatePrintingEditions.IdDesc => result.OrderByDescending(s => s.Id),
+                //SortStatePrintingEditions.NameAsc => result.OrderBy(s => s.Name),
+                //SortStatePrintingEditions.NameDesc => result.OrderByDescending(s => s.Name),
+                SortStatePrintingEditions.CategoryAsc => result.OrderBy(s => s.Type),
+                SortStatePrintingEditions.CategoryDesc => result.OrderByDescending(s => s.Type),
+                SortStatePrintingEditions.PriceAsc => result.OrderBy(s => s.Price),
+                SortStatePrintingEditions.PriceDesc => result.OrderByDescending(s => s.Price),
+            };*/
+            return result;
         }
     }
 }

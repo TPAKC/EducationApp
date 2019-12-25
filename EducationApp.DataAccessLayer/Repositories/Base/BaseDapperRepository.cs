@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace EducationApp.DataAccessLayer.Repositories.Base
 {
-    public class BaseDapperRepository<TEntity>: IBaseRepository<TEntity> where TEntity: BaseEntity
+    public class BaseDapperRepository<TEntity> where TEntity: BaseEntity
     {
 
         protected IDbConnection Connection { get; set; }

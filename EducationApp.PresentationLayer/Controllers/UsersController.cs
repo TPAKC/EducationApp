@@ -18,9 +18,9 @@ namespace CustomIdentityApp.Controllers
         }
 
         [HttpGet("users")]
-        public ActionResult UsersAsync(bool isActive, bool isBlocked)
+        public ActionResult UsersAsync(bool isActive, bool isBlocked, int numberSortState)
         {
-            var result = _userService.GetUsersAsync(isActive, isBlocked);
+            var result = _userService.GetUsersAsync(isActive, isBlocked, numberSortState);
             if(result.Errors.Count!=0) return Ok(result.Errors);
             return Ok(result.Users);
         }

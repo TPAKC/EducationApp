@@ -5,6 +5,7 @@ using EducationApp.BusinessLogicalLayer.Models.Users;
 using EducationApp.BusinessLogicalLayer.Models.ViewModels;
 using EducationApp.BusinessLogicalLayer.Services.Interfaces;
 using EducationApp.DataAccessLayer.Entities;
+using EducationApp.DataAccessLayer.Entities.Enums;
 using EducationApp.DataAccessLayer.Repositories.Interfaces;
 using Microsoft.Extensions.Options;
 using System;
@@ -195,13 +196,14 @@ namespace EducationApp.BusinessLogicalLayer.Services
             return resultModel;
     }
 
-    public UserModel GetUsersAsync(bool isActive, bool isBlocked)
+    public UserModel GetUsersAsync(bool isActive, bool isBlocked, int numberSortState)
     {
             var usersResultModel = new UserModel();
-            var users = _userRepository.GetUsersAsync(isActive, isBlocked);
+            var sortState = (SortStateUsers)numberSortState;
+            var users = _userRepository.GetUsersAsync(isActive, isBlocked, sortState);
         if(users == null)
             {
-                usersResultModel.Errors.Add(UserListIsEmpty);
+                usersResultModel.Errors.Add(ListRetrievalError);
                 return usersResultModel;
             }
 

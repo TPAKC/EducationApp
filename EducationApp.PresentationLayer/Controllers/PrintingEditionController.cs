@@ -1,4 +1,5 @@
-﻿using EducationApp.BusinessLogicalLayer.Services.Interfaces;
+﻿using EducationApp.BusinessLogicalLayer.Models.PrintingEditions;
+using EducationApp.BusinessLogicalLayer.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -22,12 +23,25 @@ namespace EducationApp.PresentationLayer.Controllers
             return Ok(result.PrintingEditions);
         }
 
-        /*public async Task<ActionResult> IndexAsync()
+        [HttpGet("create")]
+        public async Task<ActionResult> Create(PrintingEditionModelItem printingEditionModelItem)
         {
-            IEnumerable<PrintingEditionModel> printingEditionModels = await pintingEditionsService.GetPrintingEditionsAsync();
-            var mapper = new MapperConfiguration(cfg => cfg.CreateMap<PrintingEditionModel, PrintingEdition>()).CreateMapper();
-            var printingEdition = mapper.Map<IEnumerable<PrintingEditionModel>, List<PrintingEdition>>(printingEditionModels);
-            return Ok(printingEdition);
-        }*/
+            var result = await _printingEditionsService.CreateAsync(printingEditionModelItem);
+            return Ok(result.Errors);
+        }
+
+        [HttpGet("update")]
+        public async Task<ActionResult> Update(PrintingEditionModelItem printingEditionModelItem, int id)
+        {
+            var result = await _printingEditionsService.UpdateAsync(printingEditionModelItem, id);
+            return Ok(result.Errors);
+        }
+
+        [HttpGet("delete")]
+        public async Task<ActionResult> Delete(long id)
+        {
+            var result = await _printingEditionsService.DeleteAsync(id);
+            return Ok(result.Errors);
+        }
     }
 }

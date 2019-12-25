@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace EducationApp.DataAccessLayer.Repositories.DapperRepositories
+namespace EducationApp.DataAccessLayer.Repositories.EFRepositories
 {
 
     public class UserRepository : IUserRepository
@@ -50,8 +50,8 @@ namespace EducationApp.DataAccessLayer.Repositories.DapperRepositories
 
         public List<ApplicationUser> GetUsersAsync(bool isActive, bool isBlocked, SortStateUsers sortState)
         {
-            List<ApplicationUser> result = new List<ApplicationUser>();
-            var users = _userManager.Users.ToList();
+           List<ApplicationUser> result = new List<ApplicationUser>();
+           var users = _userManager.Users.ToList();
             if (isActive)
             {
                 var evens = users.Where(user => !user.IsRemoved && !user.IsBlocked);
@@ -65,8 +65,8 @@ namespace EducationApp.DataAccessLayer.Repositories.DapperRepositories
 
             result = sortState switch
             {
-                SortStateUsers.NameAsc => result.OrderBy(s => (s.FirstName + " " + s.LastName)).ToList(),
-                SortStateUsers.NameDesc => result.OrderByDescending(s => (s.FirstName + " " + s.LastName)).ToList(),
+                SortStateUsers.NameAsc => result.OrderBy(s => (s.FirstName+" "+s.LastName)).ToList(),
+                SortStateUsers.NameDesc => result.OrderByDescending(s => (s.FirstName +" "+ s.LastName)).ToList(),
                 SortStateUsers.EmailAsc => result.OrderBy(s => s.Email).ToList(),
                 SortStateUsers.EmailDesc => result.OrderByDescending(s => s.Email).ToList(),
             };

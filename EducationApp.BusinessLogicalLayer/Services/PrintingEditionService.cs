@@ -34,7 +34,7 @@ namespace EducationApp.BusinessLogicalLayer.Services
             var result = await _printingEditionRepository.Add(printingEdition);
             if (result == 0)
             {
-                resultModel.Errors.Add(PrintingEditionNotCreated);
+                resultModel.Errors.Add(PrintingEditionNotExist);
                 return resultModel;
             }
             return resultModel;
@@ -65,12 +65,25 @@ namespace EducationApp.BusinessLogicalLayer.Services
             var printingEditions = await _printingEditionRepository.GetAll(categorys);
             if (printingEditions == null)
             {
-                printingEditionModel.Errors.Add(UserListIsEmpty);
+                printingEditionModel.Errors.Add(ListRetrievalError);
                 return printingEditionModel;
             }
 
             printingEditionModel.PrintingEditions = printingEditions.Select(printingEdition => _mapper.PrintingEditionToPrintingEditionModelItem(printingEdition)).ToList();
             return printingEditionModel;
+        }
+
+        public async Task<BaseModel> DeleteAsync(long id)
+        {
+            var resultModel = new BaseModel();
+            var printingEdition = await _printingEditionRepository.Find(id);
+            if (printingEdition == null)
+            {
+                resultModel.Errors.Add(PrintingEditionNotExist);
+                return resultModel;
+            }
+            await _printingEditionRepository.Remove(printingEdition);
+            return resultModel;
         }
     }
 }
