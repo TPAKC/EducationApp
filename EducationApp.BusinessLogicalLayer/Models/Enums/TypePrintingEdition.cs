@@ -1,5 +1,9 @@
-﻿namespace EducationApp.BusinessLogicalLayer.Models.Enums
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+
+namespace EducationApp.BusinessLogicalLayer.Models.Enums
 {
+    //[JsonConverter(typeof(StringEnumConverter))]
     public enum TypePrintingEdition
     {
         None = 0,

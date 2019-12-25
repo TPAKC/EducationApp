@@ -23,15 +23,15 @@ namespace EducationApp.PresentationLayer.Controllers
             return Ok(result.PrintingEditions);
         }
 
-        [HttpGet("create")]
-        public async Task<ActionResult> Create(PrintingEditionModelItem printingEditionModelItem)
+        [HttpPost("create")]
+        public async Task<ActionResult> Create([FromBody]PrintingEditionModelItem printingEditionModelItem)
         {
             var result = await _printingEditionsService.CreateAsync(printingEditionModelItem);
             return Ok(result.Errors);
         }
 
-        [HttpGet("update")]
-        public async Task<ActionResult> Update(PrintingEditionModelItem printingEditionModelItem, int id)
+        [HttpPost("update/{id}")]
+        public async Task<ActionResult> Update([FromBody]PrintingEditionModelItem printingEditionModelItem, [FromRoute]int id)
         {
             var result = await _printingEditionsService.UpdateAsync(printingEditionModelItem, id);
             return Ok(result.Errors);

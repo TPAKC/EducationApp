@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 
 namespace EducationApp.DataAccessLayer.Repositories.EFRepositories
 {
-
     public class UserRepository : IUserRepository
     {
         private readonly UserManager<ApplicationUser> _userManager;

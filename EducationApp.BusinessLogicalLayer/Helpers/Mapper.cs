@@ -84,9 +84,9 @@ namespace EducationApp.BusinessLogicalLayer.Helpers
                 Title = printingEdition.Title,
                 Description = printingEdition.Description,
                 Price = printingEdition.Price,
-                Status = (int)printingEdition.Status,
-                Currency = (int)printingEdition.Currency,
-                Type = (int)printingEdition.Type,
+                Status = (Models.Enums.StatusPrintingEdition)printingEdition.Status,
+                Currency = (Models.Enums.CurrencyPrintingEdition)printingEdition.Currency,
+                Type = (Models.Enums.TypePrintingEdition)printingEdition.Type,
             };
             return printingEditionModelItem;
         }

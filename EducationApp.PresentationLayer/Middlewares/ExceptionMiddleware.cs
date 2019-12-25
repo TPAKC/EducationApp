@@ -33,6 +33,7 @@ namespace EducationApp.PresentationLayer.Middlewares
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex);
                 _logger.LogCritical("LogCritical {0}", context.Request.Path);
                 _logger.LogDebug("LogDebug {0}", context.Request.Path);
                 _logger.LogError("LogError {0}", context.Request.Path);

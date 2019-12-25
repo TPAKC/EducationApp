@@ -1,5 +1,11 @@
-﻿namespace EducationApp.BusinessLogicalLayer.Models.Enums
+﻿
+
+using Newtonsoft.Json.Converters;
+using System.Text.Json.Serialization;
+
+namespace EducationApp.BusinessLogicalLayer.Models.Enums
 {
+    //[JsonConverter(typeof(StringEnumConverter))]
     public enum StatusPrintingEdition
     {
         Unpaid = 0,
