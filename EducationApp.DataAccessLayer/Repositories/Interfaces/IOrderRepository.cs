@@ -7,9 +7,6 @@ namespace EducationApp.DataAccessLayer.Repositories.Interfaces
     public interface IOrderRepository 
     {
         Task<long> Add(Order item);
-        Task AddRange(List<Order> item);
-        Task UpdateRange(List<Order> items);
-        Task DeleteRange(List<Order> entities);
         Task<Order> Find(long id);
         Task<List<Order>> GetAll();
         Task Remove(Order item);

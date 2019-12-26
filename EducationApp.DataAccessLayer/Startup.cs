@@ -1,5 +1,5 @@
 ﻿using EducationApp.DataAccessLayer.Initialization;
-using EducationApp.DataAccessLayer.Repositories.DapperRepositories;
+using EducationApp.DataAccessLayer.Repositories.EFRepositories;
 using EducationApp.DataAccessLayer.Repositories.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -12,10 +12,10 @@ namespace EducationApp.DataAccessLayer
             services.AddSingleton(new Connection(connectionString));
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IPrintingEditionRepository, PrintingEditionRepository>();
-            services.AddScoped<IAuthorRepository, AuthorRepository>();
+            /*services.AddScoped<IAuthorRepository, AuthorRepository>();
             services.AddScoped<IOrderRepository, OrderRepository>();
             services.AddScoped<IOrderItemRepository, OrderItemRepository>();
-            services.AddScoped<IAuthorInPrintingEditionRepository, AuthorInPrintingEditionRepository>();
+            services.AddScoped<IAuthorInPrintingEditionRepository, AuthorInPrintingEditionRepository>();*/
             services.AddScoped<DataBaseInitializer, DataBaseInitializer>();
         }
     }

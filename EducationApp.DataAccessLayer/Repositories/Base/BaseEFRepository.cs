@@ -1,12 +1,10 @@
 ﻿using EducationApp.PresentationLayer.Data;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System.Threading.Tasks;
 
 namespace EducationApp.DataAccessLayer.Repositories.Base
 {
-        public class BaseEFRepository<TEntity> 
+    public class BaseEFRepository<TEntity> 
         {
         private readonly ApplicationDbContext _context;
 
@@ -15,29 +13,36 @@ namespace EducationApp.DataAccessLayer.Repositories.Base
             _context = context;
         }
 
-        public virtual async Task Add(TEntity item)
+        public virtual async Task<EntityEntry> Add(TEntity item)
         {
             var result = _context.Add(item);
             await _context.SaveChangesAsync();
+            return result;
         }
-        /*
-        public virtual async Task Update(TEntity item)
+        
+        public virtual async Task<EntityEntry> Update(TEntity item)
         {
-            await Connection.UpdateAsync(item);
-        }
-
-        public virtual async Task Remove(TEntity item)
-        {
-            await Connection.DeleteAsync<TEntity>(item);
-        }
-
-        public virtual async Task<TEntity> Find(long id)
-        {
-            var result = await Connection.GetAsync<TEntity>(id);
+            var result = _context.Update(item);
+            await _context.SaveChangesAsync();
             return result;
         }
 
-        public async Task<List<TEntity>> GetAll()
+        public virtual async Task<EntityEntry> Remove(TEntity item)
+        {
+            var result = _context.Remove(item);
+            await _context.SaveChangesAsync();
+            return result;
+        }
+
+      /*  public virtual async Task<TEntity> Find(long id)
+        {
+            //var TEntity = await _context.FirstOrDefaultAsync(p => p.Id == id);
+            var result = _context.Find(id);
+            await _context.SaveChangesAsync();
+            return result;
+        }
+
+      /*  public async Task<List<TEntity>> GetAll()
         {
             return (await Connection.GetAllAsync<TEntity>()).AsList();
         }*/
