@@ -5,9 +5,13 @@ using System.Text;
 
 namespace EducationApp.BusinessLogicalLayer.Models.Models.Account
 {
-    public class UpdateUserModel: BaseCreateUpdateUserModel
+    public class UpdateUserModel
     {
         [Required]
         public string Id { get; set; }
+        [Required]
+        public string FirstName { get; set; }
+        [Required]
+        public string LastName { get; set; }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using EducationApp.BusinessLogicalLayer.Helpers;
 using EducationApp.BusinessLogicalLayer.Models;
 using EducationApp.BusinessLogicalLayer.Models.Base;
+using EducationApp.BusinessLogicalLayer.Models.Models.Account;
 using EducationApp.BusinessLogicalLayer.Models.Users;
 using EducationApp.BusinessLogicalLayer.Models.ViewModels;
 using EducationApp.BusinessLogicalLayer.Services.Interfaces;
@@ -81,7 +82,7 @@ namespace EducationApp.BusinessLogicalLayer.Services
             return modelResult;
         }
 
-        public async Task<UserModelItem> CreateAsync(CreateModel createModel)
+        public async Task<UserModelItem> CreateAsync(CreateUserModel createModel)
         {
             var resultModel = new UserModelItem();
             var user = await _userRepository.FindByEmailAsync(createModel.Email);
@@ -146,32 +147,6 @@ namespace EducationApp.BusinessLogicalLayer.Services
             return resultModel;
         }
 
-        public async Task<UserModelItem> FindByIdAsync(string id)
-        {
-            var userResultModel = new UserModelItem();
-            var user = await _userRepository.FindByIdAsync(id);
-            if(user == null) //todo check user for null +
-            {
-                userResultModel.Errors.Add(UserIsExist);
-                return userResultModel;
-            }
-            userResultModel = _mapper.ApplicationUserToUserModelITem(user);
-            return userResultModel; //todo map at mappers (Excention) +
-        }
-
-    public async Task<UserModelItem> FindByEmailAsync(string email)
-    {
-            var userResultModel = new UserModelItem();
-            var user = await _userRepository.FindByEmailAsync(email);
-        if(user == null)
-            {
-                userResultModel.Errors.Add(UserIsExist);
-                return userResultModel;
-            }
-            userResultModel = _mapper.ApplicationUserToUserModelITem(user); //todo map at mappers +
-            return userResultModel;
-    }
-
     public async Task<BaseModel> UpdateAsync(UserModelItem userModel)
     { 
             var resultModel = new BaseModel();
@@ -211,37 +186,6 @@ namespace EducationApp.BusinessLogicalLayer.Services
             return usersResultModel;
         }
 
-    public async Task<BaseModel> AddToRoleAsync(UserModelItem userModel, string role)
-    {
-            var resultModel = new BaseModel();
-            var user = await _userRepository.FindByEmailAsync(userModel.Email);
-            if (user == null)
-            {
-                resultModel.Errors.Add(FailedToUpdateUser);
-                return resultModel;
-            }
-            var result = await _userRepository.AddToRoleAsync(user, role);
-            if (!result)
-            {
-                resultModel.Errors.Add(UserCantBeAddedToRole);
-            }
-            return resultModel;
-        }
-
-    public async Task<BaseModel> RemoveFromRoleAsync(UserModelItem userModel, string role)
-    {
-            var resultModel = new BaseModel();
-            var user = await _userRepository.FindByEmailAsync(userModel.Email);
-         await _userRepository.RemoveFromRoleAsync(user, role);
-            return resultModel;
-    }
-
-    public async Task<bool> IsEmailConfirmedAsync(string email)
-    {
-        var user = await _userRepository.FindByEmailAsync(email);
-        return await _userRepository.IsEmailConfirmedAsync(user);
-    }
-
     public async Task SignOutAsync()
     {
             await _userRepository.SignOutAsync();
@@ -275,17 +219,6 @@ namespace EducationApp.BusinessLogicalLayer.Services
         return resultModel;
     }
 
-    public async Task<BaseModel> ResetPasswordAsync(string email, string code, string password)
-    {
-            var resultModel = new BaseModel();
-            var user = await _userRepository.FindByEmailAsync(email);
-            var result = await _userRepository.ResetPasswordAsync(user, code, password);
-            if(!result)
-            {
-                resultModel.Errors.Add(FailedToResetPassword);
-            }
-            return resultModel;
-    }
     public async Task<BaseModel> ForgotPassword(string email)
     {
             var resultModel = new BaseModel();

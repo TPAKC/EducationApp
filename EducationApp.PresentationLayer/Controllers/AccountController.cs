@@ -1,5 +1,6 @@
 ﻿using EducationApp.BusinessLogicalLayer.Helpers;
 using EducationApp.BusinessLogicalLayer.Models;
+using EducationApp.BusinessLogicalLayer.Models.Models.Account;
 using EducationApp.BusinessLogicalLayer.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -36,7 +37,7 @@ namespace EducationApp.PresentationLayer.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register(CreateModel createModel)
+        public async Task<IActionResult> Register(CreateUserModel createModel)
         {
             var resultModel = await _userService.CreateAsync(createModel);
             var code = await _userService.GenerateEmailConfirmationTokenAsync(createModel.Email);

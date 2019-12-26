@@ -1,7 +1,6 @@
 ﻿using Dapper;
 using Dapper.Contrib.Extensions;
 using EducationApp.DataAccessLayer.Entities.Base;
-using EducationApp.DataAccessLayer.Repositories.Interfaces;
 using Microsoft.Data.SqlClient;
 using System.Collections.Generic;
 using System.Data;
@@ -24,24 +23,9 @@ namespace EducationApp.DataAccessLayer.Repositories.Base
             return await Connection.InsertAsync(item);
         }
 
-        public virtual async Task AddRange(List<TEntity> item)
-        {
-            await Connection.InsertAsync(item);
-        }
-
-        public virtual async Task UpdateRange(List<TEntity> items)
-        {
-            await Connection.UpdateAsync(items);
-        }
-
         public virtual async Task Update(TEntity item)
         {
             await Connection.UpdateAsync(item); 
-        }
-
-        public async Task DeleteRange(List<TEntity> entities)
-        {
-            await Connection.DeleteAsync(entities);
         }
 
         public virtual async Task Remove(TEntity item)

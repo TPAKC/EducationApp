@@ -24,14 +24,14 @@ namespace EducationApp.PresentationLayer.Controllers
         }
 
         [HttpPost("create")]
-        public async Task<ActionResult> Create([FromBody]PrintingEditionModelItem printingEditionModelItem)
+        public async Task<ActionResult> Create(PrintingEditionModelItem printingEditionModelItem)
         {
             var result = await _printingEditionsService.CreateAsync(printingEditionModelItem);
             return Ok(result.Errors);
         }
 
         [HttpPost("update/{id}")]
-        public async Task<ActionResult> Update([FromBody]PrintingEditionModelItem printingEditionModelItem, [FromRoute]int id)
+        public async Task<ActionResult> Update(PrintingEditionModelItem printingEditionModelItem, [FromRoute]int id)
         {
             var result = await _printingEditionsService.UpdateAsync(printingEditionModelItem, id);
             return Ok(result.Errors);

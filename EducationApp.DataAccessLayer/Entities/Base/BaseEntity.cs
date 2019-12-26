@@ -9,6 +9,7 @@ namespace EducationApp.DataAccessLayer.Entities.Base
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        public DateTime CreatingDate { get; set; } = new DateTime(2000, 1, 1, 1, 0, 0);
+        public DateTime CreatingDate { get; set; } = DateTime.Now;
+        public bool IsRemoved { get; set; } = false;
     }
 }

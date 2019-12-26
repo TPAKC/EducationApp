@@ -3,7 +3,6 @@ using EducationApp.BusinessLogicalLayer.Models.Base;
 using EducationApp.BusinessLogicalLayer.Models.PrintingEditions;
 using EducationApp.BusinessLogicalLayer.Services.Interfaces;
 using EducationApp.DataAccessLayer.Repositories.Interfaces;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using static EducationApp.BusinessLogicalLayer.Common.Constants.ServiceValidationErrors;
@@ -25,12 +24,11 @@ namespace EducationApp.BusinessLogicalLayer.Services
         {
             var resultModel = new BaseModel();
             var printingEdition = _mapper.PrintingEditionModelToPrintingEdition(printingEditionModelItem);
-            if (printingEdition != null)//&& printingEdition.IsRemoved - возможно
+            if (printingEdition == null)
             {
-                // _userRepository.UpdateAsync();
                 resultModel.Errors.Add(ModelIsNotValid);
                 return resultModel;
-            }
+            } 
             var result = await _printingEditionRepository.Add(printingEdition);
             if (result == 0)
             {
@@ -82,7 +80,8 @@ namespace EducationApp.BusinessLogicalLayer.Services
                 resultModel.Errors.Add(PrintingEditionNotExist);
                 return resultModel;
             }
-            await _printingEditionRepository.Remove(printingEdition);
+            printingEdition.IsRemoved = true;
+            await _printingEditionRepository.Update(printingEdition);
             return resultModel;
         }
     }

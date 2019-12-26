@@ -5,6 +5,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Models\ViewModels\**" />
+    <Compile Remove="Models\Views\**" />
+    <EmbeddedResource Remove="Models\ViewModels\**" />
+    <EmbeddedResource Remove="Models\Views\**" />
+    <EntityDeploy Remove="Models\ViewModels\**" />
+    <EntityDeploy Remove="Models\Views\**" />
+    <None Remove="Models\ViewModels\**" />
+    <None Remove="Models\Views\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Dapper" Version="2.0.30" />
     <PackageReference Include="Dapper.Contrib" Version="2.0.30" />
     <PackageReference Include="IdentityModel" Version="4.1.0" />
@@ -35,8 +46,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\Views\" />
-    <Folder Include="Models\ViewModels\" />
+    <Folder Include="Models\Models\User\" />
   </ItemGroup>
 
 </Project>

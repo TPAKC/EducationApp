@@ -1,9 +1,5 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-
-namespace EducationApp.BusinessLogicalLayer.Models.Enums
+﻿namespace EducationApp.BusinessLogicalLayer.Models.Enums
 {
-    //[JsonConverter(typeof(StringEnumConverter))]
     public enum CurrencyPrintingEdition
     {
         USD = 0,

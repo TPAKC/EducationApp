@@ -1,5 +1,6 @@
 ﻿using EducationApp.BusinessLogicalLayer.Models;
 using EducationApp.BusinessLogicalLayer.Models.Authors;
+using EducationApp.BusinessLogicalLayer.Models.Models.Account;
 using EducationApp.BusinessLogicalLayer.Models.PrintingEditions;
 using EducationApp.BusinessLogicalLayer.Models.Users;
 using EducationApp.DataAccessLayer.Entities;
@@ -31,7 +32,7 @@ namespace EducationApp.BusinessLogicalLayer.Helpers
             return model;
         }
 
-        public ApplicationUser RegisterModelToApplicationUser(CreateModel registerModel)
+        public ApplicationUser RegisterModelToApplicationUser(CreateUserModel registerModel)
         {
             var user = new ApplicationUser
             {
@@ -72,7 +73,6 @@ namespace EducationApp.BusinessLogicalLayer.Helpers
                 Status = (StatusPrintingEdition)printingEditionModelItem.Status,
                 Currency = (CurrencyPrintingEdition)printingEditionModelItem.Currency,
                 Type = (TypePrintingEdition)printingEditionModelItem.Type,
-
             };
             return printingEdition;
         }
