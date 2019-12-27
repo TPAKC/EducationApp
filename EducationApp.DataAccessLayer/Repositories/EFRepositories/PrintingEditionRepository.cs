@@ -1,4 +1,4 @@
-﻿using EducationApp.DataAccessLayer.Entities;
+﻿    using EducationApp.DataAccessLayer.Entities;
 using EducationApp.DataAccessLayer.Repositories.Base;
 using EducationApp.DataAccessLayer.Repositories.Interfaces;
 using EducationApp.PresentationLayer.Data;
@@ -8,7 +8,7 @@ using System.Text;
 
 namespace EducationApp.DataAccessLayer.Repositories.EFRepositories
 {
-    public class PrintingEditionRepository : BaseEFRepository<PrintingEdition>, IPrintingEditionRepository
+    public class PrintingEditionRepository : BaseEFRepository<PrintingEdition>
     {
         public PrintingEditionRepository(ApplicationDbContext context) : base(context)
         {

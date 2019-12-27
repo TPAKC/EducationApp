@@ -6,7 +6,7 @@ namespace EducationApp.BusinessLogicalLayer.Models.Authors
 {
     public class AuthorModel : BaseModel
     {
-        public List<AuthorModelItem> Items;
+        public List<AuthorModelItem> Authors;
     }
 
     public class AuthorModelItem : BaseModel

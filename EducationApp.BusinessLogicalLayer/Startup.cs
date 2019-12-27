@@ -34,6 +34,7 @@ namespace EducationApp.BusinessLogicalLayer
             .AddDefaultTokenProviders(); ;
 
             services.AddScoped<IPrintingEditionsService, PrintingEditionService>();
+            services.AddScoped<IAuthorService, AuthorService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<Mapper, Mapper>();
             services.AddScoped<JwtHelper, JwtHelper>();

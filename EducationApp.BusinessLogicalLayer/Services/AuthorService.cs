@@ -1,6 +1,7 @@
 ﻿using EducationApp.BusinessLogicalLayer.Helpers;
 using EducationApp.BusinessLogicalLayer.Models.Authors;
 using EducationApp.BusinessLogicalLayer.Models.Base;
+using EducationApp.BusinessLogicalLayer.Services.Interfaces;
 using EducationApp.DataAccessLayer.Entities;
 using EducationApp.DataAccessLayer.Repositories.Interfaces;
 using System.Linq;
@@ -9,7 +10,7 @@ using static EducationApp.BusinessLogicalLayer.Common.Constants.ServiceValidatio
 
 namespace EducationApp.BusinessLogicalLayer.Services
 {
-    public class AuthorService
+    public class AuthorService : IAuthorService
     {
         private readonly IAuthorRepository _authorRepository;
         private readonly Mapper _mapper;
@@ -32,20 +33,20 @@ namespace EducationApp.BusinessLogicalLayer.Services
             return resultModel;
         }
 
-        public async Task<BaseModel> UpdateAsync(long id, string name)
+        public async Task<BaseModel> UpdateAsync(string name, long id)
         {
             var resultModel = new BaseModel();
 
             var author = await _authorRepository.Find(id);
             author.Name = name;
-            await _authorRepository.Update(author);// добавить обработчик ошибок
+            await _authorRepository.Update(author);// add exc error
             return resultModel;
         }
         public async Task<BaseModel> DeleteAsync(long id)
         {
             var resultModel = new BaseModel();
             var author = await _authorRepository.Find(id);
-            await _authorRepository.Remove(author);// добавить обработчик ошибок
+            await _authorRepository.Remove(author);// add exc error
             return resultModel;
         }
 
@@ -55,10 +56,10 @@ namespace EducationApp.BusinessLogicalLayer.Services
             var authors = await _authorRepository.GetAll();
             if (authors == null)
             {
-                authorResultModel.Errors.Add(AuthorListIsEmpty);
+                authorResultModel.Errors.Add(ListRetrievalError);
                 return authorResultModel;
             }
-            authorResultModel.Items = authors.Select(author => _mapper.AuthorToAuthorModelItem(author)).ToList();
+            authorResultModel.Authors = authors.Select(author => _mapper.AuthorToAuthorModelItem(author)).ToList();
             return authorResultModel;
         }   
     }
