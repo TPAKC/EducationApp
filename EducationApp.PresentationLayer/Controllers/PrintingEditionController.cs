@@ -15,7 +15,7 @@ namespace EducationApp.PresentationLayer.Controllers
             _printingEditionsService = printingEditionsService;
         }
 
-        [HttpGet("printingEditions")]
+        [HttpGet]
         public async Task<ActionResult> GetPrintingEditions(bool[] categorys)
         {
             var result = await _printingEditionsService.GetPrintingEditionsAsync(categorys);
@@ -23,25 +23,25 @@ namespace EducationApp.PresentationLayer.Controllers
             return Ok(result.PrintingEditions);
         }
 
-        [HttpPost("create")]
+        [HttpPost]
         public async Task<ActionResult> Create(PrintingEditionModelItem printingEditionModelItem)
         {
             var result = await _printingEditionsService.CreateAsync(printingEditionModelItem);
             return Ok(result.Errors);
         }
-
-        [HttpPost("update/{id}")]
-        public async Task<ActionResult> Update(PrintingEditionModelItem printingEditionModelItem, [FromRoute]int id)
+        /*
+        [HttpPut("{id}")]
+        public async Task<ActionResult> Update(PrintingEditionModelItem printingEditionModelItem, long id)
         {
             var result = await _printingEditionsService.UpdateAsync(printingEditionModelItem, id);
             return Ok(result.Errors);
         }
-
-        [HttpGet("delete")]
+        
+        [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(long id)
         {
             var result = await _printingEditionsService.DeleteAsync(id);
             return Ok(result.Errors);
-        }
+        }*/
     }
 }

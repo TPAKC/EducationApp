@@ -1,11 +1,12 @@
-﻿using EducationApp.BusinessLogicalLayer.Services.Interfaces;
+﻿using EducationApp.BusinessLogicalLayer.Models.Base;
+using EducationApp.BusinessLogicalLayer.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
 
 namespace EducationApp.PresentationLayer.Controllers
 {
-    public class AuthorController : Controller
+    public class AuthorController : ControllerBase
     {
         private readonly IAuthorService _authorService;
 

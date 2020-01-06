@@ -38,7 +38,7 @@ namespace EducationApp.BusinessLogicalLayer.Services
             return resultModel;
         }
 
-        public async Task<BaseModel> UpdateAsync(PrintingEditionModelItem printingEditionModelItem, int id)
+        public async Task<BaseModel> UpdateAsync(PrintingEditionModelItem printingEditionModelItem, long id)
         {
             var resultModel = new BaseModel();
             if (resultModel == null)

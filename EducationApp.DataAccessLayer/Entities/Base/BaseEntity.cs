@@ -8,7 +8,7 @@ namespace EducationApp.DataAccessLayer.Entities.Base
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        public long Id { get; set; }
         public DateTime CreatingDate { get; set; } = DateTime.Now;
         public bool IsRemoved { get; set; } = false;
     }

@@ -25,16 +25,16 @@ namespace CustomIdentityApp.Controllers
             return Ok(result.Users);
         }
 
-        [HttpPost("update")]  
+        [HttpPut("{id}")]
         public async Task<IActionResult> UpdateAsync(UserModelItem userModel)
         {
             var result = await _userService.UpdateAsync(userModel);
             return Ok(result.Errors);
         }
 
-        [HttpPost("delete")]
+        [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteAsync(string id)
-        {
+        { 
             var result = await _userService.DeleteAsync(id);
             return Ok(result.Errors);
         }
