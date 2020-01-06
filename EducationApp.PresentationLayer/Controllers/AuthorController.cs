@@ -14,7 +14,7 @@ namespace EducationApp.PresentationLayer.Controllers
             _authorService = authorService;
         }
 
-        [HttpGet("authors")]
+        [HttpGet]
         public async Task<ActionResult> GetPrintingEditions()
         {
             var result = await _authorService.GetAuthorsAsync();
@@ -22,21 +22,21 @@ namespace EducationApp.PresentationLayer.Controllers
             return Ok(result.Authors);
         }
 
-        [HttpPost("create")]
+        [HttpPost]
         public async Task<ActionResult> Create(string name)
         {
             var result = await _authorService.CreateAsync(name);
             return Ok(result.Errors);
         }
 
-        [HttpPut("update/{id}")]
+        [HttpPut("{id}")]
         public async Task<ActionResult> Update(string name, long id)
         {
             var result = await _authorService.UpdateAsync(name, id);
             return Ok(result.Errors);
         }
 
-        [HttpDelete("delete")]
+        [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(long id)
         {
             var result = await _authorService.DeleteAsync(id);
