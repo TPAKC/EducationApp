@@ -4,6 +4,7 @@ using EducationApp.BusinessLogicalLayer.Models.Orders;
 using EducationApp.BusinessLogicalLayer.Services.Interfaces;
 using EducationApp.DataAccessLayer.Repositories.Interfaces;
 using System.Threading.Tasks;
+using static EducationApp.BusinessLogicalLayer.Constants.ServiceValidationErrors;
 
 namespace EducationApp.BusinessLogicalLayer.Services
 {
@@ -19,7 +20,7 @@ namespace EducationApp.BusinessLogicalLayer.Services
             _mapper = mapper;
         }
 
-        public async Task<BaseModel> CreateAsync(OrderModelItem orderModelItem)
+       /* public async Task<BaseModel> CreateAsync(OrderModelItem orderModelItem)
         {
             var resultModel = new BaseModel();
             var printingEdition = _mapper.PrintingEditionModelToPrintingEdition(orderModelItem);
@@ -35,6 +36,6 @@ namespace EducationApp.BusinessLogicalLayer.Services
                 return resultModel;
             }
             return resultModel;
-        }
+        }*/
     }
 }

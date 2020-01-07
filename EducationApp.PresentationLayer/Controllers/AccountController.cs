@@ -51,7 +51,7 @@ namespace EducationApp.PresentationLayer.Controllers
             }  
 
         [HttpGet("confirmEmail")]
-        public async Task<IActionResult> ConfirmEmail(string userId, string code)
+        public async Task<IActionResult> ConfirmEmail(long userId, string code)
         {
             var result = await _userService.ConfirmEmailAsync(userId, code);
             return Ok(result.Errors);

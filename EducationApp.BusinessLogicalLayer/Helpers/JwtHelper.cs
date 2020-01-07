@@ -23,7 +23,7 @@ namespace EducationApp.BusinessLogicalLayer.Helpers
             _appSettings = appSettings;
         }
 
-        public async Task<string> GenerateEncodedToken(ApplicationUser user, string userRole)
+       /* public async Task<string> GenerateEncodedToken(ApplicationUser user, string userRole)
         {
             var identity = GenerateClaimsIdentity(user, userRole);
             var claims = new List<Claim>
@@ -43,9 +43,9 @@ namespace EducationApp.BusinessLogicalLayer.Helpers
 
             var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
             return encodedJwt;
-        }
+        }*/
 
-        private ClaimsIdentity GenerateClaimsIdentity(ApplicationUser user, string role)
+       /* private ClaimsIdentity GenerateClaimsIdentity(ApplicationUser user, string role)
         {
             return new ClaimsIdentity(new GenericIdentity(user.UserName, "Token"), new[]
                 {
@@ -55,7 +55,7 @@ namespace EducationApp.BusinessLogicalLayer.Helpers
                     new Claim(ClaimTypes.GivenName, user.FirstName),
                     new Claim(ClaimTypes.Surname, user.LastName)
                 });
-        }
+        }*/
 
         private long ToUnixEpochDate(DateTime date)
         {

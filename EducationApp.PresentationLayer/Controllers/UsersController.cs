@@ -40,7 +40,7 @@ namespace CustomIdentityApp.Controllers
         }*/
 
         [HttpGet("changeUserStatus")]
-        public async Task<IActionResult> ChangeUserStatus(string id, bool userStatus)
+        public async Task<IActionResult> ChangeUserStatus(long id, bool userStatus)
         {
             var result = await _userService.ChangeUserStatus(id, userStatus);
             return Ok(result.Errors);

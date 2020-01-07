@@ -24,7 +24,7 @@ namespace EducationApp.BusinessLogicalLayer
                        errorNumbersToAdd: null);
                }));
 
-            services.AddIdentity<ApplicationUser<long>, IdentityRole>(opts => //todo replace to BLL +
+            services.AddIdentity<ApplicationUser, IdentityRole<long>>(opts => //todo replace to BLL +
             {
                 opts.Password.RequireNonAlphanumeric = false;
                 opts.Password.RequireLowercase = false;

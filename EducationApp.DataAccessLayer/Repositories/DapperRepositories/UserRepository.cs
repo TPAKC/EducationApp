@@ -2,6 +2,7 @@
 using EducationApp.DataAccessLayer.Entities.Enums;
 using EducationApp.DataAccessLayer.Repositories.Interfaces;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -34,7 +35,7 @@ namespace EducationApp.DataAccessLayer.Repositories.DapperRepositories
 
         public async Task<ApplicationUser> FindByIdAsync(long id)
         {
-            return await _userManager.FindByIdAsync(id);
+            return await _userManager.Users.FirstOrDefaultAsync(v => v.Id == id);
         }
 
         public async Task<ApplicationUser> FindByEmailAsync(string email)

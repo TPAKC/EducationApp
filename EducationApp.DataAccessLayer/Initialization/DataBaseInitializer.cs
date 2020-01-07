@@ -12,14 +12,14 @@ namespace EducationApp.DataAccessLayer.Initialization
     {
 
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly RoleManager<IdentityRole<long>> _roleManager;
         private readonly IPrintingEditionRepository _printingEditionRepository;
         private readonly IAuthorRepository _authorRepository;
         private readonly IAuthorInPrintingEditionRepository _authorInPrintingEditionRepository;
 
         public DataBaseInitializer(
             UserManager<ApplicationUser> userManager, 
-            RoleManager<IdentityRole> roleManager, 
+            RoleManager<IdentityRole<long>> roleManager, 
             IPrintingEditionRepository printingEditionRepository, 
             IAuthorRepository authorRepository, 
             IAuthorInPrintingEditionRepository authorInPrintingEditionRepository)
@@ -31,12 +31,12 @@ namespace EducationApp.DataAccessLayer.Initialization
             _authorInPrintingEditionRepository = authorInPrintingEditionRepository;
         }
 
-        public async Task СreationRole(string role)
+        private async Task СreationRole(string role)
         {
-                await _roleManager.CreateAsync(new IdentityRole(role)); //todo use enum or const +
+            await _roleManager.CreateAsync(new IdentityRole<long>(role)); //todo use enum or const +
         }
 
-        public async Task СreationAccount(string email, string password, string role)
+        private async Task СreationAccount(string email, string password, string role)
         {
             var user = new ApplicationUser
             {
