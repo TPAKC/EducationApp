@@ -10,7 +10,7 @@ namespace EducationApp.DataAccessLayer.Repositories.Interfaces
     {
         Task<bool> ChangePasswordAsync(ApplicationUser user, string oldPassword, string newPassword);
         Task<bool> CreateAsync(ApplicationUser user, string password);
-        Task<ApplicationUser> FindByIdAsync(string id);
+        Task<ApplicationUser> FindByIdAsync(long id);
         Task<ApplicationUser> FindByEmailAsync(string email);
         Task<bool> UpdateAsync(ApplicationUser user);
         List<ApplicationUser> GetUsersAsync(bool isActive, bool isBlocked, SortStateUsers sortState);

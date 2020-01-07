@@ -1,7 +1,7 @@
 ﻿using MailKit.Net.Smtp;
 using MimeKit;
 using System.Threading.Tasks;
-using static EducationApp.BusinessLogicalLayer.Common.Constants.UserData;
+using static EducationApp.BusinessLogicalLayer.Constants.UserData;
 
 namespace EducationApp.BusinessLogicalLayer.Helpers
 {

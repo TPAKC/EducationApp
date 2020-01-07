@@ -1,6 +1,6 @@
-﻿namespace EducationApp.BusinessLogicalLayer.Common
+﻿namespace EducationApp.BusinessLogicalLayer
 {
-    public class Constants
+    public partial class Constants
     {
         public class ServiceValidationErrors
         {
@@ -27,25 +27,6 @@
             public const string ModelIsNotValid = "Model is not valid";
             public const string PrintingEditionIsNotFound = "User is not found";
             public const string ListRetrievalError = "list retrieval error";
-        }
-
-        public class AccountRole
-        {
-            public const string NameAdminRole = "admin";
-            public const string NameUserRole = "user";
-        }
-
-        public class UserData
-        {
-            public const string NameMailboxAddress = "Site administration";
-            public const string AdressMailboxAddress = "alex1bakay@gmail.com";
-            public const string HostConnectAsync = "smtp.gmail.com";
-            public const string UserNameAuthenticateAsync = "alex1bakay@gmail.com";
-            public const string PasswordAuthenticateAsync = "dota212310";
-        }
-        public class TemplateText
-        {
-            public const string ResetPasswordText = "You reset your password, your new password: ";
         }
     }
 }

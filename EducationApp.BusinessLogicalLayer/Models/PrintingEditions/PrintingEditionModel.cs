@@ -11,9 +11,9 @@ namespace EducationApp.BusinessLogicalLayer.Models.PrintingEditions
         public string Title { get; set; }
         public string Description { get; set; }
         public long Price { get; set; }
-        public StatusPrintingEdition Status { get; set; } //todo ProductStatus +
-        public CurrencyPrintingEdition Currency { get; set; }
-        public TypePrintingEdition Type { get; set; } //todo add enums to BLL +
+        public PrintingEditionStatus Status { get; set; } //todo ProductStatus +
+        public Currency Currency { get; set; }
+        public PrintingEditionType Type { get; set; } //todo add enums to BLL +
     }
 
     public class PrintingEditionModel : BaseModel

@@ -1,6 +1,6 @@
 ﻿namespace EducationApp.BusinessLogicalLayer.Models.Enums
 {
-    public enum TypePrintingEdition
+    public enum PrintingEditionType
     {
         Book = 0,
         Journal = 1,

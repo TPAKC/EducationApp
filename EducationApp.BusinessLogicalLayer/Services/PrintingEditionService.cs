@@ -5,7 +5,7 @@ using EducationApp.BusinessLogicalLayer.Services.Interfaces;
 using EducationApp.DataAccessLayer.Repositories.Interfaces;
 using System.Linq;
 using System.Threading.Tasks;
-using static EducationApp.BusinessLogicalLayer.Common.Constants.ServiceValidationErrors;
+using static EducationApp.BusinessLogicalLayer.Constants.ServiceValidationErrors;
 
 namespace EducationApp.BusinessLogicalLayer.Services
 {

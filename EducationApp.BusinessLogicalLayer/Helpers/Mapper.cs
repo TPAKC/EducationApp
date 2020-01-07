@@ -1,6 +1,6 @@
-﻿using EducationApp.BusinessLogicalLayer.Models;
-using EducationApp.BusinessLogicalLayer.Models.Authors;
+﻿using EducationApp.BusinessLogicalLayer.Models.Authors;
 using EducationApp.BusinessLogicalLayer.Models.Models.Account;
+using EducationApp.BusinessLogicalLayer.Models.Orders;
 using EducationApp.BusinessLogicalLayer.Models.PrintingEditions;
 using EducationApp.BusinessLogicalLayer.Models.Users;
 using EducationApp.DataAccessLayer.Entities;
@@ -84,11 +84,24 @@ namespace EducationApp.BusinessLogicalLayer.Helpers
                 Title = printingEdition.Title,
                 Description = printingEdition.Description,
                 Price = printingEdition.Price,
-                Status = (Models.Enums.StatusPrintingEdition)printingEdition.Status,
-                Currency = (Models.Enums.CurrencyPrintingEdition)printingEdition.Currency,
-                Type = (Models.Enums.TypePrintingEdition)printingEdition.Type,
+                Status = (Models.Enums.PrintingEditionStatus)printingEdition.Status,
+                Currency = (Models.Enums.Currency)printingEdition.Currency,
+                Type = (Models.Enums.PrintingEditionType)printingEdition.Type,
             };
             return printingEditionModelItem;
         }
-    }
+
+       /*  public Order OrderModelToOrder(OrderModelItem orderModelItem)
+        {
+           var order = new Order
+            {
+                Id = orderModelItem.Id,
+                Description = orderModelItem.Description,
+                UserId = orderModelItem.UserId, 
+                Date =  orderModelItem.Date,
+                Payment = orderModelItem.
+            };
+            return order;
+        }*/
+}
 }

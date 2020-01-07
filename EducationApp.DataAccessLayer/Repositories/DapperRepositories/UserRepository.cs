@@ -32,7 +32,7 @@ namespace EducationApp.DataAccessLayer.Repositories.DapperRepositories
             return result.Succeeded;
         }
 
-        public async Task<ApplicationUser> FindByIdAsync(string id)
+        public async Task<ApplicationUser> FindByIdAsync(long id)
         {
             return await _userManager.FindByIdAsync(id);
         }

@@ -31,7 +31,7 @@ namespace EducationApp.DataAccessLayer.Repositories.EFRepositories
             return result.Succeeded;
         }
 
-        public async Task<ApplicationUser> FindByIdAsync(string id)
+        public async Task<ApplicationUser> FindByIdAsync(long id)
         {
             return await _userManager.FindByIdAsync(id);
         }

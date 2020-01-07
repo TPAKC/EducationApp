@@ -25,7 +25,7 @@ namespace CustomIdentityApp.Controllers
             return Ok(result.Users);
         }
 
-        [HttpPut("{id}")]
+        /*[HttpPut("{id}")]
         public async Task<IActionResult> UpdateAsync(UserModelItem userModel)
         {
             var result = await _userService.UpdateAsync(userModel);
@@ -37,7 +37,7 @@ namespace CustomIdentityApp.Controllers
         { 
             var result = await _userService.DeleteAsync(id);
             return Ok(result.Errors);
-        }
+        }*/
 
         [HttpGet("changeUserStatus")]
         public async Task<IActionResult> ChangeUserStatus(string id, bool userStatus)

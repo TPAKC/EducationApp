@@ -12,9 +12,9 @@ using Microsoft.Extensions.Options;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using static EducationApp.BusinessLogicalLayer.Common.Constants.AccountRole;
-using static EducationApp.BusinessLogicalLayer.Common.Constants.ServiceValidationErrors;
-using static EducationApp.BusinessLogicalLayer.Common.Constants.TemplateText;
+using static EducationApp.BusinessLogicalLayer.Constants.ServiceValidationErrors;
+using static EducationApp.BusinessLogicalLayer.Constants.AccountRole;
+using static EducationApp.BusinessLogicalLayer.Constants.TemplateText;
 
 namespace EducationApp.BusinessLogicalLayer.Services
 {
@@ -23,20 +23,20 @@ namespace EducationApp.BusinessLogicalLayer.Services
 
         private readonly IUserRepository _userRepository;
         private readonly Mapper _mapper;
-        private readonly JwtHelper _jwtHelper;
-        private readonly JwtOptions _jwtOptions;
+       // private readonly JwtHelper _jwtHelper;
+       // private readonly JwtOptions _jwtOptions;
         private readonly EmailHelper _emailHelper;
         //todo inject IEmailHelper +
         public UserService(IUserRepository userRepository, 
             Mapper mapper, 
-            JwtHelper jwtHelper,     
-            IOptions<JwtOptions> jwtOptions, 
+         //   JwtHelper jwtHelper,     
+           // IOptions<JwtOptions> jwtOptions, 
             EmailHelper emailHelper)
         {
             _userRepository = userRepository;
             _mapper = mapper;
-            _jwtHelper = jwtHelper;
-            _jwtOptions = jwtOptions.Value;
+            //_jwtHelper = jwtHelper;
+           // _jwtOptions = jwtOptions.Value;
             _emailHelper = emailHelper;
         }
 
@@ -133,7 +133,7 @@ namespace EducationApp.BusinessLogicalLayer.Services
             return resultModel;
         }
 
-        public async Task<BaseModel> DeleteAsync(string id)
+        public async Task<BaseModel> DeleteAsync(long id)
         {
             var resultModel = new BaseModel();
             var user = await _userRepository.FindByIdAsync(id);
@@ -197,10 +197,10 @@ namespace EducationApp.BusinessLogicalLayer.Services
             return await _userRepository.GenerateEmailConfirmationTokenAsync(user);
     }
 
-    public async Task<BaseModel> ConfirmEmailAsync(string id, string code)
+    public async Task<BaseModel> ConfirmEmailAsync(long id, string code)
     {
         var resultModel = new BaseModel();
-        if (string.IsNullOrWhiteSpace(id) || string.IsNullOrWhiteSpace(code))
+        if (id==0 || string.IsNullOrWhiteSpace(code))
         {
             resultModel.Errors.Add(WrongInputData); //todo from const +
             return resultModel;
@@ -258,15 +258,15 @@ namespace EducationApp.BusinessLogicalLayer.Services
             return password;
         }
 
-        private async Task<string> GetAccessToken(ApplicationUser user)
+       /* private async Task<string> GetAccessToken(ApplicationUser user)
         {
             var roles = await _userRepository.GetRolesAsync(user);
             var role = roles.FirstOrDefault();
             var token = await _jwtHelper.GenerateEncodedToken(user, role);
             return token;
-        }
+        }*/
 
-        public async Task<BaseModel> ChangeUserStatus(string id, bool userStatus)
+        public async Task<BaseModel> ChangeUserStatus(long id, bool userStatus)
         {
             var resultModel = new BaseModel();
             var user = await _userRepository.FindByIdAsync(id);
