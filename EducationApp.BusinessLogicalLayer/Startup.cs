@@ -1,4 +1,5 @@
 ﻿using EducationApp.BusinessLogicalLayer.Helpers;
+using EducationApp.BusinessLogicalLayer.Helpers.Interfaces;
 using EducationApp.BusinessLogicalLayer.Services;
 using EducationApp.BusinessLogicalLayer.Services.Interfaces;
 using EducationApp.DataAccessLayer.Entities;
@@ -38,7 +39,7 @@ namespace EducationApp.BusinessLogicalLayer
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<Mapper, Mapper>();
             services.AddScoped<JwtHelper, JwtHelper>();
-            services.AddScoped<EmailHelper, EmailHelper>();
+            services.AddScoped<IEmailHelper, EmailHelper>();
 
             EducationApp.DataAccessLayer.Startup.RegisterDependencies(connectionString, services);
         }

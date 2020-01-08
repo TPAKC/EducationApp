@@ -13,9 +13,9 @@ namespace EducationApp.PresentationLayer.Controllers
     {
 
         private readonly IUserService _userService;
-        private readonly EmailHelper _emailHelper;
+        private readonly IEmailHelper _emailHelper;
 
-        public AccountController(IUserService service, EmailHelper emailHelper)
+        public AccountController(IUserService service, IEmailHelper emailHelper)
         {
             _emailHelper = emailHelper;
             _userService = service;

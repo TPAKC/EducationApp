@@ -39,11 +39,6 @@
 
 
   <ItemGroup>
-    <Folder Include="Helpers\" />
-  </ItemGroup>
-
-
-  <ItemGroup>
     <ProjectReference Include="..\EducationApp.BusinessLogicalLayer\EducationApp.BusinessLogicalLayer.csproj" />
   </ItemGroup>
 

@@ -78,7 +78,7 @@ namespace EducationApp.DataAccessLayer.Initialization
                     AuthorId = authorId,
                     PrintingEditionId = printingEditionId
                 });
-            }
+           }
         }
     }
 }

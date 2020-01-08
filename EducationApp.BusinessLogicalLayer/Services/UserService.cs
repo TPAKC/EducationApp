@@ -1,19 +1,18 @@
 ﻿using EducationApp.BusinessLogicalLayer.Helpers;
+using EducationApp.BusinessLogicalLayer.Helpers.Interfaces;
 using EducationApp.BusinessLogicalLayer.Models;
 using EducationApp.BusinessLogicalLayer.Models.Base;
 using EducationApp.BusinessLogicalLayer.Models.Models.Account;
 using EducationApp.BusinessLogicalLayer.Models.Users;
 using EducationApp.BusinessLogicalLayer.Models.ViewModels;
 using EducationApp.BusinessLogicalLayer.Services.Interfaces;
-using EducationApp.DataAccessLayer.Entities;
 using EducationApp.DataAccessLayer.Entities.Enums;
 using EducationApp.DataAccessLayer.Repositories.Interfaces;
-using Microsoft.Extensions.Options;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using static EducationApp.BusinessLogicalLayer.Constants.ServiceValidationErrors;
 using static EducationApp.BusinessLogicalLayer.Constants.AccountRole;
+using static EducationApp.BusinessLogicalLayer.Constants.ServiceValidationErrors;
 using static EducationApp.BusinessLogicalLayer.Constants.TemplateText;
 
 namespace EducationApp.BusinessLogicalLayer.Services
@@ -25,13 +24,13 @@ namespace EducationApp.BusinessLogicalLayer.Services
         private readonly Mapper _mapper;
        // private readonly JwtHelper _jwtHelper;
        // private readonly JwtOptions _jwtOptions;
-        private readonly EmailHelper _emailHelper;
-        //todo inject IEmailHelper +
+        private readonly IEmailHelper _emailHelper;
+
         public UserService(IUserRepository userRepository, 
             Mapper mapper, 
          //   JwtHelper jwtHelper,     
            // IOptions<JwtOptions> jwtOptions, 
-            EmailHelper emailHelper)
+            IEmailHelper emailHelper)
         {
             _userRepository = userRepository;
             _mapper = mapper;
