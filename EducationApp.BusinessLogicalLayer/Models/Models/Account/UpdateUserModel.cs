@@ -8,7 +8,7 @@ namespace EducationApp.BusinessLogicalLayer.Models.Models.Account
     public class UpdateUserModel
     {
         [Required]
-        public string Id { get; set; }
+        public long Id { get; set; }
         [Required]
         public string FirstName { get; set; }
         [Required]

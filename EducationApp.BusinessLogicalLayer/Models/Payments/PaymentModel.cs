@@ -6,8 +6,8 @@ namespace EducationApp.BusinessLogicalLayer.Models.Payments
     public class PaymentModelItem
     {
         [Required]
-        public string Id { get; set; }
-        public string TransactionId { get; set; }
+        public long Id { get; set; }
+        public long TransactionId { get; set; }
     }
 
     public class PaymentModel

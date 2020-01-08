@@ -12,7 +12,7 @@ namespace EducationApp.BusinessLogicalLayer.Models.Authors
     public class AuthorModelItem : BaseModel
     {
         [Required]
-        public string Id { get; set; }
+        public long Id { get; set; }
         public string Name { get; set; }
     }
 
