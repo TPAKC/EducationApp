@@ -56,13 +56,13 @@ namespace EducationApp.DataAccessLayer.Initialization
         }
 
         public async Task InitializeAsync()
-        {
+        { 
                 if (await _userManager.FindByNameAsync(AdminEmail) == null)
             {
-                await СreationRole(NameUserRole);
-                await СreationRole(NameAdminRole);
-                await СreationAccount(AdminEmail, AdminPassword, NameAdminRole);
-                await СreationAccount(UserEmail, UserPassword, NameUserRole);
+                await СreationRole(RoleUser);
+                await СreationRole(RoleAdmin);
+                await СreationAccount(AdminEmail, AdminPassword, RoleAdmin);
+                await СreationAccount(UserEmail, UserPassword, RoleUser);
                 var authorId = await _authorRepository.Add(new Author { Name = "Elon Musk" });
                 var printingEditionId = await _printingEditionRepository.Add(new PrintingEdition
                 {

@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace EducationApp.BusinessLogicalLayer.Models.Models.Account
 {
-    public class CreateUserModel
+    public class ProfileModel
     {
         [Required]
-        public string Email { get; set; }
+        public long Id { get; set; }
         [Required]
         public string Password { get; set; }
         [Required]

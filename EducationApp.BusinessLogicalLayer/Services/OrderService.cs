@@ -1,4 +1,5 @@
 ﻿using EducationApp.BusinessLogicalLayer.Helpers;
+using EducationApp.BusinessLogicalLayer.Helpers.ApplicationUserMapper;
 using EducationApp.BusinessLogicalLayer.Models.Base;
 using EducationApp.BusinessLogicalLayer.Models.Orders;
 using EducationApp.BusinessLogicalLayer.Services.Interfaces;
@@ -12,7 +13,7 @@ namespace EducationApp.BusinessLogicalLayer.Services
     {
 
         private readonly IOrderRepository _orderRepository;
-        private readonly Mapper _mapper;
+        private readonly Mapper _mapper; //add order mapper 
 
         public OrderService(IOrderRepository orderRepository, Mapper mapper)
         {

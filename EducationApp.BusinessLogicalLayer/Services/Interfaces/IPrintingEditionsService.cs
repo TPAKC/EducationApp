@@ -8,7 +8,7 @@ namespace EducationApp.BusinessLogicalLayer.Services.Interfaces
     {
         Task<BaseModel> CreateAsync(PrintingEditionModelItem printingEditionModelItem);
         Task<BaseModel> UpdateAsync(PrintingEditionModelItem printingEditionModelItem, long id);
-        Task<PrintingEditionModel> GetPrintingEditionsAsync(bool[] categorys);
+        Task<PrintingEditionModel> GetAllAsync(bool[] categorys);
         Task<BaseModel> DeleteAsync(long id);
     }
 }

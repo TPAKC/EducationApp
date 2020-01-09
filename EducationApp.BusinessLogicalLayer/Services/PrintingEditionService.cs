@@ -1,4 +1,4 @@
-﻿using EducationApp.BusinessLogicalLayer.Helpers;
+﻿using EducationApp.BusinessLogicalLayer.Helpers.Mapper.Interface;
 using EducationApp.BusinessLogicalLayer.Models.Base;
 using EducationApp.BusinessLogicalLayer.Models.PrintingEditions;
 using EducationApp.BusinessLogicalLayer.Services.Interfaces;
@@ -12,9 +12,9 @@ namespace EducationApp.BusinessLogicalLayer.Services
     public class PrintingEditionService : IPrintingEditionsService
     {
         private readonly IPrintingEditionRepository _printingEditionRepository;
-        private readonly Mapper _mapper;
+        private readonly IMapper _mapper;
 
-        public PrintingEditionService(IPrintingEditionRepository printingEditionRepository, Mapper mapper)
+        public PrintingEditionService(IPrintingEditionRepository printingEditionRepository, IMapper mapper)
         {
             _printingEditionRepository = printingEditionRepository;
             _mapper = mapper;
@@ -23,17 +23,17 @@ namespace EducationApp.BusinessLogicalLayer.Services
         public async Task<BaseModel> CreateAsync(PrintingEditionModelItem printingEditionModelItem)
         {
             var resultModel = new BaseModel();
-            var printingEdition = _mapper.PrintingEditionModelToPrintingEdition(printingEditionModelItem);
+            var printingEdition = _mapper.ModelItemToEntity(printingEditionModelItem);
             if (printingEdition == null)
             {
                 resultModel.Errors.Add(ModelIsNotValid);
                 return resultModel;
-            } 
+            }
             var result = await _printingEditionRepository.Add(printingEdition);
+            //add AuthorInPrintEd
             if (result == 0)
             {
-                resultModel.Errors.Add(PrintingEditionNotExist);
-                return resultModel;
+                resultModel.Errors.Add(FailedToCreatePrintingEdition);
             }
             return resultModel;
         }
@@ -41,33 +41,32 @@ namespace EducationApp.BusinessLogicalLayer.Services
         public async Task<BaseModel> UpdateAsync(PrintingEditionModelItem printingEditionModelItem, long id)
         {
             var resultModel = new BaseModel();
-            if (resultModel == null)
+            if (printingEditionModelItem == null)
             {
                 resultModel.Errors.Add(ModelIsNotValid);
             }
 
-            var printingEdition = _mapper.PrintingEditionModelToPrintingEdition(printingEditionModelItem);
+            var printingEdition = _mapper.ModelItemToEntity(printingEditionModelItem);
             if (printingEdition == null)
             {
                 resultModel.Errors.Add(PrintingEditionIsNotFound);
                 return resultModel;
             }
             printingEdition.Id = id;
-            await _printingEditionRepository.Update(printingEdition);
+            //update AuthorInPrintEd
+            var result = await _printingEditionRepository.Update(printingEdition);
+            if (!result)
+            {
+                resultModel.Errors.Add(FailedToUpdatePrintingEdition);
+            }
             return resultModel;
         }
 
-        public async Task<PrintingEditionModel> GetPrintingEditionsAsync(bool[] categorys)
+        public async Task<PrintingEditionModel> GetAllAsync(bool[] categorys) //add filter 
         {
             var printingEditionModel = new PrintingEditionModel();
             var printingEditions = await _printingEditionRepository.GetAll(categorys);
-            if (printingEditions == null)
-            {
-                printingEditionModel.Errors.Add(ListRetrievalError);
-                return printingEditionModel;
-            }
-
-            printingEditionModel.PrintingEditions = printingEditions.Select(printingEdition => _mapper.PrintingEditionToPrintingEditionModelItem(printingEdition)).ToList();
+            printingEditionModel.Items = printingEditions.Select(printingEdition => _mapper.EntityToModelItem(printingEdition)).ToList();
             return printingEditionModel;
         }
 
@@ -77,11 +76,15 @@ namespace EducationApp.BusinessLogicalLayer.Services
             var printingEdition = await _printingEditionRepository.Find(id);
             if (printingEdition == null)
             {
-                resultModel.Errors.Add(PrintingEditionNotExist);
+                resultModel.Errors.Add(PrintingEditionNotFound);
                 return resultModel;
             }
             printingEdition.IsRemoved = true;
-            await _printingEditionRepository.Update(printingEdition);
+            var result = await _printingEditionRepository.Update(printingEdition);
+            if (!result)
+            {
+                resultModel.Errors.Add(FailedToRemovePrintingEdition);
+            }
             return resultModel;
         }
     }

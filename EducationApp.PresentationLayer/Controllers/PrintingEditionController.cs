@@ -16,9 +16,9 @@ namespace EducationApp.PresentationLayer.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> GetPrintingEditions(bool[] categorys)
+        public async Task<ActionResult> GetAll(bool[] categorys)
         {
-            var result = await _printingEditionsService.GetPrintingEditionsAsync(categorys);
+            var result = await _printingEditionsService.GetAllAsync(categorys);
             if (result.Errors.Count != 0) return Ok(result.Errors);
             return Ok(result.PrintingEditions);
         }

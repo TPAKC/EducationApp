@@ -1,5 +1,7 @@
 ﻿using EducationApp.BusinessLogicalLayer.Helpers;
+using EducationApp.BusinessLogicalLayer.Helpers.ApplicationUserMapper;
 using EducationApp.BusinessLogicalLayer.Helpers.Interfaces;
+using EducationApp.BusinessLogicalLayer.Helpers.Mapper.Interface;
 using EducationApp.BusinessLogicalLayer.Services;
 using EducationApp.BusinessLogicalLayer.Services.Interfaces;
 using EducationApp.DataAccessLayer.Entities;
@@ -37,9 +39,8 @@ namespace EducationApp.BusinessLogicalLayer
             services.AddScoped<IPrintingEditionsService, PrintingEditionService>();
             services.AddScoped<IAuthorService, AuthorService>();
             services.AddScoped<IUserService, UserService>();
-            services.AddScoped<Mapper, Mapper>();
-            services.AddScoped<JwtHelper, JwtHelper>();
             services.AddScoped<IEmailHelper, EmailHelper>();
+            services.AddScoped<IMapper, Mapper>();
 
             EducationApp.DataAccessLayer.Startup.RegisterDependencies(connectionString, services);
         }

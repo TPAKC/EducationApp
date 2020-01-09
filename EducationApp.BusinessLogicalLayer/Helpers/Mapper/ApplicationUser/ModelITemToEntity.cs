@@ -1,26 +1,18 @@
-﻿using EducationApp.BusinessLogicalLayer.Models.Users;
+﻿using EducationApp.BusinessLogicalLayer.Helpers.Mapper.Interface;
+using EducationApp.BusinessLogicalLayer.Models.Users;
 using EducationApp.DataAccessLayer.Entities;
-using EducationApp.DataAccessLayer.Repositories.Interfaces;
-using System;
 using System.Threading.Tasks;
 
-namespace EducationApp.BusinessLogicalLayer.Helpers
+namespace EducationApp.BusinessLogicalLayer.Helpers.ApplicationUserMapper
 {
-    public partial class Mapper
+    public partial class Mapper : IMapper
     {
-        private readonly IUserRepository _userRepository;
-
-        public Mapper(IUserRepository userRepository)
+        public ApplicationUser ModelItemToEntity(UserModelItem userModel)
         {
-            _userRepository = userRepository;
-        }
-        public async Task<ApplicationUser> UserModelITemToApplicationUser(UserModelItem userModel)
-        {
-            var user = await _userRepository.FindByIdAsync(userModel.Id);
+            var user = new ApplicationUser();
+            user.Id = userModel.Id;
             user.FirstName = userModel.FirstName;
             user.LastName = userModel.LastName;
-            var code = await _userRepository.GeneratePasswordResetTokenAsync(user);
-            if (!String.IsNullOrWhiteSpace(userModel.Pasword)) await _userRepository.ResetPasswordAsync(user, code, userModel.Pasword);
             return user;
         }
     }

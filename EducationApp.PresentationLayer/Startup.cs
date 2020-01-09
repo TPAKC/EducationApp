@@ -1,5 +1,7 @@
 ﻿using EducationApp.BusinessLogicalLayer.Common;
+using EducationApp.BusinessLogicalLayer.Helpers;
 using EducationApp.PresentationLayer.Data;
+using EducationApp.PresentationLayer.Helpers.Interfaces;
 using EducationApp.PresentationLayer.Middlewares;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -7,7 +9,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Newtonsoft.Json.Converters;
 using System;
 using System.Text.Json.Serialization;
 
@@ -25,13 +26,14 @@ namespace EducationApp.PresentationLayer
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+            //services.AddScoped<IJwtHelper, JwtHelper>();
             string connection = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(connection));
 
             var appSettings = Configuration.GetSection("AppSettings");
             services.Configure<AppSettings>(appSettings);
-
             services.AddMvc().AddJsonOptions(options =>
             {
                 options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());

@@ -1,17 +1,19 @@
-﻿using EducationApp.BusinessLogicalLayer.Models.Users;
+﻿using EducationApp.BusinessLogicalLayer.Helpers.Mapper.Interface;
+using EducationApp.BusinessLogicalLayer.Models.Users;
 using EducationApp.DataAccessLayer.Entities;
 
-namespace EducationApp.BusinessLogicalLayer.Helpers
+namespace EducationApp.BusinessLogicalLayer.Helpers.ApplicationUserMapper
 {
-    public UserModelItem ApplicationUserToUserModelITem(ApplicationUser user)
+    public partial class Mapper : IMapper
     {
-        var model = new UserModelItem
+        public UserModelItem EntityToModelITem(ApplicationUser user)
         {
-            Email = user.Email,
-            Id = user.Id,
-            FirstName = user.FirstName,
-            LastName = user.LastName
-        };
-        return model;
+            var modelItem = new UserModelItem();
+            modelItem.Email = user.Email;
+            modelItem.Id = user.Id;
+            modelItem.FirstName = user.FirstName;
+            modelItem.LastName = user.LastName;
+            return modelItem;
+        }
     }
 }

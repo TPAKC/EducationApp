@@ -1,10 +1,14 @@
-﻿using EducationApp.BusinessLogicalLayer.Models.Users;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace EducationApp.BusinessLogicalLayer.Models.Orders
 {
+    public class OrderModel
+    {
+        public List<OrderModelItem> Items = new List<OrderModelItem>();
+    }
+
     public class OrderModelItem
     {
         [Required]
@@ -12,11 +16,6 @@ namespace EducationApp.BusinessLogicalLayer.Models.Orders
         public string Description { get; set; }
         public long UserId { get; set; }
         public DateTime Date { get; set; }
-        public List<OrderItemModel> OrderItems { get; set; }
-    }
-
-    public class OrderModel
-    {
-        public List<OrderModelItem> Items = new List<OrderModelItem>();
+        public List<OrderItemModelItem> OrderItems { get; set; }
     }
 }

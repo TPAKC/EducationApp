@@ -2,7 +2,7 @@
 
 namespace EducationApp.BusinessLogicalLayer.Models
 {
-    public class LoginView : BaseModel
+    public class LoginModel : BaseModel
     {
         public long UserId { get; set; }
         public bool Confirmed { get; set; }

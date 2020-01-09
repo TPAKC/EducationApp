@@ -6,14 +6,20 @@
         {
             public const string UserIsExist = "User is exist";
             public const string UserCantBeRegistered = "User can't be registered";
-            public const string PrintingEditionNotExist = "Printing edition not exist";
             public const string UserCantBeAddedToRole = "User can't be added to role";
             public const string WrongInputData = "Wrong input data";
             public const string UserNotFound = "User not found";
+            public const string AuthorNotFound = "Author not found";
+            public const string PrintingEditionNotFound = "Printing edition not found";
             public const string UserNotConfirmed = "User not confirmed";
             public const string FailedToChangePassword = "Failed to change password";
+            public const string FailedToCreatePrintingEdition = "Failed to create printing edition";
             public const string FailedToRemoveUser = "Failed to remove user";
             public const string FailedToUpdateUser = "Failed to update user";
+            public const string FailedToUpdatePrintingEdition = "Failed to update printing edition";
+            public const string FailedToUpdateAuthor = "Failed to update author";
+            public const string FailedToRemoveAuthor = "Failed to remove author";
+            public const string FailedToRemovePrintingEdition = "Failed to remove printing edition";
             public const string UserListIsEmpty = "User list is empty";
             public const string AuthorListIsEmpty = "Author list is empty";
             public const string FailedToResetPassword = "Failed to reset password";

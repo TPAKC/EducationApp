@@ -48,7 +48,6 @@
   <ItemGroup>
     <Folder Include="Helpers\Mapper\Payment\" />
     <Folder Include="Helpers\Mapper\Oder\" />
-    <Folder Include="Models\Models\User\" />
   </ItemGroup>
 
 </Project>

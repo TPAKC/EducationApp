@@ -8,8 +8,8 @@ namespace EducationApp.DataAccessLayer.Common
     {
         public class AccountRole
         {
-            public const string NameAdminRole = "admin";
-            public const string NameUserRole = "user";
+            public const string AdminRole = "admin";
+            public const string UserRole = "user";
         }
 
         public class InitializeData

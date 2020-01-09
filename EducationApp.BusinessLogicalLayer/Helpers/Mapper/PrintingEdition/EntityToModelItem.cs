@@ -1,23 +1,21 @@
-﻿using EducationApp.BusinessLogicalLayer.Models.Enums;
+﻿using EducationApp.BusinessLogicalLayer.Helpers.Mapper.Interface;
+using EducationApp.BusinessLogicalLayer.Models.Enums;
 using EducationApp.BusinessLogicalLayer.Models.PrintingEditions;
 using EducationApp.DataAccessLayer.Entities;
 
-namespace EducationApp.BusinessLogicalLayer.Helpers
+namespace EducationApp.BusinessLogicalLayer.Helpers.PrintingEditionMapper
 {
-    public partial class Mapper
+    public partial class Mapper : IMapper
     {
         public PrintingEditionModelItem EntityToModelItem(PrintingEdition printingEdition)
         {
-            var printingEditionModelItem = new PrintingEditionModelItem
-            {
-                Title = printingEdition.Title,
-                Description = printingEdition.Description,
-                Price = printingEdition.Price,
-                Status = (PrintingEditionStatus)printingEdition.Status,
-                Currency = (Currency)printingEdition.Currency,
-                Type = (PrintingEditionType)printingEdition.Type,
-            };
-            return printingEditionModelItem;
+            var modelItem = new PrintingEditionModelItem();
+            modelItem.Title = printingEdition.Title;
+            modelItem.Description = printingEdition.Description;
+            modelItem.Price = printingEdition.Price;
+            modelItem.Status = (PrintingEditionStatus)printingEdition.Status;
+            modelItem.Type = (PrintingEditionType)printingEdition.Type;
+            return modelItem;
         }
     }
 }

@@ -16,9 +16,9 @@ namespace EducationApp.PresentationLayer.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> GetPrintingEditions()
+        public async Task<ActionResult> GetAll()
         {
-            var result = await _authorService.GetAuthorsAsync();
+            var result = await _authorService.GetAllAsync();
             if (result.Errors.Count != 0) return Ok(result.Errors);
             return Ok(result.Authors);
         }

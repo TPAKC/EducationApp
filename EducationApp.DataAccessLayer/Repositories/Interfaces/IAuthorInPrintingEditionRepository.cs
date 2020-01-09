@@ -9,7 +9,7 @@ namespace EducationApp.DataAccessLayer.Repositories.Interfaces
         Task<long> Add(AuthorInPrintingEdition item);
         Task<AuthorInPrintingEdition> Find(long id);
         Task<List<AuthorInPrintingEdition>> GetAll();
-        Task Remove(AuthorInPrintingEdition item);
-        Task Update(AuthorInPrintingEdition item);
+        Task<bool> Remove(AuthorInPrintingEdition item);
+        Task<bool> Update(AuthorInPrintingEdition item);
     }
 }

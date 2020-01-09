@@ -2,7 +2,7 @@
 
 namespace EducationApp.BusinessLogicalLayer.Models
 {
-    public class PageViewModel
+    public class PageViewModel //need to embed or remove
     {
         public int PageNumber { get; private set; }
         public int TotalPages { get; private set; }

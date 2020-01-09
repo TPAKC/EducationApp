@@ -4,8 +4,8 @@
     {
         public class AccountRole
         {
-            public const string NameAdminRole = "admin";
-            public const string NameUserRole = "user";
+            public const string RoleAdmin = "admin";
+            public const string RoleUser = "user";
         }
     }
 }

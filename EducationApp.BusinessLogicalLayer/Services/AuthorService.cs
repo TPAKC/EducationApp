@@ -1,4 +1,4 @@
-﻿using EducationApp.BusinessLogicalLayer.Helpers;
+﻿using EducationApp.BusinessLogicalLayer.Helpers.AuthorMapper;
 using EducationApp.BusinessLogicalLayer.Models.Authors;
 using EducationApp.BusinessLogicalLayer.Models.Base;
 using EducationApp.BusinessLogicalLayer.Services.Interfaces;
@@ -24,7 +24,8 @@ namespace EducationApp.BusinessLogicalLayer.Services
         public async Task<BaseModel> CreateAsync(string name)
         {
             var resultModel = new BaseModel();
-            var author = new Author() { Name = name };
+            var author = new Author();
+            author.Name = name;
             var result = await _authorRepository.Add(author);
             if(result == 0)
             {
@@ -38,19 +39,37 @@ namespace EducationApp.BusinessLogicalLayer.Services
             var resultModel = new BaseModel();
 
             var author = await _authorRepository.Find(id);
+            if (author == null)
+            {
+                resultModel.Errors.Add(AuthorNotFound);
+                return resultModel;
+            }
             author.Name = name;
-            await _authorRepository.Update(author);// add exc error
+            var result = await _authorRepository.Update(author);
+            if(!result)
+            {
+                resultModel.Errors.Add(FailedToUpdateAuthor);
+            }
             return resultModel;
         }
         public async Task<BaseModel> DeleteAsync(long id)
         {
             var resultModel = new BaseModel();
             var author = await _authorRepository.Find(id);
-            await _authorRepository.Remove(author);// add exc error
+            if (author == null)
+            {
+                resultModel.Errors.Add(AuthorNotFound);
+                return resultModel;
+            }
+            var result = await _authorRepository.Remove(author);
+            if (!result)
+            {
+                resultModel.Errors.Add(FailedToRemoveAuthor);
+            }
             return resultModel;
         }
 
-        public async Task<AuthorModel> GetAuthorsAsync()  
+        public async Task<AuthorModel> GetAllAsync()  
         {
             var authorResultModel = new AuthorModel();
             var authors = await _authorRepository.GetAll();
@@ -59,7 +78,7 @@ namespace EducationApp.BusinessLogicalLayer.Services
                 authorResultModel.Errors.Add(ListRetrievalError);
                 return authorResultModel;
             }
-            authorResultModel.Authors = authors.Select(author => _mapper.AuthorToAuthorModelItem(author)).ToList();
+            authorResultModel.Items = authors.Select(author => _mapper.EntityToModelItem(author)).ToList();
             return authorResultModel;
         }   
     }

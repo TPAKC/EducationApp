@@ -10,16 +10,16 @@ namespace EducationApp.BusinessLogicalLayer.Services.Interfaces
 {
     public interface IUserService
     {
-        Task<UserModelItem> CreateAsync(CreateUserModel registerModel);
+        Task<UserModelItem> CreateAsync(RegistrationModel registerModel);
         Task<BaseModel> ChangePasswordAsync(ChangePasswordViewModel changePasswordViewModel);
         Task<BaseModel> DeleteAsync(long id);
         Task<BaseModel> UpdateAsync(UserModelItem userModel);
-        UserModel GetUsersAsync(bool isActive, bool isBlocked, int numberSortState);
+        UserModel GetAllAsync(bool isActive, bool isBlocked, int numberSortState);
         Task SignOutAsync();
         Task<string> GenerateEmailConfirmationTokenAsync(string email);
         Task<BaseModel> ConfirmEmailAsync(long id, string code);
         Task<BaseModel> ForgotPassword(string email);
-        Task<LoginView> Login(string email, string password, bool rememberMe);
+        Task<LoginModel> Login(string email, string password, bool rememberMe);
         Task<BaseModel> ChangeUserStatus(long id, bool userStatus);
     }
 }

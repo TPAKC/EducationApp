@@ -1,20 +1,19 @@
-﻿using EducationApp.BusinessLogicalLayer.Models.Models.Account;
+﻿using EducationApp.BusinessLogicalLayer.Helpers.Mapper.Interface;
+using EducationApp.BusinessLogicalLayer.Models.Models.Account;
 using EducationApp.DataAccessLayer.Entities;
 
-namespace EducationApp.BusinessLogicalLayer.Helpers
+namespace EducationApp.BusinessLogicalLayer.Helpers.ApplicationUserMapper
 {
-    public partial class Mapper
+    public partial class Mapper : IMapper
     {
-        public ApplicationUser RegisterModelToApplicationUser(CreateUserModel registerModel)
+        public ApplicationUser RegisterModelToEntity(RegistrationModel registerModel)
         {
-            var user = new ApplicationUser
-            {
-                Email = registerModel.Email,
-                UserName = registerModel.Email,
-                FirstName = registerModel.FirstName,
-                LastName = registerModel.LastName
-            };
-            return user;
+            var user = new ApplicationUser();
+            user.Email = registerModel.Email;
+            user.UserName = registerModel.Email;
+            user.FirstName = registerModel.FirstName;
+            user.LastName = registerModel.LastName;
+            return user;  
         }
     }
 }

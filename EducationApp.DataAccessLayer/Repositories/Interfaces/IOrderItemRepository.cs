@@ -9,7 +9,7 @@ namespace EducationApp.DataAccessLayer.Repositories.Interfaces
         Task<long> Add(OrderItem item);
         Task<OrderItem> Find(long id);
         Task<List<OrderItem>> GetAll();
-        Task Remove(OrderItem item);
-        Task Update(OrderItem item);
+        Task<bool> Remove(OrderItem item);
+        Task<bool> Update(OrderItem item);
     }
 }

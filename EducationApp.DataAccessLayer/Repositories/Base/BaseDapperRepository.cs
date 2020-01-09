@@ -23,14 +23,14 @@ namespace EducationApp.DataAccessLayer.Repositories.Base
             return await Connection.InsertAsync(item);
         }
 
-        public virtual async Task Update(TEntity item)
+        public virtual async Task<bool> Update(TEntity item)
         {
-            await Connection.UpdateAsync(item); 
+            return await Connection.UpdateAsync(item); 
         }
 
-        public virtual async Task Remove(TEntity item)
+        public virtual async Task<bool> Remove(TEntity item)
         {
-            await Connection.DeleteAsync<TEntity>(item);
+            return await Connection.DeleteAsync<TEntity>(item);
         }
 
         public virtual async Task<TEntity> Find(long id)
