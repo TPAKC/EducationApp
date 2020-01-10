@@ -1,8 +1,6 @@
-﻿using EducationApp.BusinessLogicalLayer.Common;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using System;
-using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -13,7 +11,7 @@ namespace EducationApp.PresentationLayer.Middlewares
         private readonly RequestDelegate _next;
         private readonly ILogger _logger;
 
-        public ExceptionMiddleware(RequestDelegate next, ILogger<ExceptionMiddleware> logger) //todo use DI to inject ILogger +
+        public ExceptionMiddleware(RequestDelegate next, ILogger<ExceptionMiddleware> logger)
         {
             _logger = logger;
             _next = next ?? throw new ArgumentNullException(nameof(next));
@@ -48,6 +46,5 @@ namespace EducationApp.PresentationLayer.Middlewares
             context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
             await context.Response.WriteAsync("Internal server error,");
         }
-        //todo remove +
     }
 }

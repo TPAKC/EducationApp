@@ -2,6 +2,7 @@
 using EducationApp.BusinessLogicalLayer.Models.Base;
 using EducationApp.BusinessLogicalLayer.Models.PrintingEditions;
 using EducationApp.BusinessLogicalLayer.Services.Interfaces;
+using EducationApp.DataAccessLayer.Entities;
 using EducationApp.DataAccessLayer.Repositories.Interfaces;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,10 +13,15 @@ namespace EducationApp.BusinessLogicalLayer.Services
     public class PrintingEditionService : IPrintingEditionsService
     {
         private readonly IPrintingEditionRepository _printingEditionRepository;
+        private readonly IAuthorInPrintingEditionRepository _authorInPrintingEditionyRepository;
         private readonly IMapper _mapper;
 
-        public PrintingEditionService(IPrintingEditionRepository printingEditionRepository, IMapper mapper)
+        public PrintingEditionService(
+            IPrintingEditionRepository printingEditionRepository, 
+            IAuthorInPrintingEditionRepository authorInPrintingEditionyRepository, 
+            IMapper mapper)
         {
+            _authorInPrintingEditionyRepository = authorInPrintingEditionyRepository;
             _printingEditionRepository = printingEditionRepository;
             _mapper = mapper;
         }
@@ -29,8 +35,19 @@ namespace EducationApp.BusinessLogicalLayer.Services
                 resultModel.Errors.Add(ModelIsNotValid);
                 return resultModel;
             }
-            var result = await _printingEditionRepository.Add(printingEdition);
-            //add AuthorInPrintEd
+
+            foreach(int element in fibNumbers)
+            { 
+                var authorInPrintingEditiony = new AuthorInPrintingEdition();
+                authorInPrintingEditiony.AuthorId = printingEditionModelItem.AuthorId;
+                authorInPrintingEditiony.PrintingEditionId = printingEdition.Id;
+            }
+            var result = await _authorInPrintingEditionyRepository.Add(authorInPrintingEditiony);
+            if (result == 0)
+            {
+                resultModel.Errors.Add(FailedToCreatePrintingEdition);
+            }
+            result = await _printingEditionRepository.Add(printingEdition);
             if (result == 0)
             {
                 resultModel.Errors.Add(FailedToCreatePrintingEdition);
@@ -80,6 +97,7 @@ namespace EducationApp.BusinessLogicalLayer.Services
                 return resultModel;
             }
             printingEdition.IsRemoved = true;
+            for()
             var result = await _printingEditionRepository.Update(printingEdition);
             if (!result)
             {
