@@ -1,4 +1,4 @@
-﻿using EducationApp.BusinessLogicalLayer.Helpers.AuthorMapper;
+﻿using EducationApp.BusinessLogicalLayer.Helpers.Mapper;
 using EducationApp.BusinessLogicalLayer.Models.Authors;
 using EducationApp.BusinessLogicalLayer.Models.Base;
 using EducationApp.BusinessLogicalLayer.Services.Interfaces;
@@ -13,10 +13,15 @@ namespace EducationApp.BusinessLogicalLayer.Services
     public class AuthorService : IAuthorService
     {
         private readonly IAuthorRepository _authorRepository;
+        private readonly IAuthorInPrintingEditionRepository _authorInPrintingEditionRepository;
         private readonly Mapper _mapper;
 
-        public AuthorService(IAuthorRepository authorRepository, Mapper mapper)
+        public AuthorService(
+            IAuthorRepository authorRepository,
+            IAuthorInPrintingEditionRepository authorInPrintingEditionRepository,
+            Mapper mapper)
         {
+            _authorInPrintingEditionRepository = authorInPrintingEditionRepository;
             _authorRepository = authorRepository;
             _mapper = mapper;
         }
@@ -66,6 +71,7 @@ namespace EducationApp.BusinessLogicalLayer.Services
             {
                 resultModel.Errors.Add(FailedToRemoveAuthor);
             }
+            _authorInPrintingEditionRepository.RemoveByAuthor(id);
             return resultModel;
         }
 

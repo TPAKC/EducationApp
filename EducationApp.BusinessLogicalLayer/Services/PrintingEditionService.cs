@@ -1,8 +1,8 @@
 ﻿using EducationApp.BusinessLogicalLayer.Helpers.Mapper.Interface;
 using EducationApp.BusinessLogicalLayer.Models.Base;
+using EducationApp.BusinessLogicalLayer.Models.Models.PrintingEdition;
 using EducationApp.BusinessLogicalLayer.Models.PrintingEditions;
 using EducationApp.BusinessLogicalLayer.Services.Interfaces;
-using EducationApp.DataAccessLayer.Entities;
 using EducationApp.DataAccessLayer.Repositories.Interfaces;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,64 +13,64 @@ namespace EducationApp.BusinessLogicalLayer.Services
     public class PrintingEditionService : IPrintingEditionsService
     {
         private readonly IPrintingEditionRepository _printingEditionRepository;
-        private readonly IAuthorInPrintingEditionRepository _authorInPrintingEditionyRepository;
+        private readonly IAuthorInPrintingEditionRepository _authorInPrintingEditionRepository;
         private readonly IMapper _mapper;
 
         public PrintingEditionService(
-            IPrintingEditionRepository printingEditionRepository, 
-            IAuthorInPrintingEditionRepository authorInPrintingEditionyRepository, 
+            IPrintingEditionRepository printingEditionRepository,
+            IAuthorInPrintingEditionRepository authorInPrintingEditionRepository,
             IMapper mapper)
         {
-            _authorInPrintingEditionyRepository = authorInPrintingEditionyRepository;
+            _authorInPrintingEditionRepository = authorInPrintingEditionRepository;
             _printingEditionRepository = printingEditionRepository;
             _mapper = mapper;
         }
 
-        public async Task<BaseModel> CreateAsync(PrintingEditionModelItem printingEditionModelItem)
+        public async Task<BaseModel> CreateAsync(NewProductModel newProductModel)
         {
             var resultModel = new BaseModel();
-            var printingEdition = _mapper.ModelItemToEntity(printingEditionModelItem);
+            var printingEdition = _mapper.NewProductModelToEntity(newProductModel);
             if (printingEdition == null)
             {
                 resultModel.Errors.Add(ModelIsNotValid);
                 return resultModel;
             }
 
-            foreach(int element in fibNumbers)
-            { 
-                var authorInPrintingEditiony = new AuthorInPrintingEdition();
-                authorInPrintingEditiony.AuthorId = printingEditionModelItem.AuthorId;
-                authorInPrintingEditiony.PrintingEditionId = printingEdition.Id;
-            }
-            var result = await _authorInPrintingEditionyRepository.Add(authorInPrintingEditiony);
-            if (result == 0)
+            var resultAdd = await _printingEditionRepository.Add(printingEdition);
+            if (resultAdd == 0)
             {
                 resultModel.Errors.Add(FailedToCreatePrintingEdition);
             }
-            result = await _printingEditionRepository.Add(printingEdition);
-            if (result == 0)
+
+            var resultAddRange = await _authorInPrintingEditionRepository.AddRange(newProductModel.AuthorsId, resultAdd);
+            if (resultAddRange)
             {
-                resultModel.Errors.Add(FailedToCreatePrintingEdition);
+                resultModel.Errors.Add(FailedCreatingСonnection);
             }
             return resultModel;
         }
 
-        public async Task<BaseModel> UpdateAsync(PrintingEditionModelItem printingEditionModelItem, long id)
+        public async Task<BaseModel> UpdateAsync(NewProductModel productModel, long id)
         {
             var resultModel = new BaseModel();
-            if (printingEditionModelItem == null)
+            if (productModel == null)
             {
                 resultModel.Errors.Add(ModelIsNotValid);
             }
 
-            var printingEdition = _mapper.ModelItemToEntity(printingEditionModelItem);
+            var printingEdition = _mapper.NewProductModelToEntity(productModel);
             if (printingEdition == null)
             {
                 resultModel.Errors.Add(PrintingEditionIsNotFound);
                 return resultModel;
             }
             printingEdition.Id = id;
-            //update AuthorInPrintEd
+            _authorInPrintingEditionRepository.RemoveByPrintingEdition(id);
+            var resultAddRange = await _authorInPrintingEditionRepository.AddRange(productModel.AuthorsId, id);
+            if (resultAddRange)
+            {
+                resultModel.Errors.Add(FailedCreatingСonnection);
+            }
             var result = await _printingEditionRepository.Update(printingEdition);
             if (!result)
             {
@@ -97,9 +97,10 @@ namespace EducationApp.BusinessLogicalLayer.Services
                 return resultModel;
             }
             printingEdition.IsRemoved = true;
-            for()
-            var result = await _printingEditionRepository.Update(printingEdition);
-            if (!result)
+            _authorInPrintingEditionRepository.RemoveByPrintingEdition(id);
+
+            var resultUpdate = await _printingEditionRepository.Update(printingEdition);
+            if (!resultUpdate)
             {
                 resultModel.Errors.Add(FailedToRemovePrintingEdition);
             }

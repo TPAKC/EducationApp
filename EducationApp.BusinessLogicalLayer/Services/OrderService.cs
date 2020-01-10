@@ -1,11 +1,6 @@
-﻿using EducationApp.BusinessLogicalLayer.Helpers;
-using EducationApp.BusinessLogicalLayer.Helpers.ApplicationUserMapper;
-using EducationApp.BusinessLogicalLayer.Models.Base;
-using EducationApp.BusinessLogicalLayer.Models.Orders;
+﻿using EducationApp.BusinessLogicalLayer.Helpers.Mapper;
 using EducationApp.BusinessLogicalLayer.Services.Interfaces;
 using EducationApp.DataAccessLayer.Repositories.Interfaces;
-using System.Threading.Tasks;
-using static EducationApp.BusinessLogicalLayer.Constants.ServiceValidationErrors;
 
 namespace EducationApp.BusinessLogicalLayer.Services
 {

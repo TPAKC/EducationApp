@@ -20,7 +20,7 @@ namespace EducationApp.PresentationLayer.Controllers
         {
             var result = await _authorService.GetAllAsync();
             if (result.Errors.Count != 0) return Ok(result.Errors);
-            return Ok(result.Authors);
+            return Ok(result.Items);
         }
 
         [HttpPost]

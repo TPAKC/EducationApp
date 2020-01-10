@@ -3,7 +3,7 @@ using EducationApp.BusinessLogicalLayer.Models.Enums;
 using EducationApp.BusinessLogicalLayer.Models.PrintingEditions;
 using EducationApp.DataAccessLayer.Entities;
 
-namespace EducationApp.BusinessLogicalLayer.Helpers.PrintingEditionMapper
+namespace EducationApp.BusinessLogicalLayer.Helpers.Mapper
 {
     public partial class Mapper : IMapper
     {
@@ -13,7 +13,7 @@ namespace EducationApp.BusinessLogicalLayer.Helpers.PrintingEditionMapper
             modelItem.Title = printingEdition.Title;
             modelItem.Description = printingEdition.Description;
             modelItem.Price = printingEdition.Price;
-            modelItem.Status = (PrintingEditionStatus)printingEdition.Status;
+            modelItem.Currency = (Currency)printingEdition.Currency;
             modelItem.Type = (PrintingEditionType)printingEdition.Type;
             return modelItem;
         }

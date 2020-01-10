@@ -1,4 +1,5 @@
-﻿using EducationApp.BusinessLogicalLayer.Models.PrintingEditions;
+﻿using EducationApp.BusinessLogicalLayer.Models.Models.PrintingEdition;
+using EducationApp.BusinessLogicalLayer.Models.PrintingEditions;
 using EducationApp.BusinessLogicalLayer.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -20,13 +21,13 @@ namespace EducationApp.PresentationLayer.Controllers
         {
             var result = await _printingEditionsService.GetAllAsync(categorys);
             if (result.Errors.Count != 0) return Ok(result.Errors);
-            return Ok(result.PrintingEditions);
+            return Ok(result.Items);
         }
 
         [HttpPost]
-        public async Task<ActionResult> Create(PrintingEditionModelItem printingEditionModelItem)
+        public async Task<ActionResult> Create(NewProductModel newProductModel)
         {
-            var result = await _printingEditionsService.CreateAsync(printingEditionModelItem);
+            var result = await _printingEditionsService.CreateAsync(newProductModel);
             return Ok(result.Errors);
         }
         /*

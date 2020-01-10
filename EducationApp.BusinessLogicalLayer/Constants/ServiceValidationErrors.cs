@@ -16,6 +16,8 @@
             public const string FailedToCreatePrintingEdition = "Failed to create printing edition";
             public const string FailedToRemoveUser = "Failed to remove user";
             public const string FailedToUpdateUser = "Failed to update user";
+            public const string FailedCreatingСonnection = "Failed to creating connection";
+            public const string FailedRemoveСonnection = "Failed to remove connection";
             public const string FailedToUpdatePrintingEdition = "Failed to update printing edition";
             public const string FailedToUpdateAuthor = "Failed to update author";
             public const string FailedToRemoveAuthor = "Failed to remove author";

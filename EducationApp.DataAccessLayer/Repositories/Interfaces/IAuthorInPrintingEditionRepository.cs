@@ -11,5 +11,8 @@ namespace EducationApp.DataAccessLayer.Repositories.Interfaces
         Task<List<AuthorInPrintingEdition>> GetAll();
         Task<bool> Remove(AuthorInPrintingEdition item);
         Task<bool> Update(AuthorInPrintingEdition item);
+        Task<bool> AddRange(List<long> authorsId, long printingEditionId);
+        long RemoveByAuthor(long authorId);
+        long RemoveByPrintingEdition(long printingEditionId);
     }
 }

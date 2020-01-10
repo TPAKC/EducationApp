@@ -1,17 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace EducationApp.DataAccessLayer.Common
+﻿namespace EducationApp.DataAccessLayer.Common
 {
-    class Constants
+    public partial class Constants
     {
-        public class AccountRole
-        {
-            public const string AdminRole = "admin";
-            public const string UserRole = "user";
-        }
-
         public class InitializeData
         {
             public const string AdminEmail = "admin@gmail.com";

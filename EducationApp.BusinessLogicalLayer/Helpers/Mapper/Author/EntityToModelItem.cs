@@ -1,7 +1,7 @@
 ﻿using EducationApp.BusinessLogicalLayer.Models.Authors;
 using EducationApp.DataAccessLayer.Entities;
 
-namespace EducationApp.BusinessLogicalLayer.Helpers.AuthorMapper
+namespace EducationApp.BusinessLogicalLayer.Helpers.Mapper
 {
     public partial class Mapper
     {

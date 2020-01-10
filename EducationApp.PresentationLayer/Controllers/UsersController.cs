@@ -22,7 +22,7 @@ namespace CustomIdentityApp.Controllers
         {
             var result = _userService.GetAllAsync(isActive, isBlocked, numberSortState);
             if(result.Errors.Count!=0) return Ok(result.Errors);
-            return Ok(result.Users);
+            return Ok(result.Items);
         }
 
         /*[HttpPut("{id}")]

@@ -2,7 +2,7 @@
 using EducationApp.BusinessLogicalLayer.Models.Models.Account;
 using EducationApp.DataAccessLayer.Entities;
 
-namespace EducationApp.BusinessLogicalLayer.Helpers.ApplicationUserMapper
+namespace EducationApp.BusinessLogicalLayer.Helpers.Mapper
 {
     public partial class Mapper : IMapper
     {

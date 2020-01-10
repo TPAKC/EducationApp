@@ -1,5 +1,6 @@
 ﻿using EducationApp.BusinessLogicalLayer.Models.Authors;
 using EducationApp.BusinessLogicalLayer.Models.Models.Account;
+using EducationApp.BusinessLogicalLayer.Models.Models.PrintingEdition;
 using EducationApp.BusinessLogicalLayer.Models.PrintingEditions;
 using EducationApp.BusinessLogicalLayer.Models.Users;
 using EducationApp.DataAccessLayer.Entities;
@@ -13,6 +14,6 @@ namespace EducationApp.BusinessLogicalLayer.Helpers.Mapper.Interface
         ApplicationUser RegisterModelToEntity(RegistrationModel registerModel);
         AuthorModelItem EntityToModelItem(Author author);
         PrintingEditionModelItem EntityToModelItem(PrintingEdition printingEdition);
-        PrintingEdition ModelItemToEntity(PrintingEditionModelItem modelItem);
+        PrintingEdition NewProductModelToEntity(NewProductModel newProductModel);
     }
 }

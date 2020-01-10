@@ -8,7 +8,7 @@ using static EducationApp.DataAccessLayer.Common.Constants.InitializeData;
 
 namespace EducationApp.DataAccessLayer.Initialization
 {
-    public class DataBaseInitializer //todo use DI +
+    public class DataBaseInitializer
     {
 
         private readonly UserManager<ApplicationUser> _userManager;
@@ -59,8 +59,8 @@ namespace EducationApp.DataAccessLayer.Initialization
         { 
                 if (await _userManager.FindByNameAsync(AdminEmail) == null)
             {
-                await СreationRole(RoleUser);
                 await СreationRole(RoleAdmin);
+                await СreationRole(RoleUser);
                 await СreationAccount(AdminEmail, AdminPassword, RoleAdmin);
                 await СreationAccount(UserEmail, UserPassword, RoleUser);
                 var authorId = await _authorRepository.Add(new Author { Name = "Elon Musk" });

@@ -1,5 +1,5 @@
-﻿using EducationApp.BusinessLogicalLayer.Helpers.ApplicationUserMapper;
-using EducationApp.BusinessLogicalLayer.Helpers.Interfaces;
+﻿using EducationApp.BusinessLogicalLayer.Helpers.Interfaces;
+using EducationApp.BusinessLogicalLayer.Helpers.Mapper;
 using EducationApp.BusinessLogicalLayer.Models;
 using EducationApp.BusinessLogicalLayer.Models.Base;
 using EducationApp.BusinessLogicalLayer.Models.Models.Account;
@@ -11,9 +11,9 @@ using EducationApp.DataAccessLayer.Repositories.Interfaces;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using static EducationApp.BusinessLogicalLayer.Constants.AccountRole;
 using static EducationApp.BusinessLogicalLayer.Constants.ServiceValidationErrors;
 using static EducationApp.BusinessLogicalLayer.Constants.TemplateText;
+using static EducationApp.BusinessLogicalLayer.Constants.AccountRole;
 
 namespace EducationApp.BusinessLogicalLayer.Services
 {
@@ -98,7 +98,7 @@ namespace EducationApp.BusinessLogicalLayer.Services
                 return resultModel;
             }
 
-            result = await _userRepository.AddToRoleAsync(user, UserRole);
+            result = await _userRepository.AddToRoleAsync(user, RoleUser);
             if (!result)
             {
                 resultModel.Errors.Add(UserCantBeAddedToRole);
@@ -154,7 +154,7 @@ namespace EducationApp.BusinessLogicalLayer.Services
                 resultModel.Errors.Add(ModelIsNotValid);
             }
 
-            var user = await _mapper.ModelItemToEntity(userModel);
+            var user = _mapper.ModelItemToEntity(userModel);
             if (user == null)
             {
                 resultModel.Errors.Add(UserIsExist);
