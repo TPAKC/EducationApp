@@ -5,7 +5,7 @@ namespace EducationApp.DataAccessLayer.Entities
 {
     public class AuthorInPrintingEdition : BaseEntity
     {
-        public long AuthorId { get; set; } //todo check +
+        public long AuthorId { get; set; } 
         public long PrintingEditionId { get; set; }
         //public DateTime Date { get; set; } 
     }

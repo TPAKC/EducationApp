@@ -4,6 +4,7 @@ using EducationApp.DataAccessLayer.Entities;
 using EducationApp.DataAccessLayer.Entities.Enums;
 using EducationApp.DataAccessLayer.Repositories.Base;
 using EducationApp.DataAccessLayer.Repositories.Interfaces;
+using EducationApp.DataAccessLayer.ResponseModels.Items;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,10 +16,11 @@ namespace EducationApp.DataAccessLayer.Repositories.DapperRepositories
         public PrintingEditionRepository(Connection connection) : base(connection)
         {
         }
-        public async Task<List<PrintingEdition>> GetAll(bool[] types)
+        public async Task<List<GetAllItemsEditionItemResponseModel>> GetAll(bool[] types)
         {
-            List<PrintingEdition> result = new List<PrintingEdition>();
+            List<GetAllItemsEditionItemResponseModel> result = new List<GetAllItemsEditionItemResponseModel>();
             var printingEditions = (await Connection.GetAllAsync<PrintingEdition>()).AsList();
+            result = printingEditions.Select(user => _mapper.EntityToModelITem(user)).ToList();
             if (types[(int)TypePrintingEdition.Book])
             {
                 var evens = printingEditions.Where(printingEdition => printingEdition.Type == TypePrintingEdition.Book);
