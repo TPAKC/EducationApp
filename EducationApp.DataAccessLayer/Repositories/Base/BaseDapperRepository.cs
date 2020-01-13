@@ -11,7 +11,7 @@ namespace EducationApp.DataAccessLayer.Repositories.Base
     public class BaseDapperRepository<TEntity> where TEntity: BaseEntity
     {
 
-        protected IDbConnection Connection { get; set; }
+        protected string _connectionString { get; set; } // новая трока конекшена
 
         public BaseDapperRepository(Connection connection)
         {
@@ -20,7 +20,7 @@ namespace EducationApp.DataAccessLayer.Repositories.Base
 
         public virtual async Task<long> Add(TEntity item)
         {
-            return await Connection.InsertAsync(item);
+            return await Connection.InsertAsync(item); //Везде новые конекшены
         }
 
         public virtual async Task<bool> Update(TEntity item)
@@ -35,13 +35,13 @@ namespace EducationApp.DataAccessLayer.Repositories.Base
 
         public virtual async Task<TEntity> Find(long id)
         {
-            var result = await Connection.GetAsync<TEntity>(id);
+            var result = await Connection.GetAsync<TEntity>(id);//Везде новые конекшены
             return result;
         }
 
         public async Task<List<TEntity>> GetAll()
         {
-            return (await Connection.GetAllAsync<TEntity>()).AsList();
+            return (await Connection.GetAllAsync<TEntity>()).AsList();//Везде новые конекшены
         }
     }
 }

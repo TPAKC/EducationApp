@@ -13,27 +13,50 @@ namespace EducationApp.DataAccessLayer.Initialization
 
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole<long>> _roleManager;
-        private readonly IPrintingEditionRepository _printingEditionRepository;
+      /*  private readonly IPrintingEditionRepository _printingEditionRepository;
         private readonly IAuthorRepository _authorRepository;
-        private readonly IAuthorInPrintingEditionRepository _authorInPrintingEditionRepository;
+        private readonly IAuthorInPrintingEditionRepository _authorInPrintingEditionRepository;*/ //вместо всего этого работать с контекстом
 
         public DataBaseInitializer(
             UserManager<ApplicationUser> userManager, 
-            RoleManager<IdentityRole<long>> roleManager, 
-            IPrintingEditionRepository printingEditionRepository, 
-            IAuthorRepository authorRepository, 
-            IAuthorInPrintingEditionRepository authorInPrintingEditionRepository)
+            RoleManager<IdentityRole<long>> roleManager)
         {
             _userManager = userManager;
             _roleManager = roleManager;
-            _printingEditionRepository = printingEditionRepository;
-            _authorRepository = authorRepository;
-            _authorInPrintingEditionRepository = authorInPrintingEditionRepository;
+        }
+
+        public async Task InitializeAsync()
+        {
+            if (await _userManager.FindByNameAsync(AdminEmail) == null)
+            {
+                await СreationRole(RoleAdmin);
+                await СreationRole(RoleUser);//Один приватный метод c СreationRole(RoleAdmin)
+                await СreationAccount(AdminEmail, AdminPassword, RoleAdmin);
+                await СreationAccount(UserEmail, UserPassword, RoleUser);//Один приватный метод c СreationAccount(AdminEmail, AdminPassword, RoleAdmin)
+
+
+                //Все дальшще сделать тоже приватным методом
+                var authorId = await _authorRepository.Add(new Author { Name = "Elon Musk" });//локальные константы
+                var printingEditionId = await _printingEditionRepository.Add(new PrintingEdition
+                {
+                    Title = "TestTitle", //локальные константы
+                    Description = "TestDescription", //локальные константы
+                    Price = 100,
+                    Status = StatusPrintingEdition.Paid,
+                    Currency = CurrencyPrintingEdition.USD,
+                    Type = TypePrintingEdition.Book
+                });
+                await _authorInPrintingEditionRepository.Add(new AuthorInPrintingEdition
+                {
+                    AuthorId = authorId,
+                    PrintingEditionId = printingEditionId
+                });
+            }
         }
 
         private async Task СreationRole(string role)
         {
-            await _roleManager.CreateAsync(new IdentityRole<long>(role)); //todo use enum or const +
+            await _roleManager.CreateAsync(new IdentityRole<long>(role)); //format document в начале
         }
 
         private async Task СreationAccount(string email, string password, string role)
@@ -53,32 +76,6 @@ namespace EducationApp.DataAccessLayer.Initialization
             {
                 await _userManager.AddToRoleAsync(user, role);
             }
-        }
-
-        public async Task InitializeAsync()
-        { 
-                if (await _userManager.FindByNameAsync(AdminEmail) == null)
-            {
-                await СreationRole(RoleAdmin);
-                await СreationRole(RoleUser);
-                await СreationAccount(AdminEmail, AdminPassword, RoleAdmin);
-                await СreationAccount(UserEmail, UserPassword, RoleUser);
-                var authorId = await _authorRepository.Add(new Author { Name = "Elon Musk" });
-                var printingEditionId = await _printingEditionRepository.Add(new PrintingEdition
-                {
-                    Title = "TestTitle",
-                    Description = "TestDescription",
-                    Price = 100,
-                    Status = StatusPrintingEdition.Paid,
-                    Currency = CurrencyPrintingEdition.USD,
-                    Type = TypePrintingEdition.Book
-                });
-                await _authorInPrintingEditionRepository.Add(new AuthorInPrintingEdition
-                {
-                    AuthorId = authorId,
-                    PrintingEditionId = printingEditionId
-                });
-           }
         }
     }
 }

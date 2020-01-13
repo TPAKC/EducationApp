@@ -1,11 +1,12 @@
 ﻿using EducationApp.BusinessLogicalLayer.Models.Models.PrintingEdition;
-using EducationApp.BusinessLogicalLayer.Models.PrintingEditions;
 using EducationApp.BusinessLogicalLayer.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
 namespace EducationApp.PresentationLayer.Controllers
 {
+    [ApiController]
+    [Route("api/[controller]")]
     public class PrintingEditionController : ControllerBase
     {
 

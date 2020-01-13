@@ -21,7 +21,7 @@ namespace EducationApp.DataAccessLayer.Repositories.Interfaces
         Task<string> GeneratePasswordResetTokenAsync(ApplicationUser user);
         Task<bool> IsEmailConfirmedAsync(ApplicationUser user);
         Task<bool> PasswordSignInAsync(ApplicationUser user, string password, bool isPersistent);
-        Task SignOutAsync();
+        Task<bool> LogOutAsync();
         Task<string> GenerateEmailConfirmationTokenAsync(ApplicationUser user);
         Task<bool> ConfirmEmailAsync(ApplicationUser user, string code);
         Task<bool> ResetPasswordAsync(ApplicationUser user, string code, string password);

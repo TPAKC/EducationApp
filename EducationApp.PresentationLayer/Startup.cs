@@ -28,9 +28,6 @@ namespace EducationApp.PresentationLayer
         {
 
             //services.AddScoped<IJwtHelper, JwtHelper>();
-            string connection = Configuration.GetConnectionString("DefaultConnection");
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(connection));
 
             var appSettings = Configuration.GetSection("AppSettings");
             services.Configure<AppSettings>(appSettings);
@@ -41,6 +38,7 @@ namespace EducationApp.PresentationLayer
 
             services.AddControllers();
 
+            string connection = Configuration.GetConnectionString("DefaultConnection");
             BusinessLogicalLayer.Startup.RegisterDependencies(connection, services);
 
             services.AddSwaggerGen(
@@ -82,7 +80,7 @@ namespace EducationApp.PresentationLayer
             app.UseMiddleware<ExceptionMiddleware>();
             app.UseRouting();
 
-            BusinessLogicalLayer.Startup.EnsureUpdate(serviceProvider);
+            BusinessLogicalLayer.Startup.EnsureUpdate(serviceProvider);//инжектить DBIntitilizator
 
             app.UseSwagger();
             app.UseSwaggerUI(

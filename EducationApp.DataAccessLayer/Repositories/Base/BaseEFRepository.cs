@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace EducationApp.DataAccessLayer.Repositories.Base
 {
-    public class BaseEFRepository<TEntity> 
+    public class BaseEFRepository<TEntity> : IBaseEFRepository //создать
         {
         private readonly ApplicationDbContext _context;
 
@@ -17,21 +17,21 @@ namespace EducationApp.DataAccessLayer.Repositories.Base
         public virtual async Task<EntityEntry> Add(TEntity item)
         {
             var result = _context.Add(item);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(); // Проверять действия тоже 
             return result;
         }
         
         public virtual async Task<EntityEntry> Update(TEntity item)
         {
             var result = _context.Update(item);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(); // Проверять действия тоже 
             return result;
         }
 
         public virtual async Task<EntityEntry> Remove(TEntity item)
         {
             var result = _context.Remove(item);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();// Проверять действия тоже 
             return result;
         }
 /*

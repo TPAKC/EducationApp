@@ -190,9 +190,9 @@ namespace EducationApp.BusinessLogicalLayer.Services
             return usersResultModel;
         }
 
-        public async Task SignOutAsync()
+        public async Task<BaseModel> LogOutAsync()
         {
-            await _userRepository.SignOutAsync();
+            return await _userRepository.LogOutAsync();
         }
 
         public async Task<string> GenerateEmailConfirmationTokenAsync(string email)

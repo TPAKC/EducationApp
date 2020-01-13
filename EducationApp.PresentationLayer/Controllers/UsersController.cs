@@ -1,12 +1,13 @@
 ﻿using EducationApp.BusinessLogicalLayer.Models.Users;
-using EducationApp.BusinessLogicalLayer.Models.ViewModels;
 using EducationApp.BusinessLogicalLayer.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
 namespace CustomIdentityApp.Controllers
 {
     [ApiController]
+    [Route("api/[controller]")]
     public class UsersController : ControllerBase
     {
 
@@ -18,32 +19,32 @@ namespace CustomIdentityApp.Controllers
         }
 
         [HttpGet("users")]
-        public ActionResult GetAll(bool isActive, bool isBlocked, int numberSortState)
+        public ActionResult GetAll(bool isActive, bool isBlocked, int numberSortState)//в filter Model запаковать
         {
             var result = _userService.GetAllAsync(isActive, isBlocked, numberSortState);
             if(result.Errors.Count!=0) return Ok(result.Errors);
             return Ok(result.Items);
         }
 
-        /*[HttpPut("{id}")]
-        public async Task<IActionResult> UpdateAsync(UserModelItem userModel)
+        [HttpPut("update/{id}")]
+        public async Task<IActionResult> Update(UserModelItem userModel)
         {
             var result = await _userService.UpdateAsync(userModel);
-            return Ok(result.Errors);
+            return Ok(result);
         }
 
-        [HttpDelete("{id}")]
-        public async Task<ActionResult> DeleteAsync(string id)
+        [HttpDelete("delete/{id}")]
+        public async Task<ActionResult> Delete(long id)
         { 
             var result = await _userService.DeleteAsync(id);
-            return Ok(result.Errors);
-        }*/
+            return Ok(result);
+        }
 
-        [HttpGet("changeUserStatus")]
+        [HttpGet("changeUserStatus/{id}")]
         public async Task<IActionResult> ChangeUserStatus(long id, bool userStatus)
         {
             var result = await _userService.ChangeUserStatus(id, userStatus);
-            return Ok(result.Errors);
+            return Ok(result);
         }
     }
 }

@@ -9,5 +9,6 @@ namespace EducationApp.DataAccessLayer.Entities
         public long UserId { get; set; }
         public DateTime Date { get; set; }
         public Payment Payment { get; set; }
+        //add user id and payment id properties and foreign Keys attributes
     }
 }

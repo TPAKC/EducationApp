@@ -49,10 +49,10 @@ namespace EducationApp.DataAccessLayer.Repositories.DapperRepositories
             return result.Succeeded;
         }
 
-        public List<ApplicationUser> GetUsersAsync(bool isActive, bool isBlocked, SortStateUsers sortState)
+        public List<ApplicationUser> FilteredAsync(bool isActive, bool isBlocked, SortStateUsers sortState) // фильтер модеь закинуть
         {
             List<ApplicationUser> result = new List<ApplicationUser>();
-            var users = _userManager.Users.ToList();
+            var users = _userManager.Users.ToList(); // Не нужен лист - нужно оставить IQueryable
             if (isActive)
             {
                 var evens = users.Where(user => !user.IsRemoved && !user.IsBlocked);
@@ -61,17 +61,20 @@ namespace EducationApp.DataAccessLayer.Repositories.DapperRepositories
             if (isBlocked)
             {
                 var evens = users.Where(user => !user.IsRemoved && user.IsBlocked);
-                foreach (ApplicationUser user in evens) result.Add(user);
+                foreach (ApplicationUser user in evens)
+                {
+                    result.Add(user);
+                }
             }
 
-            result = sortState switch
+            result = sortState switch //использовать расширение и рефлекцию 
             {
-                SortStateUsers.NameAsc => result.OrderBy(s => (s.FirstName + " " + s.LastName)).ToList(),
+                SortStateUsers.NameAsc => result.OrderBy(s => (s.FirstName + " " + s.LastName)).ToList(), //и Reflection, чтобы найти свойство сортировки от объекта
                 SortStateUsers.NameDesc => result.OrderByDescending(s => (s.FirstName + " " + s.LastName)).ToList(),
                 SortStateUsers.EmailAsc => result.OrderBy(s => s.Email).ToList(),
                 SortStateUsers.EmailDesc => result.OrderByDescending(s => s.Email).ToList(),
             };
-            return result; //todo filter list+
+            return result; //дбавить пагинацию
         }
 
         public async Task<bool> AddToRoleAsync(ApplicationUser user, string role)
@@ -112,9 +115,9 @@ namespace EducationApp.DataAccessLayer.Repositories.DapperRepositories
             return result.Succeeded;
         }
 
-        public async Task SignOutAsync()
+        public async Task<bool> LogOutAsync()
         {
-           await _signInManager.SignOutAsync();
+           return await _signInManager.SignOutAsync();
         }
 
         public async Task<string> GenerateEmailConfirmationTokenAsync(ApplicationUser user)

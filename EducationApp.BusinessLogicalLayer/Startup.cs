@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Configuration;
 
 namespace EducationApp.BusinessLogicalLayer
 {
@@ -41,7 +42,8 @@ namespace EducationApp.BusinessLogicalLayer
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IEmailHelper, EmailHelper>();
             services.AddScoped<IMapper, Mapper>();
-
+            services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(connectionString));
             EducationApp.DataAccessLayer.Startup.RegisterDependencies(connectionString, services);
         }
 

@@ -3,7 +3,6 @@ using EducationApp.BusinessLogicalLayer.Models.Base;
 using EducationApp.BusinessLogicalLayer.Models.Models.Account;
 using EducationApp.BusinessLogicalLayer.Models.Users;
 using EducationApp.BusinessLogicalLayer.Models.ViewModels;
-using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 
 namespace EducationApp.BusinessLogicalLayer.Services.Interfaces
@@ -15,7 +14,7 @@ namespace EducationApp.BusinessLogicalLayer.Services.Interfaces
         Task<BaseModel> DeleteAsync(long id);
         Task<BaseModel> UpdateAsync(UserModelItem userModel);
         UserModel GetAllAsync(bool isActive, bool isBlocked, int numberSortState);
-        Task SignOutAsync();
+        Task<BaseModel> LogOutAsync();
         Task<string> GenerateEmailConfirmationTokenAsync(string email);
         Task<BaseModel> ConfirmEmailAsync(long id, string code);
         Task<BaseModel> ForgotPassword(string email);

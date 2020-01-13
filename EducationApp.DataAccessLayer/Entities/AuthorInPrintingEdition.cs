@@ -7,6 +7,7 @@ namespace EducationApp.DataAccessLayer.Entities
     {
         public long AuthorId { get; set; } 
         public long PrintingEditionId { get; set; }
-        //public DateTime Date { get; set; } 
+
+      //должен работать с ентити а не id
     }
 }
