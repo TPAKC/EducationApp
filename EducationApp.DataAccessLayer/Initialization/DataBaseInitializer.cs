@@ -1,28 +1,33 @@
 ﻿using EducationApp.DataAccessLayer.Entities;
 using EducationApp.DataAccessLayer.Entities.Enums;
-using EducationApp.DataAccessLayer.Repositories.Interfaces;
+using EducationApp.PresentationLayer.Data;
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
-using static EducationApp.DataAccessLayer.Common.Constants.AccountRole;
-using static EducationApp.DataAccessLayer.Common.Constants.InitializeData;
+
 
 namespace EducationApp.DataAccessLayer.Initialization
 {
     public class DataBaseInitializer
     {
+        private const string AdminEmail = "admin@gmail.com";
+        private const string AdminPassword = "admin@gmail.com";
+        private const string UserEmail = "user@gmail.com";
+        private const string UserPassword = "_Uu123456";
+        private const string RoleAdmin = "admin";
+        private const string RoleUser = "user";
 
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole<long>> _roleManager;
-      /*  private readonly IPrintingEditionRepository _printingEditionRepository;
-        private readonly IAuthorRepository _authorRepository;
-        private readonly IAuthorInPrintingEditionRepository _authorInPrintingEditionRepository;*/ //вместо всего этого работать с контекстом
+        private readonly ApplicationDbContext _context;
 
         public DataBaseInitializer(
             UserManager<ApplicationUser> userManager, 
-            RoleManager<IdentityRole<long>> roleManager)
+            RoleManager<IdentityRole<long>> roleManager,
+            ApplicationDbContext context)
         {
             _userManager = userManager;
             _roleManager = roleManager;
+            _context = context;
         }
 
         public async Task InitializeAsync()
@@ -33,20 +38,20 @@ namespace EducationApp.DataAccessLayer.Initialization
                 await СreationRole(RoleUser);//Один приватный метод c СreationRole(RoleAdmin)
                 await СreationAccount(AdminEmail, AdminPassword, RoleAdmin);
                 await СreationAccount(UserEmail, UserPassword, RoleUser);//Один приватный метод c СreationAccount(AdminEmail, AdminPassword, RoleAdmin)
-
+                await Creation
 
                 //Все дальшще сделать тоже приватным методом
-                var authorId = await _authorRepository.Add(new Author { Name = "Elon Musk" });//локальные константы
-                var printingEditionId = await _printingEditionRepository.Add(new PrintingEdition
+                var authorId = _context.Authors.Add(new Author { Name = "Elon Musk" });//локальные константы
+                var printingEditionId = _context.PrintingEditions.Add(new PrintingEdition
                 {
                     Title = "TestTitle", //локальные константы
                     Description = "TestDescription", //локальные константы
                     Price = 100,
-                    Status = StatusPrintingEdition.Paid,
                     Currency = CurrencyPrintingEdition.USD,
                     Type = TypePrintingEdition.Book
                 });
-                await _authorInPrintingEditionRepository.Add(new AuthorInPrintingEdition
+
+                _context.AuthorInPrintingEditions.Add(new AuthorInPrintingEdition
                 {
                     AuthorId = authorId,
                     PrintingEditionId = printingEditionId

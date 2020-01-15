@@ -4,6 +4,7 @@
     {
         public class ServiceValidationErrors
         {
+            public const string ErrorLogOut = "Error log out";
             public const string UserIsExist = "User is exist";
             public const string UserCantBeRegistered = "User can't be registered";
             public const string UserCantBeAddedToRole = "User can't be added to role";

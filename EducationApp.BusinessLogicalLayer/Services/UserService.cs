@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using static EducationApp.BusinessLogicalLayer.Constants.ServiceValidationErrors;
 using static EducationApp.BusinessLogicalLayer.Constants.TemplateText;
 using static EducationApp.BusinessLogicalLayer.Constants.AccountRole;
+using EducationApp.BusinessLogicalLayer.Helpers;
 
 namespace EducationApp.BusinessLogicalLayer.Services
 {
@@ -39,7 +40,7 @@ namespace EducationApp.BusinessLogicalLayer.Services
             _emailHelper = emailHelper;
         }
 
-        public async Task<LoginModel> Login(string email, string password, bool rememberMe)
+        public async Task<LoginModel> LoginAsync(string email, string password, bool rememberMe)
         {
             var modelResult = new LoginModel();
             var user = await _userRepository.FindByEmailAsync(email);
@@ -190,9 +191,10 @@ namespace EducationApp.BusinessLogicalLayer.Services
             return usersResultModel;
         }
 
-        public async Task<BaseModel> LogOutAsync()
+        public async Task LogOutAsync()
         {
-            return await _userRepository.LogOutAsync();
+            var resultModel = new BaseModel();
+            await _userRepository.LogOutAsync();
         }
 
         public async Task<string> GenerateEmailConfirmationTokenAsync(string email)
@@ -223,10 +225,10 @@ namespace EducationApp.BusinessLogicalLayer.Services
             return resultModel;
         }
 
-        public async Task<BaseModel> ForgotPassword(string email)
+        public async Task<BaseModel> ForgotPasswordAsync(string email)
         {
             var resultModel = new BaseModel();
-            var newPassword = GeneratePassword();
+            var newPassword = "";//GeneratePasswordHelper.Ge
             var user = await _userRepository.FindByEmailAsync(email);
             if (user == null)
             {
@@ -240,26 +242,13 @@ namespace EducationApp.BusinessLogicalLayer.Services
                 return resultModel;
             }
             await _emailHelper.SendEmailAsync(email, "Reset Password", $"{ResetPasswordText}{newPassword}");
-            var code = await _userRepository.GeneratePasswordResetTokenAsync(user);
-            result = await _userRepository.ResetPasswordAsync(user, code, newPassword);
+            result = await _userRepository.ResetPasswordAsync(user, newPassword);
             if (!result)
             {
                 resultModel.Errors.Add(FailedToResetPassword);
                 return resultModel;
             }
             return resultModel;
-        }
-
-        private string GeneratePassword()
-        {
-            int[] arr = new int[8];
-            Random random = new Random();
-            string password = "";
-            for (int i = 0; i < arr.Length; i++)
-            {
-                password += random.Next(0, 9);
-            }
-            return password;
         }
 
         /* private async Task<string> GetAccessToken(ApplicationUser user)
@@ -270,7 +259,7 @@ namespace EducationApp.BusinessLogicalLayer.Services
              return token;
          }*/
 
-        public async Task<BaseModel> ChangeUserStatus(long id, bool userStatus)
+        public async Task<BaseModel> ChangeStatusAsync(long id, bool userStatus)
         {
             var resultModel = new BaseModel();
             var user = await _userRepository.FindByIdAsync(id);
@@ -280,7 +269,11 @@ namespace EducationApp.BusinessLogicalLayer.Services
                 return resultModel;
             }
             user.IsBlocked = userStatus;
-            await _userRepository.UpdateAsync(user);
+            var result = await _userRepository.UpdateAsync(user);
+            if(!result)
+            {
+                resultModel.Errors.Add(FailedToUpdateUser);
+            }
             return resultModel;
         }
     }

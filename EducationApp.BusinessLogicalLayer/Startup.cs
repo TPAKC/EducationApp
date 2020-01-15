@@ -11,7 +11,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Configuration;
 
 namespace EducationApp.BusinessLogicalLayer
 {
@@ -28,7 +27,7 @@ namespace EducationApp.BusinessLogicalLayer
                        errorNumbersToAdd: null);
                }));
 
-            services.AddIdentity<ApplicationUser, IdentityRole<long>>(opts => //todo replace to BLL +
+            services.AddIdentity<ApplicationUser, IdentityRole<long>>(opts =>
             {
                 opts.Password.RequireNonAlphanumeric = false;
                 opts.Password.RequireLowercase = false;

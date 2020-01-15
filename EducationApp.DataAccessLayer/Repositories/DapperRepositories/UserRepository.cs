@@ -115,9 +115,9 @@ namespace EducationApp.DataAccessLayer.Repositories.DapperRepositories
             return result.Succeeded;
         }
 
-        public async Task<bool> LogOutAsync()
+        public async Task LogOutAsync()
         {
-           return await _signInManager.SignOutAsync();
+           await _signInManager.SignOutAsync();
         }
 
         public async Task<string> GenerateEmailConfirmationTokenAsync(ApplicationUser user)
@@ -131,8 +131,9 @@ namespace EducationApp.DataAccessLayer.Repositories.DapperRepositories
             return result.Succeeded;
         }
 
-        public async Task<bool> ResetPasswordAsync(ApplicationUser user, string code, string password)
+        public async Task<bool> ResetPasswordAsync(ApplicationUser user, string password)
         {
+            var code = await _userManager.GeneratePasswordResetTokenAsync(user);
             var result = await _userManager.ResetPasswordAsync(user, code, password);
             return result.Succeeded;
         }

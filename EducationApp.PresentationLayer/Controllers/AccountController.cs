@@ -28,7 +28,7 @@ namespace EducationApp.PresentationLayer.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login(string email, string password, bool rememberMe)
         {
-            var resultModel = await _userService.Login(email,password,rememberMe);
+            var resultModel = await _userService.LoginAsync(email,password,rememberMe);
             return Ok(resultModel);
         }
 
@@ -36,8 +36,8 @@ namespace EducationApp.PresentationLayer.Controllers
         [HttpPost("logOut")]
         public async Task<IActionResult> LogOut()
         {
-            var resultModel =  await _userService.LogOutAsync();
-            return Ok(resultModel);
+            await _userService.LogOutAsync();
+            return Ok();
         }
 
         [Authorize]
@@ -68,7 +68,7 @@ namespace EducationApp.PresentationLayer.Controllers
         [HttpPost("forgotPassword")]
         public async Task<IActionResult> ForgotPasswordForEmail(string email)
         {
-            var result = await _userService.ForgotPassword(email);
+            var result = await _userService.ForgotPasswordAsync(email);
             return Ok(result);
         }
     }

@@ -14,11 +14,11 @@ namespace EducationApp.BusinessLogicalLayer.Services.Interfaces
         Task<BaseModel> DeleteAsync(long id);
         Task<BaseModel> UpdateAsync(UserModelItem userModel);
         UserModel GetAllAsync(bool isActive, bool isBlocked, int numberSortState);
-        Task<BaseModel> LogOutAsync();
+        Task LogOutAsync();
         Task<string> GenerateEmailConfirmationTokenAsync(string email);
         Task<BaseModel> ConfirmEmailAsync(long id, string code);
-        Task<BaseModel> ForgotPassword(string email);
-        Task<LoginModel> Login(string email, string password, bool rememberMe);
-        Task<BaseModel> ChangeUserStatus(long id, bool userStatus);
+        Task<BaseModel> ForgotPasswordAsync(string email);
+        Task<LoginModel> LoginAsync(string email, string password, bool rememberMe);
+        Task<BaseModel> ChangeStatusAsync(long id, bool userStatus);
     }
 }
