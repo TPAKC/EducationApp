@@ -8,13 +8,11 @@ using EducationApp.BusinessLogicalLayer.Models.ViewModels;
 using EducationApp.BusinessLogicalLayer.Services.Interfaces;
 using EducationApp.DataAccessLayer.Entities.Enums;
 using EducationApp.DataAccessLayer.Repositories.Interfaces;
-using System;
 using System.Linq;
 using System.Threading.Tasks;
+using static EducationApp.BusinessLogicalLayer.Constants.AccountRole;
 using static EducationApp.BusinessLogicalLayer.Constants.ServiceValidationErrors;
 using static EducationApp.BusinessLogicalLayer.Constants.TemplateText;
-using static EducationApp.BusinessLogicalLayer.Constants.AccountRole;
-using EducationApp.BusinessLogicalLayer.Helpers;
 
 namespace EducationApp.BusinessLogicalLayer.Services
 {

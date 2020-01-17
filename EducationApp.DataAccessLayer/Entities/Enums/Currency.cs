@@ -1,6 +1,6 @@
 ﻿namespace EducationApp.DataAccessLayer.Entities.Enums
 {
-   public enum CurrencyPrintingEdition
+   public enum Currency
     { 
         USD = 0,
         UAH = 1, 

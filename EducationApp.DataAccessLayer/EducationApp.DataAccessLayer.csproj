@@ -45,8 +45,8 @@
 
   <ItemGroup>
     <Folder Include="Common\" />
+    <Folder Include="Helpers\Mapper\User\" />
     <Folder Include="Migrations\" />
-    <Folder Include="RequestModels\" />
   </ItemGroup>
 
 </Project>

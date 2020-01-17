@@ -69,7 +69,6 @@ namespace EducationApp.DataAccessLayer.Initialization
                 await _userManager.AddToRoleAsync(user, RoleUser);
             }
 
-            user = new ApplicationUser();
             user.Email = AdminEmail;
             user.UserName = AdminEmail;
             user.FirstName = RoleAdmin;
@@ -95,8 +94,8 @@ namespace EducationApp.DataAccessLayer.Initialization
             printingEdition.Title = NameTitle;
             printingEdition.Description = NameDescription;
             printingEdition.Price = Price;
-            printingEdition.Currency = CurrencyPrintingEdition.USD;
-            printingEdition.Type = TypePrintingEdition.Book;
+            printingEdition.Currency = Currency.USD;
+            printingEdition.Type = PrintingEditionType.Book;
 
             _context.PrintingEditions.Add(printingEdition);
             return printingEdition.Id;

@@ -1,6 +1,5 @@
 ﻿using EducationApp.BusinessLogicalLayer.Models.Users;
 using EducationApp.BusinessLogicalLayer.Services.Interfaces;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -21,9 +20,8 @@ namespace CustomIdentityApp.Controllers
         [HttpGet("users")]
         public ActionResult GetAll(bool isActive, bool isBlocked, int numberSortState)//в filter Model запаковать
         {
-            var result = _userService.GetAllAsync(isActive, isBlocked, numberSortState);
-            if(result.Errors.Count!=0) return Ok(result.Errors);
-            return Ok(result.Items);
+            var result = _userService.GetSortedAsync(isActive, isBlocked, numberSortState);
+            return Ok(result);
         }
 
         [HttpPut("update/{id}")]
@@ -43,7 +41,7 @@ namespace CustomIdentityApp.Controllers
         [HttpGet("changeUserStatus/{id}")]
         public async Task<IActionResult> ChangeUserStatus(long id, bool userStatus)
         {
-            var result = await _userService.ChangeUserStatus(id, userStatus);
+            var result = await _userService.ChangeStatusAsync(id, userStatus);
             return Ok(result);
         }
     }

@@ -1,6 +1,6 @@
 ﻿namespace EducationApp.DataAccessLayer.Entities.Enums
 {
-    public enum TypePrintingEdition
+    public enum PrintingEditionType
     {
         Book = 0, 
         Journal = 1,

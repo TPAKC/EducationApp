@@ -13,7 +13,7 @@ namespace EducationApp.BusinessLogicalLayer.Helpers.Mapper
             printingEdition.Title = modelItem.Title;
             printingEdition.Description = modelItem.Description;
             printingEdition.Price = modelItem.Price;
-            printingEdition.Currency = (CurrencyPrintingEdition)modelItem.Currency;
+            printingEdition.Currency = (Currency)modelItem.Currency;
             printingEdition.Type = (TypePrintingEdition)modelItem.Type;
             return printingEdition;
         }

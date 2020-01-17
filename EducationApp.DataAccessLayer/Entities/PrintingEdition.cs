@@ -8,7 +8,7 @@ namespace EducationApp.DataAccessLayer.Entities
         public string Title { get; set; }
         public string Description { get; set; }
         public decimal Price { get; set; }
-        public CurrencyPrintingEdition Currency { get; set; }
-        public TypePrintingEdition Type { get; set; }
+        public Currency Currency { get; set; }
+        public PrintingEditionType Type { get; set; }
     }
 }

@@ -1,23 +1,28 @@
 ﻿using EducationApp.DataAccessLayer.Entities;
 using EducationApp.DataAccessLayer.Entities.Enums;
+using EducationApp.DataAccessLayer.Helpers.Mapper.Interface;
 using EducationApp.DataAccessLayer.Repositories.Interfaces;
+using EducationApp.DataAccessLayer.ResponseModels.Items;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace EducationApp.DataAccessLayer.Repositories.EFRepositories
+namespace EducationApp.DataAccessLayer.Repositories.UserRepository
 {
+
     public class UserRepository : IUserRepository
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly IMapper _mapper;
 
-        public UserRepository(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+        public UserRepository(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IMapper mapper)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _mapper = mapper;
         }
 
         public async Task<bool> ChangePasswordAsync(ApplicationUser user, string oldPassword, string newPassword)
@@ -48,10 +53,11 @@ namespace EducationApp.DataAccessLayer.Repositories.EFRepositories
             return result.Succeeded;
         }
 
-        public List<ApplicationUser> GetUsersAsync(bool isActive, bool isBlocked, SortStateUsers sortState)
+        public async Task<List<GetAllItemsEditionItemResponseModel>> FilteredAsync(bool isActive, bool isBlocked, SortStateUsers sortState) // фильтер модеь закинуть
         {
-           List<ApplicationUser> result = new List<ApplicationUser>();
-           var users = _userManager.Users.ToList();
+            List<GetAllItemsEditionItemResponseModel> result = new List<GetAllItemsEditionItemResponseModel>();
+            var users = await _userManager.Users.ToListAsync();
+            var responseModels = users.Select(user => _mapper.EntityToModelITem(user)).ToList();
             if (isActive)
             {
                 var evens = users.Where(user => !user.IsRemoved && !user.IsBlocked);
@@ -60,17 +66,20 @@ namespace EducationApp.DataAccessLayer.Repositories.EFRepositories
             if (isBlocked)
             {
                 var evens = users.Where(user => !user.IsRemoved && user.IsBlocked);
-                foreach (ApplicationUser user in evens) result.Add(user);
+                foreach (ApplicationUser user in evens)
+                {
+                    result.Add(user);
+                }
             }
 
-            result = sortState switch
+            result = sortState switch //использовать расширение и рефлекцию 
             {
-                SortStateUsers.NameAsc => result.OrderBy(s => (s.FirstName+" "+s.LastName)).ToList(),
-                SortStateUsers.NameDesc => result.OrderByDescending(s => (s.FirstName +" "+ s.LastName)).ToList(),
+                SortStateUsers.NameAsc => result.OrderBy(s => (s.FirstName + " " + s.LastName)).ToList(), //и Reflection, чтобы найти свойство сортировки от объекта
+                SortStateUsers.NameDesc => result.OrderByDescending(s => (s.FirstName + " " + s.LastName)).ToList(),
                 SortStateUsers.EmailAsc => result.OrderBy(s => s.Email).ToList(),
                 SortStateUsers.EmailDesc => result.OrderByDescending(s => s.Email).ToList(),
             };
-            return result; //todo filter list+
+            return result; //дбавить пагинацию
         }
 
         public async Task<bool> AddToRoleAsync(ApplicationUser user, string role)
@@ -102,7 +111,7 @@ namespace EducationApp.DataAccessLayer.Repositories.EFRepositories
 
         public async Task<bool> IsEmailConfirmedAsync(ApplicationUser user)
         {
-            return await _userManager.IsEmailConfirmedAsync(user);  
+            return await _userManager.IsEmailConfirmedAsync(user);
         }
 
         public async Task<bool> PasswordSignInAsync(ApplicationUser user, string password, bool isPersistent)
@@ -111,9 +120,9 @@ namespace EducationApp.DataAccessLayer.Repositories.EFRepositories
             return result.Succeeded;
         }
 
-        public async Task SignOutAsync()
+        public async Task LogOutAsync()
         {
-           await _signInManager.SignOutAsync();
+            await _signInManager.SignOutAsync();
         }
 
         public async Task<string> GenerateEmailConfirmationTokenAsync(ApplicationUser user)
@@ -127,11 +136,11 @@ namespace EducationApp.DataAccessLayer.Repositories.EFRepositories
             return result.Succeeded;
         }
 
-        public async Task<bool> ResetPasswordAsync(ApplicationUser user, string code, string password)
+        public async Task<bool> ResetPasswordAsync(ApplicationUser user, string password)
         {
+            var code = await _userManager.GeneratePasswordResetTokenAsync(user);
             var result = await _userManager.ResetPasswordAsync(user, code, password);
             return result.Succeeded;
         }
     }
 }
-   

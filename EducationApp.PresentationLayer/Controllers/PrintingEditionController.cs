@@ -20,7 +20,7 @@ namespace EducationApp.PresentationLayer.Controllers
         [HttpGet]
         public async Task<ActionResult> GetAll(bool[] categorys)
         {
-            var result = await _printingEditionsService.GetAllAsync(categorys);
+            var result = await _printingEditionsService.GetSortedAsync(categorys);
             if (result.Errors.Count != 0) return Ok(result.Errors);
             return Ok(result.Items);
         }

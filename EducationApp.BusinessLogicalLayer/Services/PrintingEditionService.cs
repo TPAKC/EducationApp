@@ -79,14 +79,14 @@ namespace EducationApp.BusinessLogicalLayer.Services
             return resultModel;
         }
 
-        public async Task<PrintingEditionModel> GetAllAsync(bool[] categorys) //add filter 
+        public async Task<PrintingEditionModel> GetSortedAsync(bool[] categorys) //add filter 
         {
             var printingEditionModel = new PrintingEditionModel();
-            var printingEditions = await _printingEditionRepository.GetAll(categorys);
+            var printingEditions = await _printingEditionRepository.FilteredAsync(categorys);
             printingEditionModel.Items = printingEditions.Select(printingEdition => _mapper.EntityToModelItem(printingEdition)).ToList();
             foreach (var item in printingEditionModel.Items)
             {
-                item.AuthorsName = d
+               // item.AuthorsName = d
             }
             return printingEditionModel;
         }

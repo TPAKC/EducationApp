@@ -1,41 +1,64 @@
 ﻿using Dapper;
-using Dapper.Contrib.Extensions;
 using EducationApp.DataAccessLayer.Entities;
 using EducationApp.DataAccessLayer.Entities.Enums;
+using EducationApp.DataAccessLayer.Helpers.Mapper.Interface;
 using EducationApp.DataAccessLayer.Repositories.Base;
 using EducationApp.DataAccessLayer.Repositories.Interfaces;
+using EducationApp.DataAccessLayer.RequestModels.PrintingEdition;
 using EducationApp.DataAccessLayer.ResponseModels.Items;
 using System.Collections.Generic;
-using System.Linq;
+using System.Data;
+using System.Data.SqlClient;
 using System.Threading.Tasks;
+using static EducationApp.DataAccessLayer.Entities.Enums.Enum;
 
 namespace EducationApp.DataAccessLayer.Repositories.DapperRepositories
 {
     public class PrintingEditionRepository : BaseDapperRepository<PrintingEdition>, IPrintingEditionRepository
     {
-        public PrintingEditionRepository(Connection connection) : base(connection)
+        private readonly string _connectionString;
+        private readonly IMapper _mapper;
+        public PrintingEditionRepository(string connectionString, IMapper mapper) : base(connectionString)
         {
+            _connectionString = connectionString;
+            _mapper = mapper;
         }
-        public async Task<List<GetAllItemsEditionItemResponseModel>> FilteredAsync(bool[] types)
+        public async Task<List<GetAllItemsEditionItemResponseModel>> FilteredAsync(FilteredModel filteredModel)
         {
-            List<GetAllItemsEditionItemResponseModel> result = new List<GetAllItemsEditionItemResponseModel>();
-            var printingEditions = (await Connection.GetAllAsync<PrintingEdition>()).AsList();
-            result = printingEditions.Select(user => _mapper.EntityToModelITem(user)).ToList();
-            if (types[(int)TypePrintingEdition.Book])
-            {
-                var evens = printingEditions.Where(printingEdition => printingEdition.Type == TypePrintingEdition.Book);
-                foreach (PrintingEdition printingEdition in evens) result.Add(printingEdition);
-            }
-            if (types[(int)TypePrintingEdition.Journal])
-            {
-                var evens = printingEditions.Where(printingEdition => printingEdition.Type == TypePrintingEdition.Journal);
-                foreach (PrintingEdition printingEdition in evens) result.Add(printingEdition);
-            }
-            if (types[(int)TypePrintingEdition.Newspaper])
-            {
-                var evens = printingEditions.Where(printingEdition => printingEdition.Type == TypePrintingEdition.Newspaper);
-                foreach (PrintingEdition printingEdition in evens) result.Add(printingEdition);
-            }
+            /*  using IDbConnection connection = new SqlConnection(_connectionString);
+              List<GetAllItemsEditionItemResponseModel> responceModels = new List<GetAllItemsEditionItemResponseModel>();
+              var printingEditions = (await connection.GetAllAsync<PrintingEdition>()).AsList();
+              responceModels = printingEditions.Select(printingEdition => _mapper.EntityToResponceModel(printingEdition)).ToList();
+              List<GetAllItemsEditionItemResponseModel> result = new List<GetAllItemsEditionItemResponseModel>();
+              if (types[(int)TypePrintingEdition.Book])
+              {
+                  var evens = responceModels.Where(responceModels => responceModels.Type == TypePrintingEdition.Book);
+                  foreach (GetAllItemsEditionItemResponseModel responceModel in evens) result.Add(responceModel);
+              }
+              if (types[(int)TypePrintingEdition.Journal])
+              {
+                  var evens = responceModels.Where(responceModels => responceModels.Type == TypePrintingEdition.Journal);
+                  foreach (GetAllItemsEditionItemResponseModel responceModel in evens) result.Add(responceModel);
+              }
+              if (types[(int)TypePrintingEdition.Newspaper])
+              {  
+                  var evens = responceModels.Where(responceModels => responceModels.Type == TypePrintingEdition.Newspaper);
+                  foreach (GetAllItemsEditionItemResponseModel responceModel in evens) result.Add(responceModel);
+              }*/
+
+            using IDbConnection connection = new SqlConnection(_connectionString);
+            List<GetAllItemsEditionItemResponseModel> responceModels = new List<GetAllItemsEditionItemResponseModel>();
+            var sqlQuery = "SELECT * FROM PrintingEditions WHERE type IN (";
+            if (filteredModel.Types.IndexOf(PrintingEditionType.Book) != -1) sqlQuery += "'0',";
+            if (filteredModel.Types.IndexOf(PrintingEditionType.Journal) != -1) sqlQuery += "'1',";
+            if (filteredModel.Types.IndexOf(PrintingEditionType.Newspaper) != -1) sqlQuery += "'2',";//не забыть удалить последнюю запятую
+            sqlQuery += ")";
+            if (filteredModel.PriceMin != 0 && filteredModel.PriceMax != 0) sqlQuery += " price BETWEEN PriceMin = @filteredModel.PriceMin AND PriceMin = @filteredModel.PriceMax AND"; //могут быть лишние AND 
+            if (!string.IsNullOrWhiteSpace(filteredModel.SearchText)) sqlQuery += " title LIKE '%filteredModel = @filteredModel.SearchText%' AND"; //могут быть лишние AND 
+            if (filteredModel.SortType == SortType.Asc) sqlQuery += " ORDER BY Price ASC";
+            if (filteredModel.SortType == SortType.Desc) sqlQuery += " ORDER BY Price DESC";
+            return connection.Execute(sqlQuery, new { filteredModel.PriceMin, filteredModel.PriceMax, filteredModel.SearchText});
+
             /*var sortOrder = SortStatePrintingEditions.IdAsc;
 
             printingEditions = sortOrder switch
@@ -49,7 +72,6 @@ namespace EducationApp.DataAccessLayer.Repositories.DapperRepositories
                 SortStatePrintingEditions.PriceAsc => result.OrderBy(s => s.Price),
                 SortStatePrintingEditions.PriceDesc => result.OrderByDescending(s => s.Price),
             };*/
-            return result;
         }
     }
 }

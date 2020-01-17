@@ -8,7 +8,7 @@ namespace EducationApp.BusinessLogicalLayer.Models.Orders
         [Required]
         public long Id { get; set; }
         public long Amount { get; set; }
-        public CurrencyPrintingEdition Currency { get; set; }
+        public Currency Currency { get; set; }
         public long PrintingEditionId { get; set; }
         public long OrderId { get; set; }
         public long Count { get; set; }

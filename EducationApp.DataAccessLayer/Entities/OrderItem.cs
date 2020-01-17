@@ -7,7 +7,7 @@ namespace EducationApp.DataAccessLayer.Entities
     public class OrderItem :BaseEntity
     {
         public long Amount { get; set; }
-        public CurrencyPrintingEdition Currency { get; set; }
+        public Currency Currency { get; set; }
         public long? PrintingEditionId { get; set; }
         [ForeignKey("PrintingEditionId")]
         public PrintingEdition PrintingEdition { get; set; }

@@ -6,7 +6,7 @@ namespace EducationApp.DataAccessLayer.Repositories.DapperRepositories
 {
     public class OrderItemRepository : BaseDapperRepository<OrderItem>, IOrderItemRepository
     {
-        public OrderItemRepository(Connection connection) : base(connection)
+        public OrderItemRepository(string connectionString) : base(connectionString)
         {
         }
     }
