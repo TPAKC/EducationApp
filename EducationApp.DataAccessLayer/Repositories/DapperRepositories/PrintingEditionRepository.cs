@@ -16,7 +16,7 @@ namespace EducationApp.DataAccessLayer.Repositories.DapperRepositories
         public PrintingEditionRepository(Connection connection) : base(connection)
         {
         }
-        public async Task<List<GetAllItemsEditionItemResponseModel>> GetAll(bool[] types)
+        public async Task<List<GetAllItemsEditionItemResponseModel>> FilteredAsync(bool[] types)
         {
             List<GetAllItemsEditionItemResponseModel> result = new List<GetAllItemsEditionItemResponseModel>();
             var printingEditions = (await Connection.GetAllAsync<PrintingEdition>()).AsList();

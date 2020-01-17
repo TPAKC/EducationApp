@@ -13,7 +13,7 @@ namespace EducationApp.DataAccessLayer.Repositories.Interfaces
         Task<ApplicationUser> FindByIdAsync(long id);
         Task<ApplicationUser> FindByEmailAsync(string email);
         Task<bool> UpdateAsync(ApplicationUser user);
-        List<ApplicationUser> GetUsersAsync(bool isActive, bool isBlocked, SortStateUsers sortState);
+        Task<List<ApplicationUser>> FilteredAsync(bool isActive, bool isBlocked, SortStateUsers sortState);
         Task<bool> AddToRoleAsync(ApplicationUser user, string role);
         Task<IList<string>> GetRolesAsync(ApplicationUser user);
         Task<bool> IsInRoleAsync(ApplicationUser user, string role);
@@ -24,6 +24,6 @@ namespace EducationApp.DataAccessLayer.Repositories.Interfaces
         Task LogOutAsync();
         Task<string> GenerateEmailConfirmationTokenAsync(ApplicationUser user);
         Task<bool> ConfirmEmailAsync(ApplicationUser user, string code);
-        Task<bool> ResetPasswordAsync(ApplicationUser user,string password);
+        Task<bool> ResetPasswordAsync(ApplicationUser user, string password);
     }
 }

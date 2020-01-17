@@ -161,10 +161,9 @@ namespace EducationApp.BusinessLogicalLayer.Services
                 resultModel.Errors.Add(UserIsExist);
                 return resultModel;
             }
-            var code = await _userRepository.GeneratePasswordResetTokenAsync(user);
             if (!string.IsNullOrWhiteSpace(userModel.Pasword))
             {
-                await _userRepository.ResetPasswordAsync(user, code, userModel.Pasword);
+                await _userRepository.ResetPasswordAsync(user, userModel.Pasword);
             }
 
             var result = await _userRepository.UpdateAsync(user);
@@ -176,19 +175,13 @@ namespace EducationApp.BusinessLogicalLayer.Services
             return resultModel;
         }
 
-        public UserModel GetAllAsync(bool isActive, bool isBlocked, int numberSortState)
+        public async Task<UserModel> GetSortedAsync(bool isActive, bool isBlocked, int numberSortState)//закинуть в енуму
         {
             var usersResultModel = new UserModel();
             var sortState = (SortStateUsers)numberSortState;
-            var users = _userRepository.GetUsersAsync(isActive, isBlocked, sortState);
-            if (users == null)
-            {
-                usersResultModel.Errors.Add(ListRetrievalError);
-                return usersResultModel;
-            }
-
+            var users = await _userRepository.FilteredAsync(isActive, isBlocked, sortState);
             usersResultModel.Items = users.Select(user => _mapper.EntityToModelITem(user)).ToList();
-            return usersResultModel;
+            return usersResultModel;//добавить еще сортировку
         }
 
         public async Task LogOutAsync()

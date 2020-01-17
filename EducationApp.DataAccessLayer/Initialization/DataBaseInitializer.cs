@@ -15,13 +15,17 @@ namespace EducationApp.DataAccessLayer.Initialization
         private const string UserPassword = "_Uu123456";
         private const string RoleAdmin = "admin";
         private const string RoleUser = "user";
+        private const string NameAuthor = "Elon Musk";
+        private const string NameTitle = "Test title";
+        private const string NameDescription = "Test description";
+        private const decimal Price = 100;
 
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole<long>> _roleManager;
         private readonly ApplicationDbContext _context;
 
         public DataBaseInitializer(
-            UserManager<ApplicationUser> userManager, 
+            UserManager<ApplicationUser> userManager,
             RoleManager<IdentityRole<long>> roleManager,
             ApplicationDbContext context)
         {
@@ -34,53 +38,76 @@ namespace EducationApp.DataAccessLayer.Initialization
         {
             if (await _userManager.FindByNameAsync(AdminEmail) == null)
             {
-                await СreationRole(RoleAdmin);
-                await СreationRole(RoleUser);//Один приватный метод c СreationRole(RoleAdmin)
-                await СreationAccount(AdminEmail, AdminPassword, RoleAdmin);
-                await СreationAccount(UserEmail, UserPassword, RoleUser);//Один приватный метод c СreationAccount(AdminEmail, AdminPassword, RoleAdmin)
-                await Creation
-
-                //Все дальшще сделать тоже приватным методом
-                var authorId = _context.Authors.Add(new Author { Name = "Elon Musk" });//локальные константы
-                var printingEditionId = _context.PrintingEditions.Add(new PrintingEdition
-                {
-                    Title = "TestTitle", //локальные константы
-                    Description = "TestDescription", //локальные константы
-                    Price = 100,
-                    Currency = CurrencyPrintingEdition.USD,
-                    Type = TypePrintingEdition.Book
-                });
-
-                _context.AuthorInPrintingEditions.Add(new AuthorInPrintingEdition
-                {
-                    AuthorId = authorId,
-                    PrintingEditionId = printingEditionId
-                });
+                await СreationRole();
+                await СreationAccount();
+                var authorId = CreationAuthor();
+                var printingEditionId = CreationPrintingEdition();
+                CreationAuthorInPrintingEdition(authorId, printingEditionId);
             }
         }
 
-        private async Task СreationRole(string role)
+        private async Task СreationRole()
         {
-            await _roleManager.CreateAsync(new IdentityRole<long>(role)); //format document в начале
+            await _roleManager.CreateAsync(new IdentityRole<long>(RoleAdmin));
+            await _roleManager.CreateAsync(new IdentityRole<long>(RoleUser));
         }
 
-        private async Task СreationAccount(string email, string password, string role)
+        private async Task СreationAccount()
         {
-            var user = new ApplicationUser
-            {
-                Email = email,
-                UserName = email,
-                FirstName = role,
-                LastName = role,
-                EmailConfirmed = true,
-                IsBlocked = false,
-                IsRemoved = false
-            };
-            var result = await _userManager.CreateAsync(user, password);
+            var user = new ApplicationUser();
+            user.Email = UserEmail;
+            user.UserName = UserEmail;
+            user.FirstName = RoleUser;
+            user.LastName = RoleUser;
+            user.EmailConfirmed = true;
+            user.IsBlocked = false;
+            user.IsRemoved = false;
+
+            var result = await _userManager.CreateAsync(user, UserPassword);
             if (result.Succeeded)
             {
-                await _userManager.AddToRoleAsync(user, role);
+                await _userManager.AddToRoleAsync(user, RoleUser);
             }
+
+            user = new ApplicationUser();
+            user.Email = AdminEmail;
+            user.UserName = AdminEmail;
+            user.FirstName = RoleAdmin;
+            user.LastName = RoleAdmin;
+
+            result = await _userManager.CreateAsync(user, AdminPassword);
+            if (result.Succeeded)
+            {
+                await _userManager.AddToRoleAsync(user, RoleAdmin);
+            }
+        }
+
+        private long CreationAuthor()
+        {
+            var author = new Author();
+            author.Name = NameAuthor;
+            _context.Authors.Add(author);
+            return author.Id;
+        }
+        private long CreationPrintingEdition()
+        {
+            var printingEdition = new PrintingEdition();
+            printingEdition.Title = NameTitle;
+            printingEdition.Description = NameDescription;
+            printingEdition.Price = Price;
+            printingEdition.Currency = CurrencyPrintingEdition.USD;
+            printingEdition.Type = TypePrintingEdition.Book;
+
+            _context.PrintingEditions.Add(printingEdition);
+            return printingEdition.Id;
+        }
+
+        private void CreationAuthorInPrintingEdition(long authorId, long printingEditionId)
+        {
+            var authorInPrintingEdition = new AuthorInPrintingEdition();
+            authorInPrintingEdition.AuthorId = authorId;
+            authorInPrintingEdition.PrintingEditionId = printingEditionId;
+            _context.AuthorInPrintingEditions.Add(authorInPrintingEdition);
         }
     }
 }

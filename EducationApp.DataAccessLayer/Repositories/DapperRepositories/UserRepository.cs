@@ -49,10 +49,10 @@ namespace EducationApp.DataAccessLayer.Repositories.DapperRepositories
             return result.Succeeded;
         }
 
-        public List<ApplicationUser> FilteredAsync(bool isActive, bool isBlocked, SortStateUsers sortState) // фильтер модеь закинуть
+        public async Task<List<ApplicationUser>> FilteredAsync(bool isActive, bool isBlocked, SortStateUsers sortState) // фильтер модеь закинуть
         {
             List<ApplicationUser> result = new List<ApplicationUser>();
-            var users = _userManager.Users.ToList(); // Не нужен лист - нужно оставить IQueryable
+            var users = await _userManager.Users.ToListAsync();
             if (isActive)
             {
                 var evens = users.Where(user => !user.IsRemoved && !user.IsBlocked);
@@ -106,7 +106,7 @@ namespace EducationApp.DataAccessLayer.Repositories.DapperRepositories
 
         public async Task<bool> IsEmailConfirmedAsync(ApplicationUser user)
         {
-            return await _userManager.IsEmailConfirmedAsync(user);  
+            return await _userManager.IsEmailConfirmedAsync(user);
         }
 
         public async Task<bool> PasswordSignInAsync(ApplicationUser user, string password, bool isPersistent)
@@ -117,7 +117,7 @@ namespace EducationApp.DataAccessLayer.Repositories.DapperRepositories
 
         public async Task LogOutAsync()
         {
-           await _signInManager.SignOutAsync();
+            await _signInManager.SignOutAsync();
         }
 
         public async Task<string> GenerateEmailConfirmationTokenAsync(ApplicationUser user)
@@ -139,4 +139,3 @@ namespace EducationApp.DataAccessLayer.Repositories.DapperRepositories
         }
     }
 }
-   

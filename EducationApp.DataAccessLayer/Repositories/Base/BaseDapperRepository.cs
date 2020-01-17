@@ -11,37 +11,42 @@ namespace EducationApp.DataAccessLayer.Repositories.Base
     public class BaseDapperRepository<TEntity> where TEntity: BaseEntity
     {
 
-        protected string _connectionString { get; set; } // новая трока конекшена
+        private readonly string _connectionString;
 
-        public BaseDapperRepository(Connection connection)
+        public BaseDapperRepository(string connectionString)
         {
-            Connection = new SqlConnection(connection.ConnectionString);
+            _connectionString = connectionString;
         }
 
         public virtual async Task<long> Add(TEntity item)
         {
-            return await Connection.InsertAsync(item); //Везде новые конекшены
+            using IDbConnection connection = new SqlConnection(_connectionString);
+                return await connection.InsertAsync(item);
         }
 
         public virtual async Task<bool> Update(TEntity item)
         {
-            return await Connection.UpdateAsync(item); 
+            using IDbConnection connection = new SqlConnection(_connectionString);
+            return await connection.UpdateAsync(item); 
         }
 
         public virtual async Task<bool> Remove(TEntity item)
         {
-            return await Connection.DeleteAsync<TEntity>(item);
+            using IDbConnection connection = new SqlConnection(_connectionString);
+            return await connection.DeleteAsync<TEntity>(item);
         }
 
         public virtual async Task<TEntity> Find(long id)
         {
-            var result = await Connection.GetAsync<TEntity>(id);//Везде новые конекшены
+            using IDbConnection connection = new SqlConnection(_connectionString);
+            var result = await connection.GetAsync<TEntity>(id);
             return result;
         }
 
         public async Task<List<TEntity>> GetAll()
         {
-            return (await Connection.GetAllAsync<TEntity>()).AsList();//Везде новые конекшены
+            using IDbConnection connection = new SqlConnection(_connectionString);
+            return (await connection.GetAllAsync<TEntity>()).AsList();
         }
     }
 }

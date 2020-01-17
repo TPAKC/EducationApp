@@ -1,5 +1,6 @@
 ﻿using EducationApp.BusinessLogicalLayer.Common;
 using EducationApp.BusinessLogicalLayer.Helpers;
+using EducationApp.PresentationLayer.Configurations;
 using EducationApp.PresentationLayer.Data;
 using EducationApp.PresentationLayer.Helpers.Interfaces;
 using EducationApp.PresentationLayer.Middlewares;
@@ -41,30 +42,7 @@ namespace EducationApp.PresentationLayer
             string connection = Configuration.GetConnectionString("DefaultConnection");
             BusinessLogicalLayer.Startup.RegisterDependencies(connection, services);
 
-            services.AddSwaggerGen(
-                options =>
-                {
-                    options.SwaggerDoc("EducationApp", new Microsoft.OpenApi.Models.OpenApiInfo
-                    {
-                        Title = "Education App API",
-                        Version = $"v1.0",
-                        Description = "API Documentation - Education App",
-                    });
-
-                    //var security = new Dictionary<string, IEnumerable<string>>
-                    //{
-                    //    {"Bearer", new string[] { }},
-                    //};
-
-                    //options.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiInfo
-                    //{
-                    //    Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
-                    //    Name = "Authorization",
-                    //    In = "header",
-                    //    Type = "apiKey"
-                    //});
-                    //options.AddSecurityRequirement(security);
-                });
+            services.ConfigureSwaggerService();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
@@ -82,13 +60,7 @@ namespace EducationApp.PresentationLayer
 
             BusinessLogicalLayer.Startup.EnsureUpdate(serviceProvider);//инжектить DBIntitilizator
 
-            app.UseSwagger();
-            app.UseSwaggerUI(
-                options =>
-                {
-                    options.RoutePrefix = string.Empty;
-                    options.SwaggerEndpoint($"/swagger/EducationApp/swagger.json", "Education App");
-                });
+            app.ConfigureSwagger();
 
             app.UseAuthentication();
             app.UseAuthorization();

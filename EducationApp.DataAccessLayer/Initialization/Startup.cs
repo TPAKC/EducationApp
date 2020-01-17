@@ -9,7 +9,7 @@ namespace EducationApp.DataAccessLayer
     {
         public static void RegisterDependencies(string connectionString, IServiceCollection services)
         {
-            services.AddSingleton(new Connection(connectionString));
+            services.AddSingleton(connectionString);
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IPrintingEditionRepository, PrintingEditionRepository>();
             services.AddScoped<IAuthorRepository, AuthorRepository>();

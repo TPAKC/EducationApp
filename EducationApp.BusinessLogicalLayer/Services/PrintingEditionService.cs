@@ -84,7 +84,7 @@ namespace EducationApp.BusinessLogicalLayer.Services
             var printingEditionModel = new PrintingEditionModel();
             var printingEditions = await _printingEditionRepository.GetAll(categorys);
             printingEditionModel.Items = printingEditions.Select(printingEdition => _mapper.EntityToModelItem(printingEdition)).ToList();
-            foreach(var item in printingEditionModel.Items)
+            foreach (var item in printingEditionModel.Items)
             {
                 item.AuthorsName = d
             }

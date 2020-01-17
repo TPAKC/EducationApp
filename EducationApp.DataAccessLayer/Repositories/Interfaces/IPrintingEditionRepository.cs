@@ -1,4 +1,5 @@
 ﻿using EducationApp.DataAccessLayer.Entities;
+using EducationApp.DataAccessLayer.ResponseModels.Items;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -11,6 +12,6 @@ namespace EducationApp.DataAccessLayer.Repositories.Interfaces
         Task<List<PrintingEdition>> GetAll();
         Task<bool> Remove(PrintingEdition item);
         Task<bool> Update(PrintingEdition item);
-        Task<List<PrintingEdition>> GetAll(bool[] categorys);
+        Task<List<GetAllItemsEditionItemResponseModel>> FilteredAsync(bool[] categorys);
     }
 }
