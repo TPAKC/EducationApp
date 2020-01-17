@@ -1,14 +1,17 @@
 ﻿using Dapper;
 using EducationApp.DataAccessLayer.Entities;
 using EducationApp.DataAccessLayer.Entities.Enums;
+using EducationApp.DataAccessLayer.Extensions.Enum;
 using EducationApp.DataAccessLayer.Helpers.Mapper.Interface;
 using EducationApp.DataAccessLayer.Repositories.Base;
 using EducationApp.DataAccessLayer.Repositories.Interfaces;
 using EducationApp.DataAccessLayer.RequestModels.PrintingEdition;
 using EducationApp.DataAccessLayer.ResponseModels.Items;
+using Microsoft.EntityFrameworkCore.Internal;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
 using System.Threading.Tasks;
 using static EducationApp.DataAccessLayer.Entities.Enums.Enum;
 
@@ -46,18 +49,19 @@ namespace EducationApp.DataAccessLayer.Repositories.DapperRepositories
                   foreach (GetAllItemsEditionItemResponseModel responceModel in evens) result.Add(responceModel);
               }*/
 
-            using IDbConnection connection = new SqlConnection(_connectionString);
-            List<GetAllItemsEditionItemResponseModel> responceModels = new List<GetAllItemsEditionItemResponseModel>();
-            var sqlQuery = "SELECT * FROM PrintingEditions WHERE type IN (";
-            if (filteredModel.Types.IndexOf(PrintingEditionType.Book) != -1) sqlQuery += "'0',";
-            if (filteredModel.Types.IndexOf(PrintingEditionType.Journal) != -1) sqlQuery += "'1',";
-            if (filteredModel.Types.IndexOf(PrintingEditionType.Newspaper) != -1) sqlQuery += "'2',";//не забыть удалить последнюю запятую
-            sqlQuery += ")";
-            if (filteredModel.PriceMin != 0 && filteredModel.PriceMax != 0) sqlQuery += " price BETWEEN PriceMin = @filteredModel.PriceMin AND PriceMin = @filteredModel.PriceMax AND"; //могут быть лишние AND 
-            if (!string.IsNullOrWhiteSpace(filteredModel.SearchText)) sqlQuery += " title LIKE '%filteredModel = @filteredModel.SearchText%' AND"; //могут быть лишние AND 
-            if (filteredModel.SortType == SortType.Asc) sqlQuery += " ORDER BY Price ASC";
-            if (filteredModel.SortType == SortType.Desc) sqlQuery += " ORDER BY Price DESC";
-            return connection.Execute(sqlQuery, new { filteredModel.PriceMin, filteredModel.PriceMax, filteredModel.SearchText});
+            var types = filteredModel.Types.Select(v => ((int)v).ToString()).Join(",");
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                var query = "SELECT * FROM PrintingEditions WHERE type IN STRING_SPLIT(@types, ',') " +
+                    "AND (@PriceMin is null OR @PriceMin <= Price) " +
+                    "AND (@PriceMax is null OR @PriceMax >= Price) " +
+                    "AND (@SearchText is null OR CHARINDEX(UPPER(@SearchText), UPPER(Title)) > 0) ORDER BY Price " + filteredModel.SortType.GetDescription();
+                var response = (await connection.QueryAsync<GetAllItemsEditionItemResponseModel>(query, new { types, filteredModel.PriceMin, filteredModel.PriceMax, filteredModel.SearchText })).AsList();
+                return response;
+            }
+
+
+    
 
             /*var sortOrder = SortStatePrintingEditions.IdAsc;
 
