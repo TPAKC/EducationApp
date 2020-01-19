@@ -45,7 +45,7 @@
 
   <ItemGroup>
     <Folder Include="Common\" />
-    <Folder Include="Helpers\Mapper\User\" />
+    <Folder Include="Helpers\" />
     <Folder Include="Migrations\" />
   </ItemGroup>
 

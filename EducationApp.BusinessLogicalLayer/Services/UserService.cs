@@ -8,6 +8,7 @@ using EducationApp.BusinessLogicalLayer.Models.ViewModels;
 using EducationApp.BusinessLogicalLayer.Services.Interfaces;
 using EducationApp.DataAccessLayer.Entities.Enums;
 using EducationApp.DataAccessLayer.Repositories.Interfaces;
+using EducationApp.DataAccessLayer.RequestModels;
 using System.Linq;
 using System.Threading.Tasks;
 using static EducationApp.BusinessLogicalLayer.Constants.AccountRole;
@@ -173,11 +174,11 @@ namespace EducationApp.BusinessLogicalLayer.Services
             return resultModel;
         }
 
-        public async Task<UserModel> GetSortedAsync(bool isActive, bool isBlocked, int numberSortState)//закинуть в енуму
+        public async Task<UserModel> GetSortedAsync()//закинуть в енуму
         {
+            var paginationModel = new PaginationModel(); 
             var usersResultModel = new UserModel();
-            var sortState = (SortStateUsers)numberSortState;
-            var users = await _userRepository.FilteredAsync(isActive, isBlocked, sortState);
+            var users = await _userRepository.FilteredAsync(isActive, isBlocked, paginationModel);
             usersResultModel.Items = users.Select(user => _mapper.EntityToModelITem(user)).ToList();
             return usersResultModel;//добавить еще сортировку
         }

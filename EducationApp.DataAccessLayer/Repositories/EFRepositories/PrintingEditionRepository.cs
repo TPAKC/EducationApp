@@ -46,6 +46,24 @@ namespace EducationApp.DataAccessLayer.Repositories.EFRepositories
                 SortStatePrintingEditions.PriceDesc => result.OrderByDescending(s => s.Price),
             };
             return result;
-        }*/
+        }         using IDbConnection connection = new SqlConnection(_connectionString);
+              List<GetAllItemsEditionItemResponseModel> responceModels = new List<GetAllItemsEditionItemResponseModel>();
+              var printingEditions = (await connection.GetAllAsync<PrintingEdition>()).AsList();
+              responceModels = printingEditions.Select(printingEdition => _mapper.EntityToResponceModel(printingEdition)).ToList();
+              List<GetAllItemsEditionItemResponseModel> result = new List<GetAllItemsEditionItemResponseModel>();
+              if (types[(int)TypePrintingEdition.Book])
+              {
+                  var evens = responceModels.Where(responceModels => responceModels.Type == TypePrintingEdition.Book);
+                  foreach (GetAllItemsEditionItemResponseModel responceModel in evens) result.Add(responceModel);
+              }
+              if (types[(int)TypePrintingEdition.Journal])
+              {
+                  var evens = responceModels.Where(responceModels => responceModels.Type == TypePrintingEdition.Journal);
+                  foreach (GetAllItemsEditionItemResponseModel responceModel in evens) result.Add(responceModel);
+              }
+              if (types[(int)TypePrintingEdition.Newspaper])
+              {  
+                  var evens = responceModels.Where(responceModels => responceModels.Type == TypePrintingEdition.Newspaper);
+                  foreach (GetAllItemsEditionItemResponseModel responceModel in evens) result.Add(responceModel);*/
     }
 }

@@ -13,7 +13,7 @@ namespace EducationApp.BusinessLogicalLayer.Services.Interfaces
         Task<BaseModel> ChangePasswordAsync(ChangePasswordViewModel changePasswordViewModel);
         Task<BaseModel> DeleteAsync(long id);
         Task<BaseModel> UpdateAsync(UserModelItem userModel);
-        Task<UserModel> GetSortedAsync(bool isActive, bool isBlocked, int numberSortState);
+        Task<UserModel> GetSortedAsync();
         Task LogOutAsync();
         Task<string> GenerateEmailConfirmationTokenAsync(string email);
         Task<BaseModel> ConfirmEmailAsync(long id, string code);

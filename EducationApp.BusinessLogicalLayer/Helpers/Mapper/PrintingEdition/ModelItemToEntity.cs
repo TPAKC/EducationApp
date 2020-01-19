@@ -14,7 +14,7 @@ namespace EducationApp.BusinessLogicalLayer.Helpers.Mapper
             printingEdition.Description = modelItem.Description;
             printingEdition.Price = modelItem.Price;
             printingEdition.Currency = (Currency)modelItem.Currency;
-            printingEdition.Type = (TypePrintingEdition)modelItem.Type;
+            printingEdition.Type = (PrintingEditionType)modelItem.Type;
             return printingEdition;
         }
     }

@@ -4,7 +4,8 @@ using System.Threading.Tasks;
 
 namespace EducationApp.DataAccessLayer.Repositories.Base
 {
-    public class BaseEFRepository<TEntity> : IBaseEFRepository //создать
+    public class BaseEFRepository<TEntity> 
+        //: IBaseEFRepository //создать
         {
         private readonly ApplicationDbContext _context;
 

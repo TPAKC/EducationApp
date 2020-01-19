@@ -1,6 +1,4 @@
-﻿using EducationApp.DataAccessLayer.Helpers.Mapper;
-using EducationApp.DataAccessLayer.Helpers.Mapper.Interface;
-using EducationApp.DataAccessLayer.Initialization;
+﻿using EducationApp.DataAccessLayer.Initialization;
 using EducationApp.DataAccessLayer.Repositories.DapperRepositories;
 using EducationApp.DataAccessLayer.Repositories.Interfaces;
 using EducationApp.DataAccessLayer.Repositories.UserRepository;
@@ -19,7 +17,6 @@ namespace EducationApp.DataAccessLayer
             services.AddScoped<IOrderRepository, OrderRepository>();
             services.AddScoped<IOrderItemRepository, OrderItemRepository>();
             services.AddScoped<IAuthorInPrintingEditionRepository, AuthorInPrintingEditionRepository>();
-            services.AddScoped<IMapper, Mapper>();
             services.AddScoped<DataBaseInitializer>();
         }
     }

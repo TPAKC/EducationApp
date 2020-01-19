@@ -1,8 +1,6 @@
 ﻿using EducationApp.DataAccessLayer.Entities;
-using EducationApp.DataAccessLayer.Entities.Enums;
-using EducationApp.DataAccessLayer.Helpers.Mapper.Interface;
 using EducationApp.DataAccessLayer.Repositories.Interfaces;
-using EducationApp.DataAccessLayer.ResponseModels.Items;
+using EducationApp.DataAccessLayer.RequestModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -16,13 +14,11 @@ namespace EducationApp.DataAccessLayer.Repositories.UserRepository
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly IMapper _mapper;
 
-        public UserRepository(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IMapper mapper)
+        public UserRepository(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            _mapper = mapper;
         }
 
         public async Task<bool> ChangePasswordAsync(ApplicationUser user, string oldPassword, string newPassword)
@@ -53,11 +49,10 @@ namespace EducationApp.DataAccessLayer.Repositories.UserRepository
             return result.Succeeded;
         }
 
-        public async Task<List<GetAllItemsEditionItemResponseModel>> FilteredAsync(bool isActive, bool isBlocked, SortStateUsers sortState) // фильтер модеь закинуть
+        public async Task<List<ApplicationUser>> FilteredAsync(bool isActive, bool isBlocked, PaginationModel paginationModel) // фильтер модеь закинуть
         {
-            List<GetAllItemsEditionItemResponseModel> result = new List<GetAllItemsEditionItemResponseModel>();
+            List<ApplicationUser> result = new List<ApplicationUser>();
             var users = await _userManager.Users.ToListAsync();
-            var responseModels = users.Select(user => _mapper.EntityToModelITem(user)).ToList();
             if (isActive)
             {
                 var evens = users.Where(user => !user.IsRemoved && !user.IsBlocked);
@@ -72,13 +67,13 @@ namespace EducationApp.DataAccessLayer.Repositories.UserRepository
                 }
             }
 
-            result = sortState switch //использовать расширение и рефлекцию 
+           /* result = sortState switch //использовать расширение и рефлекцию 
             {
                 SortStateUsers.NameAsc => result.OrderBy(s => (s.FirstName + " " + s.LastName)).ToList(), //и Reflection, чтобы найти свойство сортировки от объекта
                 SortStateUsers.NameDesc => result.OrderByDescending(s => (s.FirstName + " " + s.LastName)).ToList(),
                 SortStateUsers.EmailAsc => result.OrderBy(s => s.Email).ToList(),
                 SortStateUsers.EmailDesc => result.OrderByDescending(s => s.Email).ToList(),
-            };
+            };*/
             return result; //дбавить пагинацию
         }
 

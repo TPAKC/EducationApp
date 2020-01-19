@@ -1,6 +1,7 @@
 ﻿using EducationApp.DataAccessLayer.Entities;
+using EducationApp.DataAccessLayer.RequestModels;
 using EducationApp.DataAccessLayer.RequestModels.PrintingEdition;
-using EducationApp.DataAccessLayer.ResponseModels.Items;
+using EducationApp.DataAccessLayer.ResponseModels;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -13,6 +14,6 @@ namespace EducationApp.DataAccessLayer.Repositories.Interfaces
         Task<List<PrintingEdition>> GetAll();
         Task<bool> Remove(PrintingEdition item);
         Task<bool> Update(PrintingEdition item);
-        Task<List<GetAllItemsEditionItemResponseModel>> FilteredAsync(FilteredModel filteredModel);
+        Task<GetAllItemsEditionResponceModel> FilteredAsync(FilteredModel filteredModel, PaginationModel paginationModel);
     }
 }

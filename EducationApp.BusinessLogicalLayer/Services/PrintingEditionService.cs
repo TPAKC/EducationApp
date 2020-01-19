@@ -4,6 +4,8 @@ using EducationApp.BusinessLogicalLayer.Models.Models.PrintingEdition;
 using EducationApp.BusinessLogicalLayer.Models.PrintingEditions;
 using EducationApp.BusinessLogicalLayer.Services.Interfaces;
 using EducationApp.DataAccessLayer.Repositories.Interfaces;
+using EducationApp.DataAccessLayer.RequestModels;
+using EducationApp.DataAccessLayer.RequestModels.PrintingEdition;
 using System.Linq;
 using System.Threading.Tasks;
 using static EducationApp.BusinessLogicalLayer.Constants.ServiceValidationErrors;
@@ -82,8 +84,10 @@ namespace EducationApp.BusinessLogicalLayer.Services
         public async Task<PrintingEditionModel> GetSortedAsync(bool[] categorys) //add filter 
         {
             var printingEditionModel = new PrintingEditionModel();
-            var printingEditions = await _printingEditionRepository.FilteredAsync(categorys);
-            printingEditionModel.Items = printingEditions.Select(printingEdition => _mapper.EntityToModelItem(printingEdition)).ToList();
+            var filteredModel = new FilteredModel();
+            var paginationModel = new PaginationModel();
+            var printingEditions = await _printingEditionRepository.FilteredAsync(filteredModel, paginationModel);
+            printingEditionModel.Items = printingEditions.ResponseModels.Select(printingEdition => _mapper.EntityToModelItem(printingEdition)).ToList();
             foreach (var item in printingEditionModel.Items)
             {
                // item.AuthorsName = d
