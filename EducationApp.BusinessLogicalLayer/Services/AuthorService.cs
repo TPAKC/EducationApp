@@ -57,6 +57,7 @@ namespace EducationApp.BusinessLogicalLayer.Services
             }
             return resultModel;
         }
+
         public async Task<BaseModel> DeleteAsync(long id)
         {
             var resultModel = new BaseModel();

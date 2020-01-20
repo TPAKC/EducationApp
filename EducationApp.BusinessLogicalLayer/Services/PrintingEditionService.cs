@@ -84,12 +84,9 @@ namespace EducationApp.BusinessLogicalLayer.Services
         {
             var filteredModel = new FilteredModel();
             var paginationModel = new PaginationModel();
+            var printingEditionModel = new PrintingEditionModel();
             var responseModels = await _printingEditionRepository.FilteredAsync(filteredModel, paginationModel);
-            var printingEditionModel = _mapper.ResponseModelToModelItem(responseModels.ResponseModels);
-            foreach (var item in printingEditionModel.Items)
-            {
-               // item.AuthorsName = d
-            }
+            printingEditionModel.Items = _mapper.ResponseModelsToModelItems(responseModels.ResponseModels);
             return printingEditionModel;
         }
 

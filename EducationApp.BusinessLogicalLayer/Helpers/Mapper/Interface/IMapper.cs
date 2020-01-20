@@ -15,7 +15,7 @@ namespace EducationApp.BusinessLogicalLayer.Helpers.Interface
         ApplicationUser ModelItemToEntity(UserModelItem userModel);
         ApplicationUser RegisterModelToEntity(RegistrationModel registerModel);
         AuthorModelItem EntityToModelItem(Author author);
-        PrintingEditionModel ResponseModelToModelItem(List<GetAllItemsEditionItemResponseModel> responseModel);
+        List<PrintingEditionModelItem> ResponseModelsToModelItems(List<GetAllItemsEditionItemResponseModel> responseModel);
         PrintingEdition NewProductModelToEntity(NewProductModel newProductModel);
     }
 }
