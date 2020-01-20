@@ -6,7 +6,6 @@ using EducationApp.DataAccessLayer.Repositories.Interfaces;
 using EducationApp.DataAccessLayer.RequestModels;
 using EducationApp.DataAccessLayer.RequestModels.PrintingEdition;
 using EducationApp.DataAccessLayer.ResponseModels;
-using EducationApp.DataAccessLayer.ResponseModels.Items;
 using Microsoft.EntityFrameworkCore.Internal;
 using System.Collections.Generic;
 using System.Data;
@@ -26,11 +25,11 @@ namespace EducationApp.DataAccessLayer.Repositories.DapperRepositories
         public async Task<GetAllItemsEditionResponceModel> FilteredAsync(FilteredModel filteredModel, PaginationModel paginationModel)
         {
             var types = filteredModel.Types.Select(v => ((int)v).ToString()).Join(",");
-            var query = "SELECT BIG_COUNT(Id) FROM PrintingEditions WHERE type IN STRING_SPLIT(@types, ',') " +
-                "AND (@PriceMin is null OR @PriceMin <= Price) " +
-                "AND (@PriceMax is null OR @PriceMax >= Price) " +
-                "AND (@SearchText is null OR CHARINDEX(UPPER(@SearchText), UPPER(Title)) > 0) ORDER BY Price " + filteredModel.SortType.GetDescription() +
-            @"SELECT P.*, A.Id AS AuthorId, A.[Name] AS AuthorName FROM PrintingEditions AS P
+            var query = @"SELECT BIG_COUNT(Id) FROM PrintingEditions WHERE type IN STRING_SPLIT(@types, ',')
+                AND (@PriceMin is null OR @PriceMin <= Price)
+                AND (@PriceMax is null OR @PriceMax >= Price)
+                AND (@SearchText is null OR CHARINDEX(UPPER(@SearchText), UPPER(Title)) > 0) ORDER BY Price " + filteredModel.SortType.GetDescription() +
+            @"SELECT P.*, A.[Name] AS AuthorName FROM PrintingEditions AS P
             LEFT JOIN AuthorInPrintingEditions AS AP ON AP.PrintingEditionId = P.Id
             LEFT JOIN Authors AS A ON AP.AuthorId = A.Id 
             WHERE type IN STRING_SPLIT(@types, ',') 

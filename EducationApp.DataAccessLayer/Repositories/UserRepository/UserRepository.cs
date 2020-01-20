@@ -49,11 +49,11 @@ namespace EducationApp.DataAccessLayer.Repositories.UserRepository
             return result.Succeeded;
         }
 
-        public async Task<List<ApplicationUser>> FilteredAsync(bool isActive, bool isBlocked, PaginationModel paginationModel) // фильтер модеь закинуть
-        {
-            List<ApplicationUser> result = new List<ApplicationUser>();
+        public async Task<List<ApplicationUser>> FilteredAsync( PaginationModel paginationModel) // фильтер модеь закинуть
+        { 
+           List<ApplicationUser> result = new List<ApplicationUser>();
             var users = await _userManager.Users.ToListAsync();
-            if (isActive)
+         /*   if (isActive)
             {
                 var evens = users.Where(user => !user.IsRemoved && !user.IsBlocked);
                 foreach (ApplicationUser user in evens) result.Add(user);
@@ -65,7 +65,7 @@ namespace EducationApp.DataAccessLayer.Repositories.UserRepository
                 {
                     result.Add(user);
                 }
-            }
+            }*/
 
            /* result = sortState switch //использовать расширение и рефлекцию 
             {

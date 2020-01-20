@@ -1,7 +1,6 @@
 ﻿using EducationApp.BusinessLogicalLayer.Helpers;
+using EducationApp.BusinessLogicalLayer.Helpers.Interface;
 using EducationApp.BusinessLogicalLayer.Helpers.Interfaces;
-using EducationApp.BusinessLogicalLayer.Helpers.Mapper;
-using EducationApp.BusinessLogicalLayer.Helpers.Mapper.Interface;
 using EducationApp.BusinessLogicalLayer.Services;
 using EducationApp.BusinessLogicalLayer.Services.Interfaces;
 using EducationApp.DataAccessLayer.Entities;

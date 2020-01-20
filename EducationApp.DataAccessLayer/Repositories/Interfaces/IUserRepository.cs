@@ -12,7 +12,7 @@ namespace EducationApp.DataAccessLayer.Repositories.Interfaces
         Task<ApplicationUser> FindByIdAsync(long id);
         Task<ApplicationUser> FindByEmailAsync(string email);
         Task<bool> UpdateAsync(ApplicationUser user);
-        Task<List<ApplicationUser>> FilteredAsync(bool isActive, bool isBlocked, PaginationModel sortState);
+        Task<List<ApplicationUser>> FilteredAsync(PaginationModel sortState);
         Task<bool> AddToRoleAsync(ApplicationUser user, string role);
         Task<IList<string>> GetRolesAsync(ApplicationUser user);
         Task<bool> IsInRoleAsync(ApplicationUser user, string role);

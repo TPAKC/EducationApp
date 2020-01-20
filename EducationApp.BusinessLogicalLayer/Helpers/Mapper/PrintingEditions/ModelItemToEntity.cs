@@ -1,9 +1,9 @@
-﻿using EducationApp.BusinessLogicalLayer.Helpers.Mapper.Interface;
+﻿using EducationApp.BusinessLogicalLayer.Helpers.Interface;
 using EducationApp.BusinessLogicalLayer.Models.Models.PrintingEdition;
 using EducationApp.DataAccessLayer.Entities;
 using EducationApp.DataAccessLayer.Entities.Enums;
 
-namespace EducationApp.BusinessLogicalLayer.Helpers.Mapper
+namespace EducationApp.BusinessLogicalLayer.Helpers
 {
     public partial class Mapper : IMapper
     {

@@ -4,8 +4,10 @@ using EducationApp.BusinessLogicalLayer.Models.Models.PrintingEdition;
 using EducationApp.BusinessLogicalLayer.Models.PrintingEditions;
 using EducationApp.BusinessLogicalLayer.Models.Users;
 using EducationApp.DataAccessLayer.Entities;
+using EducationApp.DataAccessLayer.ResponseModels;
+using System.Collections.Generic;
 
-namespace EducationApp.BusinessLogicalLayer.Helpers.Mapper.Interface
+namespace EducationApp.BusinessLogicalLayer.Helpers.Interface
 {
     public interface IMapper 
     {
@@ -13,7 +15,7 @@ namespace EducationApp.BusinessLogicalLayer.Helpers.Mapper.Interface
         ApplicationUser ModelItemToEntity(UserModelItem userModel);
         ApplicationUser RegisterModelToEntity(RegistrationModel registerModel);
         AuthorModelItem EntityToModelItem(Author author);
-        PrintingEditionModelItem EntityToModelItem(PrintingEdition printingEdition);
+        PrintingEditionModel ResponseModelToModelItem(List<GetAllItemsEditionItemResponseModel> responseModel);
         PrintingEdition NewProductModelToEntity(NewProductModel newProductModel);
     }
 }

@@ -1,9 +1,10 @@
-﻿using EducationApp.BusinessLogicalLayer.Models.Authors;
+﻿using EducationApp.BusinessLogicalLayer.Helpers.Interface;
+using EducationApp.BusinessLogicalLayer.Models.Authors;
 using EducationApp.DataAccessLayer.Entities;
 
-namespace EducationApp.BusinessLogicalLayer.Helpers.Mapper
+namespace EducationApp.BusinessLogicalLayer.Helpers
 {
-    public partial class Mapper
+    public partial class Mapper : IMapper
     {
         public AuthorModelItem EntityToModelItem(Author author)
         {

@@ -1,4 +1,4 @@
-﻿using EducationApp.BusinessLogicalLayer.Helpers.Mapper;
+﻿using EducationApp.BusinessLogicalLayer.Helpers.Interface;
 using EducationApp.BusinessLogicalLayer.Models.Authors;
 using EducationApp.BusinessLogicalLayer.Models.Base;
 using EducationApp.BusinessLogicalLayer.Services.Interfaces;
@@ -14,12 +14,12 @@ namespace EducationApp.BusinessLogicalLayer.Services
     {
         private readonly IAuthorRepository _authorRepository;
         private readonly IAuthorInPrintingEditionRepository _authorInPrintingEditionRepository;
-        private readonly Mapper _mapper;
+        private readonly IMapper _mapper;
 
         public AuthorService(
             IAuthorRepository authorRepository,
             IAuthorInPrintingEditionRepository authorInPrintingEditionRepository,
-            Mapper mapper)
+            IMapper mapper)
         {
             _authorInPrintingEditionRepository = authorInPrintingEditionRepository;
             _authorRepository = authorRepository;

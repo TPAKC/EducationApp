@@ -46,8 +46,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Helpers\Mapper\Payment\" />
-    <Folder Include="Helpers\Mapper\Oder\" />
+    <Folder Include="Helpers\Mapper\Payments\" />
+    <Folder Include="Helpers\Mapper\Oders\" />
   </ItemGroup>
 
 </Project>

@@ -20,7 +20,7 @@ namespace CustomIdentityApp.Controllers
         [HttpGet("users")]
         public ActionResult GetAll(bool isActive, bool isBlocked, int numberSortState)//в filter Model запаковать
         {
-            var result = _userService.GetSortedAsync(isActive, isBlocked, numberSortState);
+            var result = _userService.GetSortedAsync();
             return Ok(result);
         }
 

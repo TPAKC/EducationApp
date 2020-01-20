@@ -1,8 +1,8 @@
-﻿using EducationApp.BusinessLogicalLayer.Helpers.Mapper.Interface;
+﻿using EducationApp.BusinessLogicalLayer.Helpers.Interface;
 using EducationApp.BusinessLogicalLayer.Models.Users;
 using EducationApp.DataAccessLayer.Entities;
 
-namespace EducationApp.BusinessLogicalLayer.Helpers.Mapper
+namespace EducationApp.BusinessLogicalLayer.Helpers
 {
     public partial class Mapper : IMapper
     {

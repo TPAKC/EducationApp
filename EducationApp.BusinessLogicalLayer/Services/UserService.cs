@@ -1,12 +1,11 @@
-﻿using EducationApp.BusinessLogicalLayer.Helpers.Interfaces;
-using EducationApp.BusinessLogicalLayer.Helpers.Mapper;
+﻿using EducationApp.BusinessLogicalLayer.Helpers.Interface;
+using EducationApp.BusinessLogicalLayer.Helpers.Interfaces;
 using EducationApp.BusinessLogicalLayer.Models;
 using EducationApp.BusinessLogicalLayer.Models.Base;
 using EducationApp.BusinessLogicalLayer.Models.Models.Account;
 using EducationApp.BusinessLogicalLayer.Models.Users;
 using EducationApp.BusinessLogicalLayer.Models.ViewModels;
 using EducationApp.BusinessLogicalLayer.Services.Interfaces;
-using EducationApp.DataAccessLayer.Entities.Enums;
 using EducationApp.DataAccessLayer.Repositories.Interfaces;
 using EducationApp.DataAccessLayer.RequestModels;
 using System.Linq;
@@ -21,13 +20,13 @@ namespace EducationApp.BusinessLogicalLayer.Services
     {
 
         private readonly IUserRepository _userRepository;
-        private readonly Mapper _mapper;
+        private readonly IMapper _mapper;
         // private readonly JwtHelper _jwtHelper;
         // private readonly JwtOptions _jwtOptions;
         private readonly IEmailHelper _emailHelper;
 
         public UserService(IUserRepository userRepository,
-            Mapper mapper,
+            IMapper mapper,
             //   JwtHelper jwtHelper,     
             // IOptions<JwtOptions> jwtOptions, 
             IEmailHelper emailHelper)
@@ -178,7 +177,7 @@ namespace EducationApp.BusinessLogicalLayer.Services
         {
             var paginationModel = new PaginationModel(); 
             var usersResultModel = new UserModel();
-            var users = await _userRepository.FilteredAsync(isActive, isBlocked, paginationModel);
+            var users = await _userRepository.FilteredAsync(paginationModel);
             usersResultModel.Items = users.Select(user => _mapper.EntityToModelITem(user)).ToList();
             return usersResultModel;//добавить еще сортировку
         }

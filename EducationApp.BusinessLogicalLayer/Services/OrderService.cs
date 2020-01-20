@@ -1,4 +1,4 @@
-﻿using EducationApp.BusinessLogicalLayer.Helpers.Mapper;
+﻿using EducationApp.BusinessLogicalLayer.Helpers;
 using EducationApp.BusinessLogicalLayer.Services.Interfaces;
 using EducationApp.DataAccessLayer.Repositories.Interfaces;
 
