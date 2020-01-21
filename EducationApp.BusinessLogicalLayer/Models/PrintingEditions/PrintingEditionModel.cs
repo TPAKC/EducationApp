@@ -1,7 +1,7 @@
 ﻿using EducationApp.BusinessLogicalLayer.Models.Base;
-using EducationApp.BusinessLogicalLayer.Models.Enums;
 using System;
 using System.Collections.Generic;
+using static EducationApp.BusinessLogicalLayer.Models.Enum;
 
 namespace EducationApp.BusinessLogicalLayer.Models.PrintingEditions
 {

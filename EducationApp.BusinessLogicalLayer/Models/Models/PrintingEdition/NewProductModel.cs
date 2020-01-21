@@ -1,5 +1,5 @@
-﻿using EducationApp.BusinessLogicalLayer.Models.Enums;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using static EducationApp.BusinessLogicalLayer.Models.Enum;
 
 namespace EducationApp.BusinessLogicalLayer.Models.Models.PrintingEdition
 {

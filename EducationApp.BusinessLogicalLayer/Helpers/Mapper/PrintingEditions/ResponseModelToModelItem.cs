@@ -1,8 +1,8 @@
 ﻿using EducationApp.BusinessLogicalLayer.Helpers.Interface;
-using EducationApp.BusinessLogicalLayer.Models.Enums;
 using EducationApp.BusinessLogicalLayer.Models.PrintingEditions;
 using EducationApp.DataAccessLayer.ResponseModels;
 using System.Collections.Generic;
+using static EducationApp.BusinessLogicalLayer.Models.Enum;
 
 namespace EducationApp.BusinessLogicalLayer.Helpers
 {

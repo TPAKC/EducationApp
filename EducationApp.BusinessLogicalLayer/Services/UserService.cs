@@ -175,10 +175,10 @@ namespace EducationApp.BusinessLogicalLayer.Services
 
         public async Task<UserModel> GetSortedAsync()//закинуть в енуму
         {
-            var paginationModel = new PaginationModel(); 
+            //var paginationModel = new PaginationModel(); 
             var usersResultModel = new UserModel();
-            var users = await _userRepository.FilteredAsync(paginationModel);
-            usersResultModel.Items = users.Select(user => _mapper.EntityToModelITem(user)).ToList();
+            //var users = await _userRepository.FilteredAsync(paginationModel);
+            //usersResultModel.Items = users.Select(user => _mapper.EntityToModelITem(user)).ToList();
             return usersResultModel;//добавить еще сортировку
         }
 

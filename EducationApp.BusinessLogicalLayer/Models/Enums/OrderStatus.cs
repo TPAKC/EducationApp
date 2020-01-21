@@ -1,9 +1,12 @@
-﻿namespace EducationApp.BusinessLogicalLayer.Models.Enums
+﻿namespace EducationApp.BusinessLogicalLayer.Models
 {
-    public enum OrderStatus
+    public partial class Enum
     {
-        None = 0,
-        Unpaid = 1,
-        Paid = 2,
+        public enum OrderStatus
+        {
+            None = 0,
+            Unpaid = 1,
+            Paid = 2,
+        }
     }
 }

@@ -1,7 +1,5 @@
-﻿using EducationApp.BusinessLogicalLayer.Models.Enums;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
+using static EducationApp.BusinessLogicalLayer.Models.Enum;
 
 namespace EducationApp.BusinessLogicalLayer.Models.PrintingEditions
 {
@@ -12,7 +10,7 @@ namespace EducationApp.BusinessLogicalLayer.Models.PrintingEditions
         public decimal? PriceMax { get; set; }
         public Currency? Currency { get; set; }
         public string SearchText { get; set; }
-        public SortType SortType { get; set; }//сделать енум в BLL
-        public PrintingEditionSortColumn? SortColumn { get; set; }//сделать енум в BLL
+        public SortType SortType { get; set; }
+        public PrintingEditionSortColumn? SortColumn { get; set; }
     }
 }

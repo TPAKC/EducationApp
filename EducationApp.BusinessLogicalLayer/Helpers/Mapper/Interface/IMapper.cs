@@ -1,4 +1,5 @@
-﻿using EducationApp.BusinessLogicalLayer.Models.Authors;
+﻿using EducationApp.BusinessLogicalLayer.Models;
+using EducationApp.BusinessLogicalLayer.Models.Authors;
 using EducationApp.BusinessLogicalLayer.Models.Models.Account;
 using EducationApp.BusinessLogicalLayer.Models.Models.PrintingEdition;
 using EducationApp.BusinessLogicalLayer.Models.PrintingEditions;
@@ -17,5 +18,8 @@ namespace EducationApp.BusinessLogicalLayer.Helpers.Interface
         AuthorModelItem EntityToModelItem(Author author);
         List<PrintingEditionModelItem> ResponseModelsToModelItems(List<GetAllItemsEditionItemResponseModel> responseModel);
         PrintingEdition NewProductModelToEntity(NewProductModel newProductModel);
+        DataAccessLayer.RequestModels.PaginationModel PaginationModel(PaginationModel pagination);
+        DataAccessLayer.RequestModels.PrintingEdition.FilteredModel FilteredModel(FilteredModel filteredModel);
     }
 }
+  

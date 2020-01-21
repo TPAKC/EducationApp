@@ -1,9 +1,12 @@
-﻿namespace EducationApp.BusinessLogicalLayer.Models.Enums
+﻿namespace EducationApp.BusinessLogicalLayer.Models
 {
-    public enum PrintingEditionType
+    public partial class Enum
     {
-        Book = 0,
-        Journal = 1,
-        Newspaper = 2
+        public enum PrintingEditionType
+        {
+            Book = 0,
+            Journal = 1,
+            Newspaper = 2
+        }
     }
 }

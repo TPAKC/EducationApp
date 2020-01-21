@@ -1,4 +1,6 @@
-﻿using EducationApp.BusinessLogicalLayer.Models.Models.PrintingEdition;
+﻿using EducationApp.BusinessLogicalLayer.Models;
+using EducationApp.BusinessLogicalLayer.Models.Models.PrintingEdition;
+using EducationApp.BusinessLogicalLayer.Models.PrintingEditions;
 using EducationApp.BusinessLogicalLayer.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -17,12 +19,11 @@ namespace EducationApp.PresentationLayer.Controllers
             _printingEditionsService = printingEditionsService;
         }
 
-        [HttpGet]
-        public async Task<ActionResult> GetAll(bool[] categorys)
+        [HttpPost("G")]
+        public async Task<ActionResult> GetAll(FilteredModel filteredModel, PaginationModel paginationModel)
         {
-            var result = await _printingEditionsService.GetSortedAsync(categorys);
-            if (result.Errors.Count != 0) return Ok(result.Errors);
-            return Ok(result.Items);
+            var result = await _printingEditionsService.GetSortedAsync(filteredModel, paginationModel);
+            return Ok(result);
         }
 
         [HttpPost]
