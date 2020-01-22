@@ -1,10 +1,10 @@
 ﻿using EducationApp.BusinessLogicalLayer.Helpers.Interface;
-using EducationApp.BusinessLogicalLayer.Models;
 using EducationApp.BusinessLogicalLayer.Models.Base;
 using EducationApp.BusinessLogicalLayer.Models.Models.PrintingEdition;
 using EducationApp.BusinessLogicalLayer.Models.PrintingEditions;
 using EducationApp.BusinessLogicalLayer.Services.Interfaces;
 using EducationApp.DataAccessLayer.Repositories.Interfaces;
+using EducationApp.DataAccessLayer.RequestModels.PrintingEdition;
 using System.Threading.Tasks;
 using static EducationApp.BusinessLogicalLayer.Constants.ServiceValidationErrors;
 
@@ -79,13 +79,12 @@ namespace EducationApp.BusinessLogicalLayer.Services
             return resultModel;
         }
 
-        public async Task<PrintingEditionModel> GetSortedAsync(FilteredModel oldFilteredModel, PaginationModel oldPaginationModel)
+        public async Task<PrintingEditionModel> GetSortedAsync(CatalogModel catalogModel)
         {
             var printingEditionModel = new PrintingEditionModel();
-            var filteredModel = _mapper.FilteredModel(oldFilteredModel);
-            var paginationModel = _mapper.PaginationModel(oldPaginationModel);
-            var responseModels = await _printingEditionRepository.FilteredAsync(filteredModel, paginationModel);
-            printingEditionModel.Items = _mapper.ResponseModelsToModelItems(responseModels.ResponseModels);
+            var filteredModel = _mapper.FilteredModel(catalogModel);
+            var responseModels = await _printingEditionRepository.FilteredAsync(filteredModel);
+            printingEditionModel.Items = _mapper.ResponseModelsToModelItems(responseModels.ResponseModels, catalogModel.Currency);
             return printingEditionModel;
         }
 

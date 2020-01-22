@@ -8,7 +8,17 @@ namespace EducationApp.BusinessLogicalLayer.Helpers
 {
     public partial class Mapper : IMapper
     {
-        public List<PrintingEditionModelItem> ResponseModelsToModelItems(List<GetAllItemsEditionItemResponseModel> responseModels)
+        private readonly Dictionary<Currency, decimal> ExchangeRates = new Dictionary<Currency, decimal>
+        {
+            { Currency.USD, 1m },
+            { Currency.UAH, 24.34m },
+            { Currency.EUR, 0.9m },
+            { Currency.GBP, 0.77m },
+            { Currency.CHF, 0.97m },
+            { Currency.JPY, 110m }
+        };
+
+        public List<PrintingEditionModelItem> ResponseModelsToModelItems(List<GetAllItemsEditionItemResponseModel> responseModels, Currency currency)
         {
             var modelItem = new List<PrintingEditionModelItem>();
             foreach (GetAllItemsEditionItemResponseModel responseModel in responseModels)
@@ -22,8 +32,7 @@ namespace EducationApp.BusinessLogicalLayer.Helpers
                 var printingEditionModel = new PrintingEditionModelItem();
                 printingEditionModel.Title = responseModel.Title;
                 printingEditionModel.Description = responseModel.Description;
-                printingEditionModel.Price = responseModel.Price;
-                printingEditionModel.Currency = (Currency)responseModel.Currency;
+                printingEditionModel.Price = responseModel.Price * ExchangeRates[currency];
                 printingEditionModel.Type = (PrintingEditionType)responseModel.Type;
                 printingEditionModel.AuthorsNames.Add(responseModel.AuthorName);
 

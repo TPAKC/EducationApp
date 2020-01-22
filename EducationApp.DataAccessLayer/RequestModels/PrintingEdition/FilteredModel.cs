@@ -13,5 +13,6 @@ namespace EducationApp.DataAccessLayer.RequestModels.PrintingEdition
         public string SearchText { get; set; }
         public SortType SortType { get; set; }
         public PrintingEditionSortColumn? SortColumn { get; set; }
+        public PaginationModel PaginationModel { get; set; }
     }
 }

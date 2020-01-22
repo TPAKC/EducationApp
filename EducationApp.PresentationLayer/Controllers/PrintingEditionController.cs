@@ -2,6 +2,7 @@
 using EducationApp.BusinessLogicalLayer.Models.Models.PrintingEdition;
 using EducationApp.BusinessLogicalLayer.Models.PrintingEditions;
 using EducationApp.BusinessLogicalLayer.Services.Interfaces;
+using EducationApp.DataAccessLayer.RequestModels.PrintingEdition;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -19,32 +20,32 @@ namespace EducationApp.PresentationLayer.Controllers
             _printingEditionsService = printingEditionsService;
         }
 
-        [HttpPost("G")]
-        public async Task<ActionResult> GetAll(FilteredModel filteredModel, PaginationModel paginationModel)
+        [HttpPost("GetAll")]
+        public async Task<ActionResult> GetAll(FilteredModel filteredModel)
         {
-            var result = await _printingEditionsService.GetSortedAsync(filteredModel, paginationModel);
+            var result = await _printingEditionsService.GetSortedAsync(filteredModel);
             return Ok(result);
         }
 
-        [HttpPost]
+        [HttpPost("Create")]
         public async Task<ActionResult> Create(NewProductModel newProductModel)
         {
             var result = await _printingEditionsService.CreateAsync(newProductModel);
-            return Ok(result.Errors);
-        }
-        /*
-        [HttpPut("{id}")]
-        public async Task<ActionResult> Update(PrintingEditionModelItem printingEditionModelItem, long id)
-        {
-            var result = await _printingEditionsService.UpdateAsync(printingEditionModelItem, id);
-            return Ok(result.Errors);
+            return Ok(result);
         }
         
-        [HttpDelete("{id}")]
-        public async Task<ActionResult> Delete(long id)
+        [HttpPut("Update/{id}")]
+        public async Task<ActionResult> Update(NewProductModel newProductModel, [FromRoute]long id)
+        {
+            var result = await _printingEditionsService.UpdateAsync(newProductModel, id);
+            return Ok(result);
+        }
+        
+        [HttpDelete("Delete/{id}")]
+        public async Task<ActionResult> Delete([FromRoute]long id)
         {
             var result = await _printingEditionsService.DeleteAsync(id);
-            return Ok(result.Errors);
-        }*/
+            return Ok(result);
+        }
     }
 }

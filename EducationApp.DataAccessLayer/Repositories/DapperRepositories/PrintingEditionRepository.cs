@@ -22,28 +22,42 @@ namespace EducationApp.DataAccessLayer.Repositories.DapperRepositories
         {
             _connectionString = connectionString;
         }
-        public async Task<GetAllItemsEditionResponceModel> FilteredAsync(FilteredModel filteredModel, PaginationModel paginationModel)
+        public async Task<GetAllItemsEditionResponceModel> FilteredAsync(FilteredModel filteredModel)
         {
             var types = filteredModel.Types.Select(v => ((int)v).ToString()).Join(",");
-            var query = @"SELECT BIG_COUNT(Id) FROM PrintingEditions WHERE type IN STRING_SPLIT(@types, ',')
-                AND (@PriceMin is null OR @PriceMin <= Price)
-                AND (@PriceMax is null OR @PriceMax >= Price)
-                AND (@SearchText is null OR CHARINDEX(UPPER(@SearchText), UPPER(Title)) > 0) ORDER BY Price " + filteredModel.SortType.GetDescription() +
+            var query =
+            @"SELECT MIN(Price) FROM PrintingEditions" +
+            @"SELECT MAX(Price) FROM PrintingEditions" +
+            @"SELECT BIG_COUNT(Id) FROM PrintingEditions WHERE type IN STRING_SPLIT(@types, ',')
+            AND 0 = IsRemoved
+            AND (@PriceMin is null OR @PriceMin <= Price)
+            AND (@PriceMax is null OR @PriceMax >= Price)
+            AND (@SearchText is null OR CHARINDEX(UPPER(@SearchText), UPPER(Title)) > 0) ORDER BY Price " + filteredModel.SortType.GetDescription() +
             @"SELECT P.*, A.[Name] AS AuthorName FROM PrintingEditions AS P
             LEFT JOIN AuthorInPrintingEditions AS AP ON AP.PrintingEditionId = P.Id
             LEFT JOIN Authors AS A ON AP.AuthorId = A.Id 
             WHERE type IN STRING_SPLIT(@types, ',') 
+            AND 0 = IsRemoved
             AND (@PriceMin is null OR @PriceMin <= Price) 
             AND (@PriceMax is null OR @PriceMax >= Price) 
-            AND (@SearchText is null OR CHARINDEX(UPPER(@SearchText), UPPER(Title)) > 0) ORDER BY Price "+filteredModel.SortType.GetDescription() + 
+            AND (@SearchText is null OR CHARINDEX(UPPER(@SearchText), UPPER(Title)) > 0) ORDER BY Price " + filteredModel.SortType.GetDescription() +
             " OFFSET @start ROWS FETCH NEXT @count ROWS ONLY";
             using (var connection = new SqlConnection(_connectionString))
             {
                 connection.Open();
-                using (var multi = connection.QueryMultiple(query, new { types, filteredModel.PriceMin, filteredModel.PriceMax, 
-                    filteredModel.SearchText, paginationModel.Start, paginationModel.Count }))
+                using (var multi = connection.QueryMultiple(query, new
+                {
+                    types,
+                    filteredModel.PriceMin,
+                    filteredModel.PriceMax,
+                    filteredModel.SearchText,
+                    filteredModel.PaginationModel.Start,
+                    filteredModel.PaginationModel.Count
+                }))
                 {
                     var responseModels = new GetAllItemsEditionResponceModel();
+                    responseModels.PriceMin = await multi.ReadFirstAsync();
+                    responseModels.PriceMax = await multi.ReadFirstAsync();
                     responseModels.Count = await multi.ReadFirstAsync<long>();
                     responseModels.ResponseModels = (await multi.ReadAsync<GetAllItemsEditionItemResponseModel>()).AsList();
                     return responseModels;

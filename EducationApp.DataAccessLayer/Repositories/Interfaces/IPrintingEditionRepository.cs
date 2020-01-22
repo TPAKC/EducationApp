@@ -14,6 +14,6 @@ namespace EducationApp.DataAccessLayer.Repositories.Interfaces
         Task<List<PrintingEdition>> GetAll();
         Task<bool> Remove(PrintingEdition item);
         Task<bool> Update(PrintingEdition item);
-        Task<GetAllItemsEditionResponceModel> FilteredAsync(FilteredModel filteredModel, PaginationModel paginationModel);
+        Task<GetAllItemsEditionResponceModel> FilteredAsync(FilteredModel filteredModel);
     }
 }
