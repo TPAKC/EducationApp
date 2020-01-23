@@ -52,5 +52,12 @@ namespace EducationApp.PresentationLayer.Controllers
             var result = await _printingEditionsService.DeleteAsync(id);
             return Ok(result);
         }
+
+        [HttpPost("GetItem/{id}")]
+        public async Task<ActionResult> GetItem([FromRoute]long id)
+        {
+            var result = await _printingEditionsService.GetItemAsync(id);
+            return Ok(result);
+        }
     }
 }

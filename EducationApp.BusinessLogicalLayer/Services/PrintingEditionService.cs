@@ -79,12 +79,10 @@ namespace EducationApp.BusinessLogicalLayer.Services
             }
             return resultModel;
         }
-        public async Task<PrintingEditionModelItem> GetAsync(long Id)
+        public async Task<PrintingEditionModelItem> GetItemAsync(long Id)
         {
-            var printingEditionModel = new PrintingEditionModel();
-            var filteredModel = _mapper.UserCatalogModelToFilteredModel(catalogModel);
-            var responseModels = await _printingEditionRepository.FilteredAsync(filteredModel);
-            printingEditionModel.Items = _mapper.ResponseModelsToModelItems(responseModels.ResponseModels, catalogModel.Currency);
+            var printingEdition = await _printingEditionRepository.Find(Id);
+            var printingEditionModel = _mapper.EntityToModelItem(printingEdition);
             return printingEditionModel;
         }
 

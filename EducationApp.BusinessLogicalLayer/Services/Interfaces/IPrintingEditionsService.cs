@@ -12,5 +12,6 @@ namespace EducationApp.BusinessLogicalLayer.Services.Interfaces
         Task<PrintingEditionModel> GetUserCatalogAsync(UserCatalogModel catalogModel);
         Task<PrintingEditionModel> GetAdminCatalogAsync(AdminCatalogModel catalogModel);
         Task<BaseModel> DeleteAsync(long id);
+        Task<PrintingEditionModelItem> GetItemAsync(long Id);
     }
 }

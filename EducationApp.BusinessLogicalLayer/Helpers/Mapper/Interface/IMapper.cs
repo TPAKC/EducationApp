@@ -11,7 +11,7 @@ using static EducationApp.BusinessLogicalLayer.Models.Enum;
 
 namespace EducationApp.BusinessLogicalLayer.Helpers.Interface
 {
-    public interface IMapper 
+    public interface IMapper
     {
         UserModelItem EntityToModelITem(ApplicationUser user);
         ApplicationUser ModelItemToEntity(UserModelItem userModel);
@@ -21,6 +21,6 @@ namespace EducationApp.BusinessLogicalLayer.Helpers.Interface
         PrintingEdition NewProductModelToEntity(NewProductModel newProductModel);
         FilteredModel UserCatalogModelToFilteredModel(UserCatalogModel catalogModel);
         FilteredModel AdminCatalogModelToFilteredModel(AdminCatalogModel catalogModel);
+        PrintingEditionModelItem EntityToModelItem(PrintingEdition printingEdition);
     }
 }
-  
