@@ -184,7 +184,6 @@ namespace EducationApp.BusinessLogicalLayer.Services
 
         public async Task LogOutAsync()
         {
-            var resultModel = new BaseModel();
             await _userRepository.LogOutAsync();
         }
 

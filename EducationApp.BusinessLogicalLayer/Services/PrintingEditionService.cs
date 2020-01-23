@@ -7,6 +7,7 @@ using EducationApp.DataAccessLayer.Repositories.Interfaces;
 using EducationApp.DataAccessLayer.RequestModels.PrintingEdition;
 using System.Threading.Tasks;
 using static EducationApp.BusinessLogicalLayer.Constants.ServiceValidationErrors;
+using static EducationApp.BusinessLogicalLayer.Models.Enum;
 
 namespace EducationApp.BusinessLogicalLayer.Services
 {
@@ -78,13 +79,30 @@ namespace EducationApp.BusinessLogicalLayer.Services
             }
             return resultModel;
         }
-
-        public async Task<PrintingEditionModel> GetSortedAsync(CatalogModel catalogModel)
+        public async Task<PrintingEditionModelItem> GetAsync(long Id)
         {
             var printingEditionModel = new PrintingEditionModel();
-            var filteredModel = _mapper.FilteredModel(catalogModel);
+            var filteredModel = _mapper.UserCatalogModelToFilteredModel(catalogModel);
             var responseModels = await _printingEditionRepository.FilteredAsync(filteredModel);
             printingEditionModel.Items = _mapper.ResponseModelsToModelItems(responseModels.ResponseModels, catalogModel.Currency);
+            return printingEditionModel;
+        }
+
+        public async Task<PrintingEditionModel> GetUserCatalogAsync(UserCatalogModel catalogModel)
+        {
+            var printingEditionModel = new PrintingEditionModel();
+            var filteredModel = _mapper.UserCatalogModelToFilteredModel(catalogModel);
+            var responseModels = await _printingEditionRepository.FilteredAsync(filteredModel);
+            printingEditionModel.Items = _mapper.ResponseModelsToModelItems(responseModels.ResponseModels, catalogModel.Currency);
+            return printingEditionModel;
+        }
+
+        public async Task<PrintingEditionModel> GetAdminCatalogAsync(AdminCatalogModel catalogModel)
+        {
+            var printingEditionModel = new PrintingEditionModel();
+            var filteredModel = _mapper.AdminCatalogModelToFilteredModel(catalogModel);
+            var responseModels = await _printingEditionRepository.FilteredAsync(filteredModel);
+            printingEditionModel.Items = _mapper.ResponseModelsToModelItems(responseModels.ResponseModels, Currency.USD);
             return printingEditionModel;
         }
 

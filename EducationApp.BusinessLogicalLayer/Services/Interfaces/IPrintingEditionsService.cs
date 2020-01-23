@@ -1,8 +1,6 @@
-﻿using EducationApp.BusinessLogicalLayer.Models;
-using EducationApp.BusinessLogicalLayer.Models.Base;
+﻿using EducationApp.BusinessLogicalLayer.Models.Base;
 using EducationApp.BusinessLogicalLayer.Models.Models.PrintingEdition;
 using EducationApp.BusinessLogicalLayer.Models.PrintingEditions;
-using EducationApp.DataAccessLayer.RequestModels.PrintingEdition;
 using System.Threading.Tasks;
 
 namespace EducationApp.BusinessLogicalLayer.Services.Interfaces
@@ -11,7 +9,8 @@ namespace EducationApp.BusinessLogicalLayer.Services.Interfaces
     {
         Task<BaseModel> CreateAsync(NewProductModel newProductModel);
         Task<BaseModel> UpdateAsync(NewProductModel newProductModel, long id);
-        Task<PrintingEditionModel> GetSortedAsync(CatalogModel catalogModel);
+        Task<PrintingEditionModel> GetUserCatalogAsync(UserCatalogModel catalogModel);
+        Task<PrintingEditionModel> GetAdminCatalogAsync(AdminCatalogModel catalogModel);
         Task<BaseModel> DeleteAsync(long id);
     }
 }

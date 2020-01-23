@@ -1,8 +1,6 @@
-﻿using EducationApp.BusinessLogicalLayer.Models;
-using EducationApp.BusinessLogicalLayer.Models.Models.PrintingEdition;
+﻿using EducationApp.BusinessLogicalLayer.Models.Models.PrintingEdition;
 using EducationApp.BusinessLogicalLayer.Models.PrintingEditions;
 using EducationApp.BusinessLogicalLayer.Services.Interfaces;
-using EducationApp.DataAccessLayer.RequestModels.PrintingEdition;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -20,10 +18,17 @@ namespace EducationApp.PresentationLayer.Controllers
             _printingEditionsService = printingEditionsService;
         }
 
-        [HttpPost("GetAll")]
-        public async Task<ActionResult> GetAll(FilteredModel filteredModel)
+        [HttpPost("GetUserCatalog")]
+        public async Task<ActionResult> GetUserCatalog(UserCatalogModel catalogModel)
         {
-            var result = await _printingEditionsService.GetSortedAsync(filteredModel);
+            var result = await _printingEditionsService.GetUserCatalogAsync(catalogModel);
+            return Ok(result);
+        }
+
+        [HttpPost("GetAdminCatalog")]
+        public async Task<ActionResult> GetAdminCatalog(UserCatalogModel catalogModel)
+        {
+            var result = await _printingEditionsService.GetAdminCatalogAsync(catalogModel);
             return Ok(result);
         }
 

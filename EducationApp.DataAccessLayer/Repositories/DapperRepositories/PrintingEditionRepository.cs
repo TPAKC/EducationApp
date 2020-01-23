@@ -3,7 +3,6 @@ using EducationApp.DataAccessLayer.Entities;
 using EducationApp.DataAccessLayer.Extensions.Enum;
 using EducationApp.DataAccessLayer.Repositories.Base;
 using EducationApp.DataAccessLayer.Repositories.Interfaces;
-using EducationApp.DataAccessLayer.RequestModels;
 using EducationApp.DataAccessLayer.RequestModels.PrintingEdition;
 using EducationApp.DataAccessLayer.ResponseModels;
 using Microsoft.EntityFrameworkCore.Internal;
@@ -26,22 +25,22 @@ namespace EducationApp.DataAccessLayer.Repositories.DapperRepositories
         {
             var types = filteredModel.Types.Select(v => ((int)v).ToString()).Join(",");
             var query =
-            @"SELECT MIN(Price) FROM PrintingEditions" +
-            @"SELECT MAX(Price) FROM PrintingEditions" +
-            @"SELECT BIG_COUNT(Id) FROM PrintingEditions WHERE type IN STRING_SPLIT(@types, ',')
+            @"SELECT MIN(Price) FROM PrintingEditions
+            SELECT MAX(Price) FROM PrintingEditions
+            SELECT COUNT(Id) FROM PrintingEditions WHERE Type IN (SELECT value FROM STRING_SPLIT(@types, ','))
             AND 0 = IsRemoved
             AND (@PriceMin is null OR @PriceMin <= Price)
             AND (@PriceMax is null OR @PriceMax >= Price)
-            AND (@SearchText is null OR CHARINDEX(UPPER(@SearchText), UPPER(Title)) > 0) ORDER BY Price " + filteredModel.SortType.GetDescription() +
-            @"SELECT P.*, A.[Name] AS AuthorName FROM PrintingEditions AS P
+            AND (@SearchText is null OR CHARINDEX(UPPER('@SearchText'), UPPER(Title)) > 0)
+            SELECT P.*, A.[Name] AS AuthorName FROM PrintingEditions AS P
             LEFT JOIN AuthorInPrintingEditions AS AP ON AP.PrintingEditionId = P.Id
             LEFT JOIN Authors AS A ON AP.AuthorId = A.Id 
-            WHERE type IN STRING_SPLIT(@types, ',') 
-            AND 0 = IsRemoved
+            WHERE Type IN (SELECT value FROM STRING_SPLIT(@types, ','))
+            AND 0 = P.IsRemoved
             AND (@PriceMin is null OR @PriceMin <= Price) 
             AND (@PriceMax is null OR @PriceMax >= Price) 
             AND (@SearchText is null OR CHARINDEX(UPPER(@SearchText), UPPER(Title)) > 0) ORDER BY Price " + filteredModel.SortType.GetDescription() +
-            " OFFSET @start ROWS FETCH NEXT @count ROWS ONLY";
+            " OFFSET @Start ROWS FETCH NEXT @Count ROWS ONLY";
             using (var connection = new SqlConnection(_connectionString))
             {
                 connection.Open();
@@ -51,10 +50,10 @@ namespace EducationApp.DataAccessLayer.Repositories.DapperRepositories
                     filteredModel.PriceMin,
                     filteredModel.PriceMax,
                     filteredModel.SearchText,
-                    filteredModel.PaginationModel.Start,
-                    filteredModel.PaginationModel.Count
+                    filteredModel.Start,
+                    filteredModel.Count
                 }))
-                {
+                {  
                     var responseModels = new GetAllItemsEditionResponceModel();
                     responseModels.PriceMin = await multi.ReadFirstAsync();
                     responseModels.PriceMax = await multi.ReadFirstAsync();

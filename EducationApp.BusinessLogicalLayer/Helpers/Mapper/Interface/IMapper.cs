@@ -19,7 +19,8 @@ namespace EducationApp.BusinessLogicalLayer.Helpers.Interface
         AuthorModelItem EntityToModelItem(Author author);
         List<PrintingEditionModelItem> ResponseModelsToModelItems(List<GetAllItemsEditionItemResponseModel> responseModels, Currency currency);
         PrintingEdition NewProductModelToEntity(NewProductModel newProductModel);
-        FilteredModel FilteredModel(CatalogModel catalogModel);
+        FilteredModel UserCatalogModelToFilteredModel(UserCatalogModel catalogModel);
+        FilteredModel AdminCatalogModelToFilteredModel(AdminCatalogModel catalogModel);
     }
 }
   
