@@ -7,8 +7,6 @@ using EducationApp.BusinessLogicalLayer.Models.Users;
 using EducationApp.BusinessLogicalLayer.Models.ViewModels;
 using EducationApp.BusinessLogicalLayer.Services.Interfaces;
 using EducationApp.DataAccessLayer.Repositories.Interfaces;
-using EducationApp.DataAccessLayer.RequestModels;
-using System.Linq;
 using System.Threading.Tasks;
 using static EducationApp.BusinessLogicalLayer.Constants.AccountRole;
 using static EducationApp.BusinessLogicalLayer.Constants.ServiceValidationErrors;
@@ -21,21 +19,17 @@ namespace EducationApp.BusinessLogicalLayer.Services
 
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
-        // private readonly JwtHelper _jwtHelper;
-        // private readonly JwtOptions _jwtOptions;
         private readonly IEmailHelper _emailHelper;
-
+        private readonly IGeneratePasswordHelper _generatePasswordHelper;
         public UserService(IUserRepository userRepository,
             IMapper mapper,
-            //   JwtHelper jwtHelper,     
-            // IOptions<JwtOptions> jwtOptions, 
-            IEmailHelper emailHelper)
+            IEmailHelper emailHelper,
+            IGeneratePasswordHelper generatePasswordHelper)
         {
             _userRepository = userRepository;
-            _mapper = mapper;
-            //_jwtHelper = jwtHelper;
-            // _jwtOptions = jwtOptions.Value;
+            _mapper = mapper;;
             _emailHelper = emailHelper;
+            _generatePasswordHelper = generatePasswordHelper;
         }
 
         public async Task<LoginModel> LoginAsync(string email, string password, bool rememberMe)
@@ -68,15 +62,6 @@ namespace EducationApp.BusinessLogicalLayer.Services
                 modelResult.Errors.Add(PasswordIsIncorrect);
                 return modelResult;
             }
-
-            /*var result = new LoginView();
-            result.UserId = user.Id;
-            result.Confirmed = user.EmailConfirmed;
-            if (user.EmailConfirmed)
-            {
-                result.Token = await GetAccessToken(user);
-            }*/
-
             return modelResult;
         }
 
@@ -122,7 +107,7 @@ namespace EducationApp.BusinessLogicalLayer.Services
                 return resultModel;
             }
 
-            var result = await _userRepository.ChangePasswordAsync(user, changePasswordViewModel.OldPassword, changePasswordViewModel.NewPassword); //you may need to enter the password manually
+            var result = await _userRepository.ChangePasswordAsync(user, changePasswordViewModel.OldPassword, changePasswordViewModel.NewPassword);
             if (!result)
             {
                 resultModel.Errors.Add(FailedToChangePassword);
@@ -218,7 +203,7 @@ namespace EducationApp.BusinessLogicalLayer.Services
         public async Task<BaseModel> ForgotPasswordAsync(string email)
         {
             var resultModel = new BaseModel();
-            var newPassword = "";//GeneratePasswordHelper.Ge
+            var newPassword = _generatePasswordHelper.GeneratePassword();
             var user = await _userRepository.FindByEmailAsync(email);
             if (user == null)
             {
@@ -240,14 +225,6 @@ namespace EducationApp.BusinessLogicalLayer.Services
             }
             return resultModel;
         }
-
-        /* private async Task<string> GetAccessToken(ApplicationUser user)
-         {
-             var roles = await _userRepository.GetRolesAsync(user);
-             var role = roles.FirstOrDefault();
-             var token = await _jwtHelper.GenerateEncodedToken(user, role);
-             return token;
-         }*/
 
         public async Task<BaseModel> ChangeStatusAsync(long id, bool userStatus)
         {

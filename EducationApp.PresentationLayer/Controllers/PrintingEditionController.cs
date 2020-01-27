@@ -26,7 +26,7 @@ namespace EducationApp.PresentationLayer.Controllers
         }
 
         [HttpPost("GetAdminCatalog")]
-        public async Task<ActionResult> GetAdminCatalog(UserCatalogModel catalogModel)
+        public async Task<ActionResult> GetAdminCatalog(AdminCatalogModel catalogModel)
         {
             var result = await _printingEditionsService.GetAdminCatalogAsync(catalogModel);
             return Ok(result);

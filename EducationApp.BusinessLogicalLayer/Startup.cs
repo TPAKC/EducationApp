@@ -39,6 +39,7 @@ namespace EducationApp.BusinessLogicalLayer
             services.AddScoped<IAuthorService, AuthorService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IEmailHelper, EmailHelper>();
+            services.AddScoped<IGeneratePasswordHelper, GeneratePasswordHelper>();
             services.AddScoped<IMapper, Mapper>();
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(connectionString));
