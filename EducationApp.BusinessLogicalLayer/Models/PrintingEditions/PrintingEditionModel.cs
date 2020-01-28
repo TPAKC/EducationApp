@@ -13,7 +13,6 @@ namespace EducationApp.BusinessLogicalLayer.Models.PrintingEditions
     public class PrintingEditionModelItem : BaseModel
     {
         public long Id { get; set; }
-        public DateTime CreatingDate { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public decimal Price { get; set; }

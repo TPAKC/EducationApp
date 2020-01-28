@@ -1,14 +1,15 @@
-﻿using System;
+﻿using EducationApp.BusinessLogicalLayer.Helpers.Interfaces;
+using System;
 
 namespace EducationApp.BusinessLogicalLayer.Helpers
 {
-    public class GeneratePasswordHelper
+    public class GeneratePasswordHelper : IGeneratePasswordHelper
     {
         private const int LengthPassword = 8;
         private const int LengthChars = 73;
         private const string Chars = "$%#@!*abcdefghijklmnopqrstuvwxyz1234567890?;:ABCDEFGHIJKLMNOPQRSTUVWXYZ^&";
 
-        private string GeneratePassword()
+        public string GeneratePassword()
         {
             var random = new Random();
             string password = string.Empty;

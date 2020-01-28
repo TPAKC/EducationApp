@@ -40,7 +40,7 @@ namespace EducationApp.BusinessLogicalLayer.Helpers
             }
             return modelItem;
         }
-        public int FindPrintingEdition(List<PrintingEditionModelItem> printingEditions, long printingEditionId)
+        private int FindPrintingEdition(List<PrintingEditionModelItem> printingEditions, long printingEditionId)
         {
             for(int i=0;i<printingEditions.Count;i++)
             {
