@@ -158,13 +158,12 @@ namespace EducationApp.BusinessLogicalLayer.Services
             return resultModel;
         }
 
-        public async Task<UserModel> GetSortedAsync()//закинуть в енуму
+        public async Task<UserModel> GetSortedAsync(UsersManagmentModel usersManagmentModel)
         {
-            //var paginationModel = new PaginationModel(); 
             var usersResultModel = new UserModel();
-            //var users = await _userRepository.FilteredAsync(paginationModel);
-            //usersResultModel.Items = users.Select(user => _mapper.EntityToModelITem(user)).ToList();
-            return usersResultModel;//добавить еще сортировку
+            var users = await _userRepository.FilteredAsync(usersManagmentModel);
+            usersResultModel.Items = users.Select(user => _mapper.EntityToModelITem(user)).ToList();
+            return usersResultModel;
         }
 
         public async Task LogOutAsync()
