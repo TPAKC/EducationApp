@@ -21,9 +21,9 @@ namespace EducationApp.PresentationLayer.Controllers
         }
 
         [HttpPost("GetAll")]
-        public async Task<ActionResult> GetAll(FilteredModel filteredModel)
+        public async Task<ActionResult> GetAll(CatalogModel catalogModel)
         {
-            var result = await _printingEditionsService.GetSortedAsync(filteredModel);
+            var result = await _printingEditionsService.GetSortedAsync(catalogModel);
             return Ok(result);
         }
 
